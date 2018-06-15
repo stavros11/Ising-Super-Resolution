@@ -5,8 +5,9 @@ Created on Thu Jun 14 21:09:15 2018
 @author: Stavros
 """
 
+from numpy import save as npsave
 from os import path, mkdir
-from architectures import get_name_and_model
+from architectures import get_name_and_model, get_model, get_name
 from calculators import round_loss, cont_loss
 from metrics import get_metrics
 from keras.callbacks import History, EarlyStopping
@@ -42,8 +43,13 @@ class TrainerCritical():
                                                 min_delta=self.args.ESdelta, 
                                                 patience=self.args.ESpat))
             self.args.EP = 1000
+            
+    def crete_saving_dirs(self):
+        create_directory(self.args.metrics_dir)
+        create_directory(self.args.model_dir)
 
     def train(self, data):
+        self.crete_saving_dirs()
         self.create_loss()
         self.create_callbacks()
         
@@ -55,11 +61,57 @@ class TrainerCritical():
         
         self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
                            metrics=self.metrics_list)
-        
-        hist = self.model.fit(x=data.train_in, y=data.train_out,
+
+        hist = self.model.fit(x=data.train_in[:self.args.TRS], 
+                              y=data.train_out[:self.args.TRS],
                               batch_size=self.args.BS, epochs=self.args.EP, 
                               verbose=0, callbacks=self.callbacks, 
-                              validation_data=(data.test_in, data.test_out))
+                              validation_data=(data.test_in[:self.args.VALS], 
+                                               data.test_out[:self.args.VALS]))
         
         self.metrics = get_metrics(hist, reg=self.reg_flag)
         
+        ### Save files ###
+        npsave('%s/%s.npy'%(self.args.metrics_dir, self.name))
+        self.model.save('%s/%s.h5'%(self.args.model_dir, self.name))
+ 
+       
+class TrainerTemp(TrainerCritical):
+    def crete_saving_dirs(self):
+        create_directory('%s/%s'%(self.args.metrics_dir, self.name))
+        create_directory('%s/%s'%(self.args.model_dir, self.name))
+    
+    def train(self, data):
+        self.name = get_name(data.train_in.shape, 
+                             hid_act=self.args.ACT,
+                             hid_filters=self.args.HF, 
+                             kernels=self.args.K,
+                             pbc=self.args.PBC)
+    
+        self.create_saving_dirs()
+        self.create_loss()
+        self.create_callbacks()
+        
+        for (iT,T) in enumerate(self.args.T_list):
+            self.model = get_name_and_model(data.train_in.shape, 
+                                            hid_act=self.args.ACT,
+                                            hid_filters=self.args.HF, 
+                                            kernels=self.args.K,
+                                            pbc=self.args.PBC)
+        
+            self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
+                               metrics=self.metrics_list)
+            
+            hist = self.model.fit(
+                    x=data.train_in[iT*self.args.nTR:(iT+1)*self.args.nTR][:self.args.TRS], 
+                    y=data.train_out[iT*self.args.nTR:(iT+1)*self.args.nTR][:self.args.TRS],
+                    batch_size=self.args.BS, epochs=self.args.EP, 
+                    verbose=0, callbacks=self.callbacks, 
+                    validation_data=(data.test_in[iT*self.args.nTE:(iT+1)*self.args.nTE][:self.args.VALS], 
+                                     data.test_out[iT*self.args.nTE:(iT+1)*self.args.nTE][:self.args.VALS]))
+        
+            self.metrics = get_metrics(hist, reg=self.reg_flag)
+            
+            ### Save files ###
+            npsave('%s/%s/Met%.4f.npy'%(self.args.metrics_dir, self.name, T))
+            self.model.save('%s/%s/%Net%.4f.h5'%(self.args.model_dir, self.name, T))
