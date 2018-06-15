@@ -5,9 +5,7 @@ Created on Thu Jun 14 16:18:23 2018
 @author: Stavros
 """
 
-from data.directories import models_critical_save_dir, metrics_critical_save_dir
 from data.loaders import TrainingData
-from networks.train import TrainerCritical
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
@@ -36,8 +34,18 @@ parser.add_argument('-ESpat', type=int, default=50, help='early stopping patienc
 parser.add_argument('-ESdelta', type=float, default=0.0001, help='early stopping delta')
 
 args = parser.parse_args()
-args.models_dir = models_critical_save_dir
-args.metrics_dir= metrics_critical_save_dir
+
+if args.CR:
+    from data.directories import models_critical_save_dir, metrics_critical_save_dir
+    from networks.train import TrainerCritical
+    args.model_dir = models_critical_save_dir
+    args.metrics_dir= metrics_critical_save_dir
+else:
+    from data.directories import models_save_dir, metrics_save_dir, T_list
+    from networks.train import TrainerTemp
+    args.model_dir = models_save_dir
+    args.metrics_dir = metrics_save_dir
+    args.T_list = T_list
 
 trainer = TrainerCritical(args)
 trainer.train(TrainingData(args))
