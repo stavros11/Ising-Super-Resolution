@@ -33,9 +33,24 @@ class TrainingData():
         
         self.train_in, self.train_out = (add_index(train_in), 
                                          add_index(train_out))
-        self.val_in, self.val_out = (add_index(test_in), 
-                                     add_index(test_out))
+        self.test_in, self.test_out = (add_index(test_in), 
+                                       add_index(test_out))
         
+class TestData():
+    def __init__(self, args):
+        if args.CR:
+            test_out = read_file_critical(L=args.L, n_samples=args.nTE, train=False)
+        else:
+            test_out = read_file(L=args.L, n_samples=args.nTE, train=False)
+        
+        if args.RGWD:
+            test_in = block_rg_WD(test_out)
+        else:
+            test_in = block_rg(test_out)
+
+        self.test_in, self.test_out = (add_index(test_in), 
+                                       add_index(test_out))
+
         
 ###################################
 ########## LOAD MC DATA  ##########
