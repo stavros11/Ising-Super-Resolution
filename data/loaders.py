@@ -10,8 +10,6 @@ from directories import mc_train_dir, mc_test_dir
 from directories import mc_critical_train_dir, mc_critical_test_dir
 from decimations import block_rg, block_rg_WD
 
-## Temperature list for mc data ##
-T_list = np.linspace(0.01, 4.538, 32)
 
 ################################################
 ########## DATA FOR TRAINING READERS  ##########
@@ -33,10 +31,10 @@ class TrainingData():
             train_in = block_rg(train_out)
             test_in = block_rg(test_out)
         
-        self.train_in, self.train_out = (add_index(train_in)[:args.TRS], 
-                                         add_index(train_out)[:args.TRS])
-        self.val_in, self.val_out = (add_index(test_in)[:args.VALS], 
-                                     add_index(test_out)[:args.VALS])
+        self.train_in, self.train_out = (add_index(train_in), 
+                                         add_index(train_out))
+        self.val_in, self.val_out = (add_index(test_in), 
+                                     add_index(test_out))
         
         
 ###################################
