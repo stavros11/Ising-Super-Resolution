@@ -24,13 +24,13 @@ class TrainerCritical():
         self.metrics_list = [round_loss, cont_loss, 'accuracy']
         if self.args.magR == 0 and self.args.enR == 0:
             self.reg_flag = False
-            from networks.calculators import create_loss
+            from calculators import create_loss
             def loss(self, y_true, y_pred):
                 return create_loss(y_true, y_pred, ce=self.args.CE)
         else:
             self.reg_flag = True
-            from networks.calculators import create_loss_reg, regularization
-            self.metrics_list += [regularization]
+            from calculators import create_loss_reg, regularization
+            self.metrics_list.append(regularization)
             def loss(self, y_true, y_pred):
                 return create_loss_reg(y_true, y_pred, ce=self.args.CE, 
                                        mag_reg=self.args.magR, en_reg=self.args.enR)
