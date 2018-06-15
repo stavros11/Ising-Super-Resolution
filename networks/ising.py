@@ -60,6 +60,17 @@ def get_observables_with_corr(state, T):
     corr = correlation_lengths(state)
     return np.concatenate((obs, corr))
 
+def get_observables_with_tpf(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, tpf(L/4), tpf(L/2)]
+    state = 2 * state - 1
+    L = state.shape[1]
+    
+    obs = get_observables(state, T)
+    tpf1 = two_point_function(state, L/4)
+    tpf2 = two_point_function(state, L/2)
+    
+    return np.concatenate((obs, np.array([tpf1]), np.array([tpf2])))
+
 def get_observables_with_corr_and_tpf(state, T):
     ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
     ## S0, S1, S2, tpf(L/4), tpf(L/2)]
@@ -145,7 +156,8 @@ class IsingErrors():
         
         self._calculate_energy()
         self.energy, self.errenergy = self.average_and_std(self.sample_energy)
-        self.energy2, self.errenergy2 = self.average_and_std(np.square(sample_energy))
+        self.energy2, self.errenergy2 = self.average_and_std(
+                np.square(self.sample_energy))
         
         #return np.array([self.mag, self.energy / self.N_spins, 
         #                 self.N_spins * susc, specHeat / self.N_spins])
