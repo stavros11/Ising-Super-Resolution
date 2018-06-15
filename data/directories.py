@@ -27,3 +27,4 @@ metrics_critical_save_dir = ''
 
 ## Quantities directories ##
 quantities_dir = ''
+mulitple_exponents_dir = ''
