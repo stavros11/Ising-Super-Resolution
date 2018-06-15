@@ -7,7 +7,7 @@ Created on Thu Jun 14 21:09:15 2018
 
 from numpy import save as npsave
 from os import path, mkdir
-from architectures import get_name_and_model, get_model, get_name
+from architectures import get_model, get_name
 from calculators import round_loss, cont_loss
 from metrics import get_metrics
 from keras.callbacks import History, EarlyStopping
@@ -20,6 +20,17 @@ def create_directory(d):
 class TrainerCritical():
     def __init__(self, args):
         self.args = args
+        
+        self.create_loss()
+        self.create_callbacks()
+        
+        self.name = get_name([1, self.args.L, self.args.L, 1], 
+                             hid_act=self.args.ACT,
+                             hid_filters=self.args.HF, 
+                             kernels=self.args.K,
+                             pbc=self.args.PBC)
+        
+        self.create_saving_dirs()
 
     def create_loss(self):
         self.metrics_list = [round_loss, cont_loss, 'accuracy']
@@ -48,16 +59,14 @@ class TrainerCritical():
         create_directory(self.args.metrics_dir)
         create_directory(self.args.model_dir)
 
-    def train(self, data):
+    def train(self, data, run_time=0):
         self.crete_saving_dirs()
-        self.create_loss()
-        self.create_callbacks()
         
-        self.name, self.model = get_name_and_model(data.train_in.shape, 
-                                                   hid_act=self.args.ACT,
-                                                   hid_filters=self.args.HF, 
-                                                   kernels=self.args.K,
-                                                   pbc=self.args.PBC)
+        self.model = get_model(data.train_in.shape, 
+                               hid_act=self.args.ACT,
+                               hid_filters=self.args.HF, 
+                               kernels=self.args.K,
+                               pbc=self.args.PBC)
         
         self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
                            metrics=self.metrics_list)
@@ -72,32 +81,23 @@ class TrainerCritical():
         self.metrics = get_metrics(hist, reg=self.reg_flag)
         
         ### Save files ###
-        npsave('%s/%s.npy'%(self.args.metrics_dir, self.name))
-        self.model.save('%s/%s.h5'%(self.args.model_dir, self.name))
- 
-       
+        npsave('%s/%s_B%d_Ver%dRun%d.npy'%(self.args.metrics_dir, self.name, 
+                                           self.args.BS, self.args.VER, run_time))
+        self.model.save('%s/%s_B%d_Ver%dRun%d.h5'%(self.args.model_dir, self.name,
+                                                   self.args.BS, self.args.VER, run_time))
+
 class TrainerTemp(TrainerCritical):
     def crete_saving_dirs(self):
         create_directory('%s/%s'%(self.args.metrics_dir, self.name))
         create_directory('%s/%s'%(self.args.model_dir, self.name))
     
     def train(self, data):
-        self.name = get_name(data.train_in.shape, 
-                             hid_act=self.args.ACT,
-                             hid_filters=self.args.HF, 
-                             kernels=self.args.K,
-                             pbc=self.args.PBC)
-    
-        self.create_saving_dirs()
-        self.create_loss()
-        self.create_callbacks()
-        
         for (iT,T) in enumerate(self.args.T_list):
-            self.model = get_name_and_model(data.train_in.shape, 
-                                            hid_act=self.args.ACT,
-                                            hid_filters=self.args.HF, 
-                                            kernels=self.args.K,
-                                            pbc=self.args.PBC)
+            self.model = get_model(data.train_in.shape, 
+                                   hid_act=self.args.ACT,
+                                   hid_filters=self.args.HF, 
+                                   kernels=self.args.K,
+                                   pbc=self.args.PBC)
         
             self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
                                metrics=self.metrics_list)
