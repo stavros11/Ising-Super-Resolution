@@ -48,7 +48,8 @@ def get_moments_with_errors(state):
     obs[4] = np.array([obj.energy2, obj.errenergy2])
     
     return obs
-    
+
+   
 ##########################################
 ########## CALCULATIONS CLASSES ##########
 ##########################################
