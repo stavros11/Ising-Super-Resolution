@@ -17,10 +17,7 @@ def create_obs_function(args):
     from ising import get_observables as f
     return f
 
-def upsampling(init_data, model, args):
-    L0 = init_data.shape[1]
-    L_list = 2**np.arange(L0, L0 + 1 + args.UP)
-    
+def upsampling(init_data, model, args):   
     if args.PBC:
         from architectures import duplicate_simple2D_pbc
         def duplication_function(old_model, x):
@@ -50,5 +47,4 @@ def upsampling(init_data, model, args):
         
         obs.append(get_observables(state[:,:,:,0]))
         
-    obs = np.array(obs).T
-    return np.concatenate((L_list, obs))
+    return np.array(obs).T
