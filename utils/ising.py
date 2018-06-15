@@ -24,7 +24,7 @@ def get_observables(state, T):
                      obj.mag2 / obj.N_spins, obj.mag4 / obj.N_spins**3,
                      obj.energy2 / obj.N_spins]) / obj.N_spins
 
-def get_observables_only(state, T):
+def get_basic_observables(state, T):
     ## Returns [Mag, En, Susc, specHeat]
     obj = Ising(2 * state - 1)
     obj.calculate_moments()
@@ -38,7 +38,7 @@ def get_moments_with_errors(state):
     ## Returns array of [quantity, error] (5x2)
     ## Quantities Mag, Mag2, Mag4, En, En2
     obs = np.empty([5, 2])
-    obj = Ising(2 * state - 1)
+    obj = IsingErrors(2 * state - 1)
     obj.calculate_moments()
     
     obs[0] = np.array([obj.mag, obj.errmag])
@@ -49,7 +49,7 @@ def get_moments_with_errors(state):
     
     return obs
 
-   
+
 ##########################################
 ########## CALCULATIONS CLASSES ##########
 ##########################################
