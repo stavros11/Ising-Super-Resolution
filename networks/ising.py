@@ -11,10 +11,14 @@ Created on Thu Jun 14 15:13:40 2018
 ##################################################################
 
 import numpy as np
+from correlation import correlation_lengths, two_point_function
 
 def get_observables(state, T):
-    ## Returns [Mag, En, Susc, specHeat, Mag, Mag2, Mag4. En2]
-    obj = Ising(2 * state - 1)
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2]
+    return get_observables_assist(2*state-1, T)
+    
+def get_observables_assist(state, T):
+    obj = Ising(state)
     obj.calculate_moments()
     
     specHeat = (obj.energy2 - np.square(obj.energy)) / T**2
@@ -49,6 +53,26 @@ def get_moments_with_errors(state):
     
     return obs
 
+def get_observables_with_corr(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, S0, S1, S2]
+    state = 2 * state - 1
+    obs = get_observables_assist(state, T)
+    corr = correlation_lengths(state)
+    return np.concatenate((obs, corr))
+
+def get_observables_with_corr_and_tpf(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
+    ## S0, S1, S2, tpf(L/4), tpf(L/2)]
+    state = 2 * state - 1
+    L = state.shape[1]
+    
+    obs = get_observables(state, T)
+    corr = correlation_lengths(state)
+    tpf1 = two_point_function(state, L/4)
+    tpf2 = two_point_function(state, L/2)
+    
+    return np.concatenate((obs, corr, np.array([tpf1]), np.array([tpf2])))
+    
 
 ##########################################
 ########## CALCULATIONS CLASSES ##########
