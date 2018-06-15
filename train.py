@@ -16,6 +16,7 @@ parser.add_argument('-nTR', type=int, default=40000, help='train samples')
 parser.add_argument('-nTE', type=int, default=100000, help='test samples')
 parser.add_argument('-TRS', type=int, default=40000, help='train size')
 parser.add_argument('-VALS', type=int, default=5000, help='validation size')
+parser.add_argument('-VER', type=int, default=1, help='version for name')
 
 parser.add_argument('-PBC', type=bool, default=True, help='use PBC padding')
 parser.add_argument('-ACT', type=str, default='relu', help='hidden activation')
