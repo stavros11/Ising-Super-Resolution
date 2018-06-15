@@ -6,13 +6,39 @@ Created on Thu Jun 14 15:57:12 2018
 """
 
 import numpy as np
-from os import path, mkdir
 from directories import mc_train_dir, mc_test_dir
 from directories import mc_critical_train_dir, mc_critical_test_dir
+from decimations import block_rg, block_rg_WD
 
 ## Temperature list for mc data ##
 T_list = np.linspace(0.01, 4.538, 32)
 
+################################################
+########## DATA FOR TRAINING READERS  ##########
+################################################
+
+class TrainingData():
+    def __init__(self, args):
+        if args.CR:
+            train_out = read_file_critical(L=args.L, n_samples=args.nTR, train=True)
+            test_out = read_file_critical(L=args.L, n_samples=args.nTE, train=False)
+        else:
+            train_out = read_file(L=args.L, n_samples=args.nTR, train=True)
+            test_out = read_file(L=args.L, n_samples=args.nTE, train=False)
+        
+        if args.RGWD:
+            train_in = block_rg_WD(train_out)
+            test_in = block_rg_WD(test_out)
+        else:
+            train_in = block_rg(train_out)
+            test_in = block_rg(test_out)
+        
+        self.train_in, self.train_out = (add_index(train_in)[:args.TRS], 
+                                         add_index(train_out)[:args.TRS])
+        self.val_in, self.val_out = (add_index(test_in)[:args.VALS], 
+                                     add_index(test_out)[:args.VALS])
+        
+        
 ###################################
 ########## LOAD MC DATA  ##########
 ###################################
@@ -41,8 +67,3 @@ def add_index(data):
 
 def temp_partition(data, iT, n_samples=10000):
     return data[iT * n_samples : (iT+1) * n_samples]
-    
-def create_directory(d):
-    ## Create directory if it doesn't exist ##
-    if not path.exists(d):
-        mkdir(d)
