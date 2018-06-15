@@ -114,6 +114,16 @@ def get_name(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
     else:
         return name
     
+def get_model(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
+              pbc=False):
+    ## Returns model
+    if pbc:
+        return simple2D_pbc(x, hid_filters=hid_filters, kernels=kernels, 
+                            hid_act=hid_act)
+    else:
+        return simple2D(x, hid_filters=hid_filters, kernels=kernels, 
+                        hid_act=hid_act)
+
 def get_name_and_model(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
                        pbc=False):
     ## Returns name (that contains model info), model
