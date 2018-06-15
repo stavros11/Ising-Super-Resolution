@@ -55,16 +55,15 @@ trainer = TrainerCritical(args)
 observables = []
 for iC in range(args.C):
     trainer.train(data, run_time=iC)
-    observables.append(upsampling(data.test_out, trainer.model, args))
-    
-    create_directory(multiple_exponents_dir+'/%s'%trainer.name)
+    obs = upsampling(data.test_out, trainer.model, args)
+    observables.append(obs)
     
     if args.PRreg:
         print('Beta:')
-        print(linregress(np.log10(observables[0]), np.log10(observables[1])))
+        print(linregress(np.log10(obs[0]), np.log10(obs[1])))
         print('Gamma:')
-        print(linregress(np.log10(observables[0]), np.log10(observables[3])))
+        print(linregress(np.log10(obs[0]), np.log10(obs[3])))
 
-np.save('%s/%s/observables%d.npy'%(multiple_exponents_dir, 
-                                      trainer.name,
-                                      iC+1), observables)    
+create_directory(multiple_exponents_dir)
+np.save('%s/%s_C%dUP%d.npy'%(multiple_exponents_dir, trainer.name,
+                         args.C, args.UP), np.array(observables))
