@@ -9,6 +9,9 @@ Created on Thu Jun 14 15:51:06 2018
 ############ File directories definitions ############
 ######################################################
 
+## Temperature list for mc data ##
+T_list = np.linspace(0.01, 4.538, 32)
+
 ## Data directories ##
 mc_train_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_Titan_scripts/Ising_Data/ising-data-train-%d/L=%d/q=%d/configs.npy'
 mc_test_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_Titan_scripts/Ising_Data/ising-data-test-%d/L=%d/q=%d/configs.npy'
