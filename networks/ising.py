@@ -13,6 +13,16 @@ Created on Thu Jun 14 15:13:40 2018
 import numpy as np
 from correlation import correlation_lengths, two_point_function
 
+def get_basic_observables(state, T):
+    ## Returns [Mag, En, Susc, specHeat]
+    obj = Ising(2 * state - 1)
+    obj.calculate_moments()
+    
+    specHeat = (obj.energy2 - np.square(obj.energy)) / T**2
+    susc = (obj.mag2 - np.square(obj.mag)) / T
+    
+    return np.array([obj.mag, obj.energy, susc, specHeat]) / obj.N_spins
+
 def get_observables(state, T):
     ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2]
     return get_observables_assist(2*state-1, T)
@@ -28,15 +38,36 @@ def get_observables_assist(state, T):
                      obj.mag2 / obj.N_spins, obj.mag4 / obj.N_spins**3,
                      obj.energy2 / obj.N_spins]) / obj.N_spins
 
-def get_basic_observables(state, T):
-    ## Returns [Mag, En, Susc, specHeat]
-    obj = Ising(2 * state - 1)
-    obj.calculate_moments()
+def get_observables_with_corr(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, S0, S1, S2]
+    state = 2 * state - 1
+    obs = get_observables_assist(state, T)
+    corr = correlation_lengths(state)
+    return np.concatenate((obs, corr))
+
+def get_observables_with_tpf(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, tpf(L/2), tpf(L/4)]
+    state = 2 * state - 1
+    L = state.shape[1]
     
-    specHeat = (obj.energy2 - np.square(obj.energy)) / T**2
-    susc = (obj.mag2 - np.square(obj.mag)) / T
+    obs = get_observables_assist(state, T)
+    tpf1 = two_point_function(state, L//2)
+    tpf2 = two_point_function(state, L//4)
     
-    return np.array([obj.mag, obj.energy, susc, specHeat]) / obj.N_spins
+    return np.concatenate((obs, np.array([tpf1]), np.array([tpf2])))
+
+def get_observables_with_corr_and_tpf(state, T):
+    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
+    ## tpf(L/2), tpf(L/4), S0, S1, S2,]
+    state = 2 * state - 1
+    L = state.shape[1]
+    
+    obs = get_observables_assist(state, T)
+    corr = correlation_lengths(state)
+    tpf1 = two_point_function(state, L//2)
+    tpf2 = two_point_function(state, L//4)
+    
+    return np.concatenate((obs, np.array([tpf1]), np.array([tpf2]), corr))
 
 def get_moments_with_errors(state):
     ## Returns array of [quantity, error] (5x2)
@@ -52,37 +83,6 @@ def get_moments_with_errors(state):
     obs[4] = np.array([obj.energy2, obj.errenergy2])
     
     return obs
-
-def get_observables_with_corr(state, T):
-    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, S0, S1, S2]
-    state = 2 * state - 1
-    obs = get_observables_assist(state, T)
-    corr = correlation_lengths(state)
-    return np.concatenate((obs, corr))
-
-def get_observables_with_tpf(state, T):
-    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, tpf(L/4), tpf(L/2)]
-    state = 2 * state - 1
-    L = state.shape[1]
-    
-    obs = get_observables(state, T)
-    tpf1 = two_point_function(state, L/4)
-    tpf2 = two_point_function(state, L/2)
-    
-    return np.concatenate((obs, np.array([tpf1]), np.array([tpf2])))
-
-def get_observables_with_corr_and_tpf(state, T):
-    ## Returns [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
-    ## S0, S1, S2, tpf(L/4), tpf(L/2)]
-    state = 2 * state - 1
-    L = state.shape[1]
-    
-    obs = get_observables(state, T)
-    corr = correlation_lengths(state)
-    tpf1 = two_point_function(state, L/4)
-    tpf2 = two_point_function(state, L/2)
-    
-    return np.concatenate((obs, corr, np.array([tpf1]), np.array([tpf2])))
     
 
 ##########################################
@@ -96,7 +96,7 @@ class Ising():
         self.state = state
         
     def _calculate_magnetization(self):
-        self.sample_mag = np.sum(np.sum(self.state, axis=2), axis=1)
+        self.sample_mag = np.sum(self.state, axis=(1,2))
         
     def _calculate_energy(self, Jx=1, Jy=1):
         ## Returns total energy of the current state - Full calculation ##
@@ -115,6 +115,7 @@ class Ising():
         self._calculate_magnetization()
         self.mag  = np.mean(np.abs(self.sample_mag))
         self.mag2 = np.mean(np.square(self.sample_mag))
+        self.mag4 = np.mean(np.square(self.sample_mag))
         
         self._calculate_energy()
         self.energy  = np.mean(self.sample_energy)
