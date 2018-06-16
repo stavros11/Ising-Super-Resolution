@@ -46,5 +46,6 @@ def upsampling(init_data, model, args):
         state = (cont_state > np.random.random(cont_state.shape)).astype(np.int)
         
         obs.append(get_observables(state[:,:,:,0]))
+        print('%d / %d upsamplings done!'%(i+1, args.UP))
         
     return np.array(obs).T
