@@ -9,6 +9,7 @@ import numpy as np
 from data.loaders import TrainingData
 from data.directories import models_critical_save_dir, metrics_critical_save_dir
 from data.directories import multiple_exponents_dir
+from networks.utils import set_GPU_memory
 from networks.train import TrainerCritical, create_directory
 from networks.consecutive import upsampling
 from argparse import ArgumentParser
@@ -21,6 +22,7 @@ parser.add_argument('-PRreg', type=bool, default=True, help='print regression')
 parser.add_argument('-TPF', type=bool, default=False, help='calculate two point function')
 parser.add_argument('-CORR', type=bool, default=False, help='calculate correlation length')
 
+parser.add_argument('-GPUF', type=float, default=0.4, help='GPU memory fraction')
 parser.add_argument('-RGWD', type=bool, default=False, help='well defined RG')
 parser.add_argument('-L', type=int, default=16, help='output size')
 parser.add_argument('-nTR', type=int, default=40000, help='train samples')
@@ -40,16 +42,22 @@ parser.add_argument('-magR', type=float, default=0.0, help='magnetization regula
 parser.add_argument('-enR', type=float, default=0.0, help='energy regularization')
 
 parser.add_argument('-EP', type=int, default=100, help='epochs')
+parser.add_argument('-VB', type=int, default=0, help='verbose')
 parser.add_argument('-BS', type=int, default=1000, help='batch size')
 parser.add_argument('-ES', type=bool, default=False, help='early stopping')
 parser.add_argument('-ESpat', type=int, default=50, help='early stopping patience')
-parser.add_argument('-ESdelta', type=float, default=0.0001, help='early stopping delta')
+parser.add_argument('-ESdelta', type=float, default=0.001, help='early stopping delta')
 
 args = parser.parse_args()
 
 args.CR = True
 args.model_dir = models_critical_save_dir
 args.metrics_dir= metrics_critical_save_dir
+set_GPU_memory(fraction=args.GPUF)
+
+if args.PRreg:
+    L0 = int(np.log2(args.L))
+    L_list = 2**np.arange(L0, L0+1+args.UP)
 
 data = TrainingData(args)
 trainer = TrainerCritical(args)
@@ -61,9 +69,14 @@ for iC in range(args.C):
     
     if args.PRreg:
         print('Beta:')
-        print(linregress(np.log10(obs[0]), np.log10(obs[1])))
+        print(linregress(np.log10(L_list), np.log10(obs[0])))
         print('Gamma:')
-        print(linregress(np.log10(obs[0]), np.log10(obs[3])))
+        print(linregress(np.log10(L_list), np.log10(obs[2])))
+        if args.TPF:
+            print('Eta1:')
+            print(linregress(np.log10(L_list/2.0), np.log10(obs[7])))
+            print('Eta2:')
+            print(linregress(np.log10(L_list/4.0), np.log10(obs[8])))
 
 create_directory(multiple_exponents_dir)
 np.save('%s/%s_C%dUP%d.npy'%(multiple_exponents_dir, trainer.name,
