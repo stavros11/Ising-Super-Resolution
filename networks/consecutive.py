@@ -17,7 +17,8 @@ def create_obs_function(args):
     from ising import get_observables as f
     return f
 
-def upsampling(init_data, model, args):   
+def upsampling(init_data, model, args):
+    Tc = 2.0 / np.log(1 + np.sqrt(2))
     if args.PBC:
         from architectures import duplicate_simple2D_pbc
         def duplication_function(old_model, x):
@@ -34,9 +35,9 @@ def upsampling(init_data, model, args):
                                       hid_act=args.ACT)
     
     get_observables = create_obs_function(args)
-    
+
     # Number of args that get_observables function returns: 7
-    obs = [get_observables(init_data[:,:,:,0])]
+    obs = [get_observables(init_data[:,:,:,0], Tc)]
     
     state = np.copy(init_data)
     for i in range(args.UP):
@@ -45,7 +46,7 @@ def upsampling(init_data, model, args):
         
         state = (cont_state > np.random.random(cont_state.shape)).astype(np.int)
         
-        obs.append(get_observables(state[:,:,:,0]))
+        obs.append(get_observables(state[:,:,:,0], Tc))
         print('%d / %d upsamplings done!'%(i+1, args.UP))
         
     return np.array(obs).T
