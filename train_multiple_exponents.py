@@ -34,7 +34,7 @@ parser.add_argument('-ACT', type=str, default='relu', help='hidden activation')
 parser.add_argument('-HF', type=list, default=[64,32], help='hidden filters list')
 parser.add_argument('-K', type=list, default=[6,1,3], help='kernel size list')
 
-parser.add_argument('-OPT', type=str, default='opt', help='optimizer')
+parser.add_argument('-OPT', type=str, default='Adam', help='optimizer')
 parser.add_argument('-CE', type=bool, default=True, help='use cross-entropy')
 parser.add_argument('-magR', type=float, default=0.0, help='magnetization regularization')
 parser.add_argument('-enR', type=float, default=0.0, help='energy regularization')
@@ -47,6 +47,7 @@ parser.add_argument('-ESdelta', type=float, default=0.0001, help='early stopping
 
 args = parser.parse_args()
 
+args.CR = True
 args.model_dir = models_critical_save_dir
 args.metrics_dir= metrics_critical_save_dir
 
