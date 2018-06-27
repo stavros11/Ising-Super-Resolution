@@ -6,16 +6,11 @@ Created on Thu Jun 14 21:09:15 2018
 """
 
 from numpy import save as npsave
-from os import path, mkdir
 from architectures import get_model, get_name
 from calculators import round_loss, cont_loss
 from metrics import get_metrics
+from utils import create_directory
 from keras.callbacks import History, EarlyStopping
-
-def create_directory(d):
-    ## Create directory if it doesn't exist ##
-    if not path.exists(d):
-        mkdir(d)
 
 class TrainerCritical():
     def __init__(self, args):
