@@ -102,6 +102,7 @@ class TrainerTemp(TrainerCritical):
         create_directory('%s/%s'%(self.args.model_dir, self.name))
     
     def train(self, data):
+        n_temp = len(self.args.T_list)
         for (iT,T) in enumerate(self.args.T_list):
             self.model = get_model(data.train_in.shape, 
                                    hid_act=self.args.ACT,
@@ -125,4 +126,6 @@ class TrainerTemp(TrainerCritical):
             ### Save files ###
             npsave('%s/%s/Met%.4f.npy'%(self.args.metrics_dir, self.name, T), 
                    self.metrics)
-            self.model.save('%s/%s/%Net%.4f.h5'%(self.args.model_dir, self.name, T))
+            self.model.save('%s/%s/Net%.4f.h5'%(self.args.model_dir, self.name, T))
+            
+            print('Temperature %d / %d done!'%(iT+1, n_temp))
