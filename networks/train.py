@@ -98,6 +98,11 @@ class TrainerCritical():
 
 class TrainerTemp(TrainerCritical):
     def create_saving_dirs(self):
+        ### Update name ###
+            self.name += '_MReg%.2fEReg%.2fB%d'%(self.args.magR,
+                                                 self.args.enR,
+                                                 self.args.BS)
+        
         create_directory('%s/%s'%(self.args.metrics_dir, self.name))
         create_directory('%s/%s'%(self.args.model_dir, self.name))
     
@@ -112,6 +117,7 @@ class TrainerTemp(TrainerCritical):
         
             self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
                                metrics=self.metrics_list)
+            
             
             hist = self.model.fit(
                     x=data.train_in[iT*self.args.nTR:(iT+1)*self.args.nTR][:self.args.TRS], 
