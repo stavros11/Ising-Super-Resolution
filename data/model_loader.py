@@ -20,25 +20,27 @@ class ModelLoader():
         else:
             from directories import models_save_dir as model_dir
         
+        self.model_dir = model_dir
         self.name = listdir(model_dir)[list_ind]
-        self.regularization = reg_from_name(self.name)
+        self.regularization = self.reg_from_name(self.name)
         
         metrics_list = ['round_loss', 'cont_loss']
+        
         if self.regularization:
             metrics_list.append('regularization')
             
-       self.custom_objects = {'loss': mean_squared_error}
+        self.custom_objects = {'loss': mean_squared_error}
         for x in metrics_list:
             self.custom_objects[x] = mean_squared_error
         
         if critical:
             self.graph = load_model('%s/%s'%(model_dir, self.name), 
-                           custom_objects=self.custom_objects)
-        
+                                    custom_objects=self.custom_objects)
+            
     def update_temperature(self, T):
-        self.graph = load_model('%s/%s/T%.4f.h5'%(model_dir, self.name, T), 
-                       custom_objects=self.custom_objects)
-    
+        self.graph = load_model('%s/%s/Net%.4f.h5'%(self.model_dir, self.name, T), 
+                                custom_objects=self.custom_objects)
+            
     @staticmethod
     def reg_from_name(name):
         i = 4
