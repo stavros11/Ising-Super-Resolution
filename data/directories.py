@@ -36,3 +36,7 @@ metrics_critical_save_dir = BASIC_DIR + 'MetricsCritical'
 quantities_dir = BASIC_DIR + 'Quantities'
 quantities_critical_dir = BASIC_DIR + 'QuantitiesCritical'
 multiple_exponents_dir = BASIC_DIR + 'MultipleExponents'
+
+## Output directories ##
+output_dir = BASIC_DIR + 'Output'
+output_critical_dir = BASIC_DIR + 'OutputCritical'
