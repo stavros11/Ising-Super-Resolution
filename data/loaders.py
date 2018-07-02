@@ -6,6 +6,7 @@ Created on Thu Jun 14 15:57:12 2018
 """
 
 import numpy as np
+from os import path, mkdir
 from directories import mc_train_dir, mc_test_dir
 from directories import mc_critical_train_dir, mc_critical_test_dir
 from decimations import block_rg, block_rg_WD
@@ -80,3 +81,8 @@ def add_index(data):
 
 def temp_partition(data, iT, n_samples=10000):
     return data[iT * n_samples : (iT+1) * n_samples]
+
+def create_directory(d):
+    ## Create directory if it doesn't exist ##
+    if not path.exists(d):
+        mkdir(d)
