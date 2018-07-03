@@ -40,7 +40,7 @@ It is possible to change the default loading/saving directories in data/director
 
 `-K`: List of kernels. Must have length one more than `-HF`.
 
-- Training Hyperparameters:
+- Compiling Hyperparameters:
 
 `-OPT`: Optimizer. Use any keras optimizer
 
@@ -49,6 +49,8 @@ It is possible to change the default loading/saving directories in data/director
 `-magR`:  Coefficient of the magnetization regularization in loss.
 
 `-enR`: Coefficient of the energy regularization in loss.
+
+- Training Hyperparameters
 
 `-EP`: Number of epochs for training. If `-ES` is `True` this is ignored and turned to 1000.
 
