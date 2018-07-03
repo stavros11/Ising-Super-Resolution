@@ -6,11 +6,11 @@ A Keras implementation of Convolutional Neural Networks (CNNs) for super-resolvi
 It is possible to change the default loading/saving directories in data/directories.py file.
 
 ## Required modules
-Tensorflow, Keras, argparse, os, numpy
+Tensorflow, Keras, argparse, os, numpy, scipy.stats (for linear regression)
 
 ## Main Scripts
 
-***train.py***: Trains a model. Depending on the `-CR` options this can be on critical temperature data or data in different temperatures. The metrics during training are saved as an `.npy` file and the Keras model graph as an `.h5` file.
+***1) train.py***: Trains a model. Depending on the `-CR` options this can be on critical temperature data or data in different temperatures. The metrics during training are saved as an `.npy` file and the Keras model graph as an `.h5` file.
 
 #### Settings
 
@@ -70,4 +70,17 @@ Tensorflow, Keras, argparse, os, numpy
 
 `-VB`: Keras verbose for messages during training.
 
-***train_multiple_exponents.py:*** Runs the training (for critical configurations only) and critical exponent calculation multiple times.
+***2) train_multiple_exponents.py:*** Runs the training for critical configurations and calculates critical exponents. The calculation is run multiple times according to `-C` setting. The `.h5` graph is saved for every trained network and an `.npy` file with predicted observables. The format of this file is ... .
+
+#### Settings
+Some settings are the same with `train.py` and are not repeated here.
+
+`-C`: Number of times to run training and calculation.
+
+`-UP`: Number of upsamplings for the critical exponent calculation.
+
+`-PRreg`: If `True` print regression results after every calculation.
+
+`-TPF`: If `True` calculate two-point function in observables.
+
+`-CORR`: If `True` calculate correlation length.
