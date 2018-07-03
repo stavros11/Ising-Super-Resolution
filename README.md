@@ -4,7 +4,7 @@ This repository is still under construction. I update as I am cleaning up the co
 
 It is possible to change the default loading/saving directories in data/directories.py file.
 
-So far the main scripts are:
+## Main Scripts:
 
 ***train.py***: Trains a model.
 
