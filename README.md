@@ -5,7 +5,10 @@ A Keras implementation of Convolutional Neural Networks (CNNs) for super-resolvi
 
 It is possible to change the default loading/saving directories in data/directories.py file.
 
-## Main Scripts:
+## Required modules
+Tensorflow, Keras, argparse, os, numpy
+
+## Main Scripts
 
 ***train.py***: Trains a model. Depending on the `-CR` options this can be on critical temperature data or data in different temperatures. The metrics during training are saved as an `.npy` file and the Keras model graph as an `.h5` file.
 
