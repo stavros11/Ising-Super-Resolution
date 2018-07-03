@@ -7,6 +7,11 @@ It is possible to change the default loading/saving directories in data/director
 So far the main scripts are:
 
 ***train.py***: Trains a model.
+
 `-CR`: asdasw
+
+`-RGWD`: asdasd
+
+`-Tind`: 
 
 ***train_multiple_exponents.py:*** Runs the training (for critical configurations only) and critical exponent calculation multiple times.
