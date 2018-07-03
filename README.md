@@ -6,7 +6,7 @@ It is possible to change the default loading/saving directories in data/director
 
 ## Main Scripts:
 
-***train.py***: Trains a model.
+***train.py***: Trains a model. Depending on the `-CR` options this can be on critical temperature data or data in different temperatures. The metrics during training are saved as an `.npy` file and the Keras model graph as an `.h5` file.
 
 - Basic information:
 
