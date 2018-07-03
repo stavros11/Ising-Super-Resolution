@@ -22,7 +22,7 @@ Tensorflow, Keras, argparse, os, numpy, scipy.stats (for linear regression)
 
 `-L`: Linear size of the *output* configuration. The input is L/2.
 
-`-Tind`: Temperature indices to train on. By default `T_list` has 32 values. It is not required to train on all temperatures every time we run the training script. Used only if `-CR` is `False`.
+`-Tind`: Temperature indices to train on. The default `T_list` is defined in `directories.py`. It is not required to train on all temperatures every time we run the training script. Used only if `-CR` is `False`. If `[]` all temperatures are used.
 
 - Sample numbers:
 
@@ -70,7 +70,26 @@ Tensorflow, Keras, argparse, os, numpy, scipy.stats (for linear regression)
 
 `-VB`: Keras verbose for messages during training.
 
-***2) train_multiple_exponents.py:*** Runs the training for critical configurations and calculates critical exponents. The calculation is run multiple times according to `-C` setting. The `.h5` graph is saved for every trained network and an `.npy` file with predicted observables. The format of this file is ... .
+***2) test.py:*** Tests a trained network by calculating thermodynamic quantities from the predicted output. It loads a trained keras model and use it to predict and then calculate quantities. The results are saved in `.npy` file with the format: (*temperatures*, *output interpretation*, *quantity*).
+
+- *temperatures*: The different temperatures. If `-CR` is `False` this is ommited.
+
+- *output intepretation*: Five values: 0=Original MC, 1=Decimated RG, 2=Continuous SR, 3=Rounded SR, 4=Sampled SR.
+
+- *quantity*: 0=Magnetization, 1=Energy, 2=Susceptibility, 3=Heat Capacity, 4=Mag^2, 5=Mag^4, 6=En^2, 7=TPF(L/4), 8=TPF(L/2), 9=S0, 10=S1, 11=S2. TPF = Two-point function, S=Fourier transform of TPF (see https://arxiv.org/abs/1101.3281).
+
+#### Settings
+Some settings are the same with `train.py` and are not repeated here.
+
+`-Mind`: Model index in the `listdir` listing.
+
+`-OUT`: If `True` it saves the predicted continuous output in `.npy` files.
+
+`-Tind`: Do the calculation for specific temperatures. If `[]` the calculation is done in all temperatures.
+
+***3) list_models.py:*** Lists trained models using `listdir`. This can be used to find the index required when we run `test.py`.
+
+***4) train_multiple_exponents.py:*** Runs the training for critical configurations and calculates critical exponents. The calculation is run multiple times according to `-C` setting. The `.h5` graph is saved for every trained network and an `.npy` file with predicted observables. The format of this file is ... .
 
 #### Settings
 Some settings are the same with `train.py` and are not repeated here.
