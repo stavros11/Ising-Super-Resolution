@@ -12,6 +12,8 @@ Tensorflow, Keras, argparse, os, numpy
 
 ***train.py***: Trains a model. Depending on the `-CR` options this can be on critical temperature data or data in different temperatures. The metrics during training are saved as an `.npy` file and the Keras model graph as an `.h5` file.
 
+#### Settings
+
 - Basic information:
 
 `-CR`: `True` if data at critical temperature are used. `False` for data in different temperatures.
