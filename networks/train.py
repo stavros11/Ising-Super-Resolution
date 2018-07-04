@@ -7,7 +7,7 @@ Created on Thu Jun 14 21:09:15 2018
 
 from numpy import save as npsave
 from architectures import get_model, get_name
-from calculators import round_loss, cont_loss
+from calculators import round_loss, cont_loss, create_basic_loss
 from metrics import get_metrics
 from utils import create_directory
 from keras.callbacks import History, EarlyStopping
@@ -36,16 +36,20 @@ class TrainerCritical():
         self.metrics_list = [round_loss, cont_loss, 'accuracy']
         if self.args.magR == 0 and self.args.enR == 0:
             self.reg_flag = False
-            from calculators import create_loss
             def loss(y_true, y_pred):
-                return create_loss(y_true, y_pred, ce=self.args.CE)
+                return create_basic_loss(y_true, y_pred, ce=self.args.CE)
+            
         else:
             self.reg_flag = True
-            from calculators import create_loss_reg, regularization
+            from calculators import regularization as reg_assist
+            def regularization(y_true, y_pred):
+                return reg_assist(y_true, y_pred, mag_reg=self.args.magR,
+                                  en_reg=self.args.enR, n_spins=self.args.L**2)
             self.metrics_list.append(regularization)
+            
             def loss(y_true, y_pred):
-                return create_loss_reg(y_true, y_pred, ce=self.args.CE, 
-                                       mag_reg=self.args.magR, en_reg=self.args.enR)
+                return (create_basic_loss(y_true, y_pred, ce=self.args.CE) + 
+                        regularization(y_true, y_pred))
                 
         return loss
                 
@@ -99,12 +103,13 @@ class TrainerCritical():
 class TrainerTemp(TrainerCritical):
     def create_saving_dirs(self):
         ### Update name ###
-            self.name += '_MReg%.2fEReg%.2fB%d'%(self.args.magR,
-                                                 self.args.enR,
-                                                 self.args.BS)
+        self.name += '_MReg%.2fEReg%.2fB%d'%(self.args.magR,
+                                            self.args.enR,
+                                            self.args.BS)
         
         create_directory('%s/%s'%(self.args.metrics_dir, self.name))
         create_directory('%s/%s'%(self.args.model_dir, self.name))
+        
     
     def train(self, data):
         n_temp = len(self.args.T_list)
