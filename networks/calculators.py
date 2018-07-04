@@ -23,8 +23,7 @@ from keras.losses import mean_squared_error
 def calculate_magnetization(state):
     return K.expand_dims(K.mean(state, axis=(1, 2, 3)))
     
-def calculate_energy2D(state):
-    n_spins = int(state.shape[1])**2
+def calculate_energy2D(state, n_spins):
     # Energy from x interactions
     Ex = K.sum(state[:,:,1:] * state[:,:,:-1], axis=(1, 2))
     # Energy from y interactions
@@ -66,26 +65,36 @@ def round_loss(y_true, y_pred):
 def cont_loss(y_true, y_pred):
     return K.mean(mean_squared_error(y_true, y_pred), axis=(1, 2))
 
-def regularization(y_true, y_pred, mag_reg, en_reg):
+def regularization(y_true, y_pred, mag_reg, en_reg, n_spins=0):
     y_true = 2 * y_true - 1
     y_pred = 2 * y_pred - 1
     
-    mag_dif = K.square(calculate_magnetization(y_true) - 
-                       calculate_magnetization(y_pred))
-    en_dif  = K.square(calculate_energy2D(y_true) - calculate_energy2D(y_pred))
+    loss = 0
+    if mag_reg != 0.0:
+        mag_dif = K.square(calculate_magnetization(y_true) - 
+                           calculate_magnetization(y_pred))
+        loss = loss + mag_reg * mag_dif
+        
+    if en_reg != 0.0:
+        en_dif  = K.square(calculate_energy2D(y_true, n_spins=n_spins) - 
+                           calculate_energy2D(y_pred, n_spins=n_spins))
+        loss = loss + en_reg * en_dif
     
-    return mag_reg * mag_dif + en_reg * en_dif
+    return loss
 
-def create_loss(y_true, y_pred, ce=True):
+def create_basic_loss(y_true, y_pred, ce=True):
     if ce:
         return cross_entropy_loss(y_true, y_pred)
     else:
         return K.mean(mean_squared_error(y_true, y_pred), axis=(1,2))
     
-def create_loss_reg(y_true, y_pred, ce=True, mag_reg=0.0, en_reg=0.0):
-    loss = create_loss(y_true, y_pred, ce=ce)
-    return loss + regularization(y_true, y_pred, mag_reg=mag_reg, en_reg=en_reg)
+def create_loss(y_true, y_pred, ce=True, mag_reg=0.0, en_reg=0.0, n_spins=0):
+    loss = create_basic_loss(y_true, y_pred, ce=ce)
+    if mag_reg == 0.0 and en_reg == 0.0:
+        return loss
     
+    return loss + regularization(y_true, y_pred, mag_reg=mag_reg, en_reg=en_reg,
+                                 n_spins=n_spins)   
 
 ######################################################
 ############ Not ready yet                ############
