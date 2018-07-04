@@ -22,7 +22,7 @@ parser.add_argument('-PRreg', type=bool, default=True, help='print regression')
 parser.add_argument('-TPF', type=bool, default=False, help='calculate two point function')
 parser.add_argument('-CORR', type=bool, default=False, help='calculate correlation length')
 
-parser.add_argument('-GPUF', type=float, default=0.4, help='GPU memory fraction')
+parser.add_argument('-GPU', type=float, default=0.4, help='GPU memory fraction')
 parser.add_argument('-RGWD', type=bool, default=False, help='well defined RG')
 parser.add_argument('-L', type=int, default=16, help='output size')
 parser.add_argument('-nTR', type=int, default=40000, help='train samples')
