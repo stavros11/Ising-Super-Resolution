@@ -6,9 +6,9 @@ Created on Sat Jun 30 16:25:59 2018
 """
 
 import numpy as np
-from data.loaders import TestData, create_directory
+from data.loaders import TestData
 from data.model_loader import ModelLoader
-from networks.utils import set_GPU_memory
+from networks.utils import set_GPU_memory, create_directory
 from networks.ising import get_observables_with_corr_and_tpf as get_observables
 # Returns 12 observables 
 # [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
