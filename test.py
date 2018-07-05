@@ -23,10 +23,10 @@ parser.add_argument('-GPU', type=float, default=0.3, help='GPU memory fraction')
 
 parser.add_argument('-Mind', type=int, default=0, help='model index')
 parser.add_argument('-OUT', type=bool, default=False, help='save output')
-parser.add_argument('-Tind', type=list, default=[], help='temperatures indices to train')
+parser.add_argument('-Tind', nargs='+', type=int, default=None, help='temperatures indices to train')
 
-parser.add_argument('-nTE', type=int, default=100000, help='test samples')
-parser.add_argument('-TEST', type=int, default=5000, help='test size')
+parser.add_argument('-nTE', type=int, default=10000, help='test samples')
+parser.add_argument('-TEST', type=int, default=10000, help='test size')
 
 def calculate_observables(data_or, data_in, data_out, T):
     pred_samp = (data_out > np.random.random(data_out.shape)).astype(np.int)
@@ -45,6 +45,9 @@ def main(args):
     set_GPU_memory(fraction=args.GPU)
     
     model = ModelLoader(list_ind=args.Mind, critical=args.CR)
+    
+    if args.TEST > args.nTE:
+        args.TEST = args.nTE
         
     if args.CR:
         from data.directories import quantities_critical_dir
@@ -78,7 +81,7 @@ def main(args):
             from data.directories import output_dir
             create_directory(output_dir + '/' + model.name)
         
-        if args.Tind == []:
+        if args.Tind == None:
             args.Tind = np.arange(len(T_list))
         
         obs = np.zeros([len(args.Tind), 5, 12])
