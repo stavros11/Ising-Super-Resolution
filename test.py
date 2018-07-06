@@ -100,7 +100,7 @@ def main(args):
                     
             ## Save network output ##
             if args.OUT:
-                np.save(output_dir + '/T%.4f.npy'%T, pred_cont)
+                np.save(output_dir + '/%s/T%.4f.npy'%(model.name, T), pred_cont)
                 
             print('Temperature %d / %d done!'%(iT+1, len(args.Tind)))
         
