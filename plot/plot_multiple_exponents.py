@@ -17,6 +17,7 @@ from scipy.stats import linregress
 
 NAME = 'Simple2D16relu_L2_64_32_K333_PBC_C1UP3VER1'
 NAME = 'Simple2D16relu_L2_64_16_16_K3333_PBC_C42UP3_old'
+NAME = 'Simple2D16relu_L2_64_32_K333_PBC_C20UP3VER1'
 
 obs = np.load('%s/%s.npy'%(multiple_exponents_dir, NAME))
 
