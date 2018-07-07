@@ -85,8 +85,8 @@ def main(args):
                 print(linregress(np.log10(L_list/4.0), np.log10(obs[8])))
     
     create_directory(multiple_exponents_dir)
-    np.save('%s/%s_C%dUP%d.npy'%(multiple_exponents_dir, trainer.name,
-                             args.C, args.UP), np.array(observables))
+    np.save('%s/%s_C%dUP%dVER%d.npy'%(multiple_exponents_dir, trainer.name,
+                             args.C, args.UP, args.VER), np.array(observables))
 
 
 main(parser.parse_args())
