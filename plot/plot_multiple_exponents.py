@@ -24,13 +24,22 @@ calcs, n_obs, upsamplings = obs.shape
 upsamplings += -1
 L_list = 2**np.arange(4, upsamplings+5)
 
-beta, gamma = np.zeros(calcs), np.zeros(calcs)
-eta1, eta2 = np.zeros(calcs), np.zeros(calcs)
+## (Calcs, [slope, intercept, rvalue, pvalue, stderr])
+beta_lr, gamma_lr = np.zeros([calcs, 5]), np.zeros([calcs, 5])
+eta1_lr, eta2_lr = np.zeros([calcs, 5]), np.zeros([calcs, 5])
+
+binder = np.zeros([calcs, upsamplings+1])
 for iC in range(calcs):
-    beta[iC] = linregress(np.log10(L_list), np.log10(obs[iC, 0]))[0]
-    gamma[iC] = linregress(np.log10(L_list), np.log10(obs[iC, 2]))[0]
-    eta1[iC] = linregress(np.log10(L_list/2.0), np.log10(obs[iC, 7]))[0]
-    eta2[iC] = linregress(np.log10(L_list/4.0), np.log10(obs[iC, 8]))[0]
+    beta_lr[iC] = linregress(np.log10(L_list), np.log10(obs[iC, 0]))
+    gamma_lr[iC] = linregress(np.log10(L_list), np.log10(obs[iC, 2]))
+    eta1_lr[iC] = linregress(np.log10(L_list/2.0), np.log10(obs[iC, 7]))
+    eta2_lr[iC] = linregress(np.log10(L_list/4.0), np.log10(obs[iC, 8]))
+    
+    binder[iC] = 3.0 * (1 - obs[iC, 5] / obs[iC, 4]**2 / 3.0) / 2.0
+    
+beta = -beta_lr[:, 0]
+gamma= gamma_lr[:, 0]
+eta1, eta2 = -eta1_lr[:, 0], -eta2_lr[:, 0]
 
 print('Calculations: %d  -  Upsamplings: %d'%(calcs, upsamplings))
 print('Beta: %.6f  +-  %.6f'%(beta.mean(), beta.std()))
