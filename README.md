@@ -5,8 +5,9 @@ A Keras implementation of Convolutional Neural Networks (CNNs) for super-resolvi
 
 It is possible to change the default loading/saving directories in data/directories.py file.
 
-## Required modules
-Tensorflow, Keras, argparse, os, numpy, scipy.stats (for linear regression)
+## Dependencies
+os, numpy, Tensorflow, Keras, argparse
+*Optional for linear regressions:* scipy.stats
 
 ## Main Scripts
 
@@ -103,3 +104,14 @@ Some settings are the same with `train.py` and are not repeated here.
 `-TPF`: If `True` calculate two-point function in observables.
 
 `-CORR`: If `True` calculate correlation length.
+
+## Plot scripts
+In the `plot` folder. To work we must change the NAME to the corresponding `.npy` file to be read.
+
+***1) plot_directories.py:*** Set directories of `.npy` files to read/plot.
+
+***2) plot_quantities.py:*** Plots for comparison between MC, RG and SR. Reads the different temperature `.npy` produced by `test.py`.
+
+***3) output_hist.py:*** Plots configurations from the output `.npy` files produced by `test.py` at different temperatures with `-OUT` enabled. Also plots the block sum histograms using different sampling methods.
+
+***4) plot_multiple_exponents.py:*** Calculates critical exponents using the `.npy` produced by `train_multiple_exponents.py`.
