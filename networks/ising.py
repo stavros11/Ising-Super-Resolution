@@ -115,7 +115,7 @@ class Ising():
         self._calculate_magnetization()
         self.mag  = np.mean(np.abs(self.sample_mag))
         self.mag2 = np.mean(np.square(self.sample_mag))
-        self.mag4 = np.mean(np.square(self.sample_mag))
+        self.mag4 = np.mean(self.sample_mag**4)
         
         self._calculate_energy()
         self.energy  = np.mean(self.sample_energy)
