@@ -11,12 +11,12 @@ import utils.data_functions as df
 from plot_directories import T_list, output_dir
 from utils.decimations import block_sum, block_rg_WD
 
-NETWORK_NAME = 'Simple2D16relu_L2_64_32_K333_PBC_MReg0.00EReg0.30B1000'
+NAME = 'Simple2D16relu_L2_64_32_K333_PBC_MReg0.00EReg0.30B1000'
 iT = 20
 
 ## Read MC and SR data ##
 mc = df.temp_partition(df.read_file(df.data_directory_select(1), L=16), iT)
-output = np.load('%s/%s/T%.4f.npy'%(T_list[iT]))[:,:,:,0]
+output = np.load('%s/%s/T%.4f.npy'%(output_dir, NAME, T_list[iT]))[:,:,:,0]
 sampled = (output > np.random.random(output.shape)).astype(np.int)
 
 def plot_block_sum(figsize=(10, 6), save=False):
