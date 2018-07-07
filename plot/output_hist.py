@@ -10,8 +10,10 @@ import matplotlib.pyplot as plt
 import utils.data_functions as df
 from plot_directories import T_list, output_dir
 from utils.decimations import block_sum, block_rg_WD
+from matplotlib import rcParams
+rcParams.update({'font.size': 32})
 
-NAME = 'Simple2D16relu_L2_64_32_K333_PBC_MReg0.00EReg0.30B1000'
+NAME = 'Simple2D16relu_L2_64_32_K777_PBC_MReg0.00EReg0.30B1000'
 iT = 20
 
 ## Read MC and SR data ##
@@ -27,37 +29,47 @@ def plot_block_sum(figsize=(10, 6), save=False):
     samp = block_sum(sampled)    
     
     plt.figure(figsize=figsize)
-    plt.suptitle('T = %.4f'%T_list[iT])
+    #plt.suptitle('T = %.4f'%T_list[iT])
     
     plt.subplot(141)
     plt.hist(mcs.ravel(), bins=5)
     plt.ylim((0,350000))
+    plt.xticks(np.arange(0, 5, step=1))
     plt.yticks([])
     plt.title('MC')
     
     plt.subplot(142)
     plt.hist(cont.ravel(), bins=5)
     plt.ylim((0,350000))
+    plt.xticks(np.arange(0, 5, step=1))
     plt.yticks([])
     plt.title('Continuous')
     
     plt.subplot(143)
     plt.hist(rnd.ravel(), bins=5)
     plt.ylim((0,350000))
+    plt.xticks(np.arange(0, 5, step=1))
     plt.yticks([])
     plt.title('Rounded')
     
     plt.subplot(144)
     plt.hist(samp.ravel(), bins=5)
     plt.ylim((0,350000))
+    plt.xticks(np.arange(0, 5, step=1))
     plt.yticks([])
     plt.title('Sampled')
     
     if save:
-        plt.savefig('sum_hist%.4f.pdf'%T_list[iT])
+        plt.savefig('sum_hist_%s_T%.4f.pdf'%(NAME, T_list[iT]))
     else:
         plt.show()
-    
+        
+def output_hist(figsize=(10, 6)):
+    plt.figure(figsize=figsize)
+    plt.title('T = %.4f'%T_list[iT])
+    plt.hist(output.ravel(), bins=20)
+    plt.show()
+
 def plot_configs(sampling=0, i_sample=None, figsize=(12, 6), save=False):
     ## Plots MC, RG and SR configurations ##
     ## sampling: 0=Continuous, 1=Sampled, 2=Rounded
