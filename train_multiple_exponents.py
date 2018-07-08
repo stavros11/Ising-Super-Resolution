@@ -48,6 +48,9 @@ parser.add_argument('-ES', type=bool, default=False, help='early stopping')
 parser.add_argument('-ESpat', type=int, default=50, help='early stopping patience')
 parser.add_argument('-ESdelta', type=float, default=0.001, help='early stopping delta')
 
+parser.add_argument('-CB', type=bool, default=False, help='use batches for calculation')
+parser.add_argument('-CBS', type=int, default=1000, help='calculation batches')
+parser.add_argument('-NUP', type=int, default=4, help='maximum upsampling number without batches')
 
 def main(args):
     args.CR = True
@@ -64,6 +67,11 @@ def main(args):
     if args.PRreg:
         L0 = int(np.log2(args.L))
         L_list = 2**np.arange(L0, L0+1+args.UP)
+        
+    if args.CB:
+        from networks.consecutive import upsampling_batches as upsampling
+    else:
+        from networks.consecutive import upsampling
     
     data = TrainingData(args)
     trainer = TrainerCritical(args)
