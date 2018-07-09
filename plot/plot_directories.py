@@ -13,6 +13,8 @@ BASIC_DIR = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/SR_r
 T_list = linspace(0.01, 4.538, 32)
 
 ## Network directories ##
+models_dir = BASIC_DIR + 'Models'
+models_critical_dir = BASIC_DIR + 'ModelsCritical'
 metrics_save_dir = BASIC_DIR + 'Metrics'
 metrics_critical_save_dir = BASIC_DIR + 'MetricsCritical'
 
