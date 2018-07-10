@@ -69,6 +69,7 @@ def main(args):
         
     if args.CB:
         from networks.consecutive import upsampling_batches as upsampling
+        print('Upsampling with batches')
     else:
         from networks.consecutive import upsampling
     
