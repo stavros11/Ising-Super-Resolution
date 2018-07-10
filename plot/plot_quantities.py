@@ -17,7 +17,7 @@ rcParams.update({'font.size': 32})
 # ind2: [MC, RG, SR continuous, SR rounded, SR sampled]
 # ind3: [Mag, En, Susc, specHeat, Mag2, Mag4, En2, tpf(L/2), tpf(L/4), S0, S1, S2]
 
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD'
+NAME = 'Simple2D16relu_L3_64_16_16_K3333_PBC_MReg0.00EReg0.30B1000'
 
 # Load data
 obs = np.load('%s/%s.npy'%(quantities_dir, NAME))
