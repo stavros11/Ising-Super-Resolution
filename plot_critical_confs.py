@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 import plot.utils.data_functions_critical as df
 from plot.plot_directories import models_critical_dir
 from networks.architectures import simple2D_pbc, duplicate_simple2D_pbc
+from matplotlib import rcParams
+rcParams.update({'font.size': 32})
+
 
 #64652 i_sample
 NAME = 'Simple2D16relu_L2_64_32_K333_PBC_MReg0.00EReg0.00B1000_Ver2Run7'
