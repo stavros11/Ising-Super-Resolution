@@ -7,6 +7,7 @@ It is possible to change the default loading/saving directories in data/director
 
 ## Dependencies
 os, numpy, Tensorflow, Keras, argparse
+
 *Optional for linear regressions:* scipy.stats
 
 ## Main Scripts
@@ -104,6 +105,14 @@ Some settings are the same with `train.py` and are not repeated here.
 `-TPF`: If `True` calculate two-point function in observables.
 
 `-CORR`: If `True` calculate correlation length.
+
+Accessing sizes larger than 128x128 sometimes gives memory error either in the network or in the vectorized quantity calculation. A solution is to do the calculation in batches instead of the whole dataset of (say) 100,000 samples. The relevant settings are:
+
+`-CB`: If `True` it enables the calculation with batches.
+
+`-CBS`: How many configurations in each batch.
+
+`-NUP`: Number of upsamplings before starting the batch use. If `NUP=3` the first three upsamplings will be done normally and after that batches will be used.
 
 ## Plot scripts
 In the `plot` folder. To work we must change the NAME to the corresponding `.npy` file to be read.
