@@ -40,8 +40,13 @@ beta = -beta_lr[:, 0]
 gamma= gamma_lr[:, 0]
 eta1, eta2 = -eta1_lr[:, 0], -eta2_lr[:, 0]
 
+beta_err = np.abs(beta - 0.125) * 100 / 0.125
+gamma_err = np.abs(gamma - 1.75) * 100 / 1.75
+eta1_err = np.abs(eta1 - 0.25) * 100 / 0.25
+eta2_err = np.abs(eta2 - 0.25) * 100 / 0.25
+
 print('Calculations: %d  -  Upsamplings: %d'%(calcs, upsamplings))
-print('Beta: %.6f  +-  %.6f'%(beta.mean(), beta.std()))
-print('Gamma: %.6f  +-  %.6f'%(gamma.mean(), gamma.std()))
-print('Eta1: %.6f  +-  %.6f'%(eta1.mean(), eta1.std()))
-print('Eta2: %.6f  +-  %.6f'%(eta2.mean(), eta2.std()))
+print('Beta: %.6f  +-  %.6f  Error: %.2f%%'%(beta.mean(), beta.std(), beta_err.mean()))
+print('Gamma: %.6f  +-  %.6f  Error: %.2f%%'%(gamma.mean(), gamma.std(), gamma_err.mean()))
+print('Eta1: %.6f  +-  %.6f  Error: %.2f%%'%(eta1.mean(), eta1.std(), eta1_err.mean()))
+print('Eta2: %.6f  +-  %.6f  Error: %.2f%%'%(eta2.mean(), eta2.std(), eta2_err.mean()))
