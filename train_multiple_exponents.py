@@ -11,7 +11,6 @@ from data.directories import models_critical_save_dir, metrics_critical_save_dir
 from data.directories import multiple_exponents_dir
 from networks.utils import set_GPU_memory
 from networks.train import TrainerCritical, create_directory
-from networks.consecutive import upsampling
 from argparse import ArgumentParser
 from scipy.stats import linregress
 
