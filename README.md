@@ -1,9 +1,9 @@
 # Ising Super Resolution
-A Keras implementation of Convolutional Neural Networks (CNNs) for super-resolving classical Ising configurations sampled with standard Monte Carlo methods.
+A Keras implementation of Convolutional Neural Networks (CNNs) used for the super-resolution of classical Ising configurations sampled with standard Monte Carlo methods.
 
-*This repository is still under construction*. I update as I am cleaning up the code used for the actual project.
+*This repository is still under construction*. I update this as I am cleaning up the code used for the actual project.
 
-It is possible to change the default loading/saving directories in data/directories.py file.
+It is possible to change the default loading/saving directories in data/directories.py file. There is another directories file for plots in plots/plot_directories.py to set the directories of `.npy` files to be plotted.
 
 ## Dependencies
 os, numpy, Tensorflow, Keras, argparse
