@@ -64,8 +64,9 @@ class TrainerCritical():
     def create_saving_dirs(self):
         create_directory(self.args.metrics_dir)
         create_directory(self.args.model_dir)
-
-    def train(self, data, run_time=0):       
+        
+    ## Split compiling and training for the critical case
+    def compiler(self, data):
         self.model = get_model(data.train_in.shape, 
                                hid_act=self.args.ACT,
                                hid_filters=self.args.HF, 
@@ -75,6 +76,7 @@ class TrainerCritical():
         self.model.compile(optimizer=self.args.OPT, loss=self.loss, 
                            metrics=self.metrics_list)
 
+    def train(self, data, run_time=0, save_models=True):
         hist = self.model.fit(x=data.train_in[:self.args.TRS], 
                               y=data.train_out[:self.args.TRS],
                               batch_size=self.args.BS, epochs=self.args.EP, 
@@ -85,20 +87,21 @@ class TrainerCritical():
         self.metrics = get_metrics(hist, reg=self.reg_flag)
         
         ### Save files ###
-        npsave('%s/%s_MReg%.2fEReg%.2fB%d_Ver%dRun%d.npy'%(self.args.metrics_dir, 
-                                                           self.name,
-                                                           self.args.magR,
-                                                           self.args.enR,                                                        
-                                                           self.args.BS, 
-                                                           self.args.VER, 
-                                                           run_time), self.metrics)
-        self.model.save('%s/%s_MReg%.2fEReg%.2fB%d_Ver%dRun%d.h5'%(self.args.model_dir, 
-                                                                   self.name,
-                                                                   self.args.magR,
-                                                                   self.args.enR,
-                                                                   self.args.BS,
-                                                                   self.args.VER,
-                                                                   run_time))
+        if save_models:
+            npsave('%s/%s_MReg%.2fEReg%.2fB%d_Ver%dRun%d.npy'%(self.args.metrics_dir, 
+                                                               self.name,
+                                                               self.args.magR,
+                                                               self.args.enR,                                                        
+                                                               self.args.BS, 
+                                                               self.args.VER, 
+                                                               run_time), self.metrics)
+            self.model.save('%s/%s_MReg%.2fEReg%.2fB%d_Ver%dRun%d.h5'%(self.args.model_dir, 
+                                                                       self.name,
+                                                                       self.args.magR,
+                                                                       self.args.enR,
+                                                                       self.args.BS,
+                                                                       self.args.VER,
+                                                                       run_time))
 
 class TrainerTemp(TrainerCritical):
     def create_saving_dirs(self):
@@ -109,7 +112,6 @@ class TrainerTemp(TrainerCritical):
         
         create_directory('%s/%s'%(self.args.metrics_dir, self.name))
         create_directory('%s/%s'%(self.args.model_dir, self.name))
-        
     
     def train(self, data):
         n_temp = len(self.args.T_list)

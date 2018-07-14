@@ -57,6 +57,7 @@ def main(args):
     print('Hidden Filters: ' + str(args.HF))
     print('Kernels: ' + str(args.K))
     
+    data = TrainingData(args)
     if args.CR:
         from data.directories import models_critical_save_dir, metrics_critical_save_dir
         from networks.train import TrainerCritical
@@ -64,6 +65,7 @@ def main(args):
         args.metrics_dir= metrics_critical_save_dir
         
         trainer = TrainerCritical(args)
+        trainer.compiler(data)
         
     else:
         from data.directories import models_save_dir, metrics_save_dir, T_list
@@ -78,7 +80,7 @@ def main(args):
         
         trainer = TrainerTemp(args)
     
-    trainer.train(TrainingData(args))
+    trainer.train(data)
     return
     
 main(parser.parse_args())

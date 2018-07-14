@@ -77,6 +77,7 @@ def main(args):
     trainer = TrainerCritical(args)
     observables = []
     for iC in range(args.C):
+        trainer.compiler(data)
         trainer.train(data, run_time=iC)
         obs = upsampling(data.test_out, trainer.model, args)
         observables.append(obs)
