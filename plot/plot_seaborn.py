@@ -96,3 +96,43 @@ def plot_two(iT, bins=20, figsize=(15, 5), save=False,
         plt.savefig('Seaborn_%s_T%.4f.pdf'%(NAME, T_list[iT]))
     else:
         plt.show()
+  
+def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False, 
+                          tx=(0.0, 3.0), ty=(5.0, 1.0), text=('a)', 'b)')):
+    # If iT < 5 select rounded instead of sampled
+    if iT < 5:
+        sampled = 3
+    else:
+        sampled = 4
+        
+    color_list = ['blue', 'green', 'red']
+    label_list = ['MC', 'RG', 'SR']
+    alphas = [1.0, 0.75, 0.5]
+    
+    for i in range(2):
+        # Select temperature and [MC, SR sampled]
+        mag = obs[iT[i], np.array([0, 1, sampled]), 0]
+        en  = obs[iT[i], np.array([0, 1, sampled]), 1]
+            
+        plt.figure(figsize=figsize)
+        plt.subplot(141)
+        for i in range(3):
+            distplot(mag[i], bins=bins, color=color_list[i], label=label_list[i],
+                     norm_hist=True, hist_kws=dict(alpha=alphas[i]))
+        plt.xlabel('Magnetization')
+        plt.ylabel('PDF')
+        plt.text(tx[i], ty[i], text[i], horizontalalignment='center', 
+                 verticalalignment='center', fontsize=50)
+        
+        plt.subplot(142)
+        for i in range(3):
+            distplot(en[i], bins=bins, color=color_list[i], label=label_list[i],
+                     norm_hist=True, hist_kws=dict(alpha=alphas[i]))
+        plt.xlabel('Energy')
+        plt.ylabel('PDF')
+        plt.legend()
+    
+    if save:
+        plt.savefig('Seaborn_%s_T%.4f.pdf'%(NAME, T_list[iT]))
+    else:
+        plt.show()    
