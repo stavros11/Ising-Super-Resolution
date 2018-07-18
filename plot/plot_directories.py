@@ -25,6 +25,5 @@ quantities_critical_dir = BASIC_DIR + 'QuantitiesCritical'
 multiple_exponents_dir = BASIC_DIR + 'MultipleExponents'
 seaborn_dir = BASIC_DIR + 'SeabornQuantities'
 
-
 ## Output directories ##
 output_dir = BASIC_DIR + 'Output'

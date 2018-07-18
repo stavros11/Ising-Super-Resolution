@@ -13,12 +13,12 @@ from utils.decimations import block_sum, block_rg_WD
 from matplotlib import rcParams
 rcParams.update({'font.size': 32})
 
-NAME = 'Simple2D16relu_L2_64_32_K777_PBC_MReg0.00EReg0.30B1000'
-iT = 20
+NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD'
+iT = 10
 
 ## Read MC and SR data ##
 mc = df.temp_partition(df.read_file(df.data_directory_select(1), L=16), iT)
-output = np.load('%s/%s/T%.4f.npy'%(output_dir, NAME, T_list[iT]))[:,:,:,0]
+output = np.load('%s/%s/T%.4f.npy'%(output_dir, NAME, T_list[iT]))
 sampled = (output > np.random.random(output.shape)).astype(np.int)
 
 def plot_block_sum(figsize=(10, 6), save=False):
