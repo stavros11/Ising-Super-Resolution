@@ -6,8 +6,11 @@ Created on Fri Jul  6 22:35:29 2018
 """
 
 import numpy as np
-from plot_directories import multiple_exponents_dir
 from scipy.stats import linregress
+
+# If plot_directories module is available:
+from plot_directories import multiple_exponents_dir
+# otherwise fix directory
 
 ### !!! .NPY DESCRIPTION !!! ###
 # obs = (Calculations, 12, Upsamplings+1)
@@ -15,8 +18,9 @@ from scipy.stats import linregress
 # ind2: [Mag, En, Susc, specHeat, Mag2, Mag4, En2, tpf(L/2), tpf(L/4), S0, S1, S2]
 # ind3: different lengths
 
-NAME = 'Simple2D16relu_L2_64_32_K555_PBC_C20UP3VER1'
-
+# Load data (fix .npy directory here!)
+NAME = 'Simple2D16relu_L2_64_32_K333_PBC_C20UP3VER123_CONC'
+NAME = 'Simple2D16relu_L2_64_32_K513_PBC_C20UP3VER1'
 obs = np.load('%s/%s.npy'%(multiple_exponents_dir, NAME))
 
 calcs, n_obs, upsamplings = obs.shape
@@ -34,6 +38,7 @@ for iC in range(calcs):
     eta1_lr[iC] = linregress(np.log10(L_list/2.0), np.log10(obs[iC, 7]))
     eta2_lr[iC] = linregress(np.log10(L_list/4.0), np.log10(obs[iC, 8]))
     
+    # See Eq. (76) in Sandvik: https://arxiv.org/pdf/1101.3281.pdf
     binder[iC] = 3.0 * (1 - obs[iC, 5] / obs[iC, 4]**2 / 3.0) / 2.0
     
 beta = -beta_lr[:, 0]
