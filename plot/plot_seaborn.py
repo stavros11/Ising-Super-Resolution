@@ -98,7 +98,7 @@ def plot_two(iT, bins=20, figsize=(15, 5), save=False,
         plt.show()
   
 def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False, 
-                          tx=(0.0, 3.0), ty=(5.0, 1.0), text=('a)', 'b)')):
+                          tx=(0.0, 0.95), ty=(5.0, 3.2), text=('a)', 'b)')):
     # If iT < 5 select rounded instead of sampled
     if iT < 5:
         sampled = 3
