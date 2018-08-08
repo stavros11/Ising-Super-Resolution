@@ -36,9 +36,14 @@ class ModelLoader():
         if critical:
             self.graph = load_model('%s/%s'%(model_dir, self.name), 
                                     custom_objects=self.custom_objects)
+        
+        if self.name[-3:] == 'OLD':
+            self.priorT_symbol = 'T'
+        else:
+            self.priorT_symbol = 'Net'
             
     def update_temperature(self, T):
-        self.graph = load_model('%s/%s/Net%.4f.h5'%(self.model_dir, self.name, T), 
+        self.graph = load_model('%s/%s/%s%.4f.h5'%(self.model_dir, self.name, self.priorT_symbol, T), 
                                 custom_objects=self.custom_objects)
             
     @staticmethod
