@@ -23,7 +23,7 @@ from plot_directories import T_list, quantities_dir
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_PBC_MReg0.00EReg0.30B1000'
+NAME = 'Simple2D16relu_L3_64_16_16_K3333_PBC_MReg0.10EReg0.30_OLD'
 obs = np.load('%s/%s.npy'%(quantities_dir, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
@@ -55,7 +55,7 @@ def plot_four(figsize=(14, 8), L=16, linewidth=1.5, save=False):
         
         plt.plot(T_list, obs[:, -1, q], '*', color='red', label='%dx%d SR'%(L, L))
         plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k')
-        if q == 1:
+        if q == 0:
             plt.legend()
         plt.xlabel('$T$')
         plt.ylabel(ylab[q])
