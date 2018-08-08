@@ -7,7 +7,7 @@ Created on Wed Aug  8 13:30:34 2018
 
 import numpy as np
 from data.loaders import read_file, temp_partition, add_index
-from data.directories import quantities_dir, T_list
+from data.directories import quantities_real_dir, T_list
 from data.model_loader import ModelLoader
 from networks.utils import set_GPU_memory, create_directory, calculate_observables
 from renormalization.curves import inv_curve
@@ -64,18 +64,15 @@ def main(args):
         ## Find closer value from T_list to update model temperature ##
         difs = (T_list - Tr_mag)**2 + (T_list - Tr_en)**2
         T_closer = T_list[difs.argmin()]
-        print(T_closer)
         model.update_temperature(T=T_closer)
         
-        print(model.graph)
-        
         ## Make predictions ##
-        data_in = temp_partition(data_in, iT, n_samples=args.nTE)
-        pred_cont = model.graph.predict(data_in)
+        data_in_T = temp_partition(data_in, iT, n_samples=args.nTE)
+        pred_cont = model.graph.predict(data_in_T)
         
         ## Calculate observables ##
         obs[iT] = calculate_observables(temp_partition(data_or, iT, n_samples=args.nTE), 
-           data_in[:,:,:,0], pred_cont[:,:,:,0], T=T)#, Tr=(Tr_mag + Tr_en)/2.0)
+           data_in_T[:,:,:,0], pred_cont[:,:,:,0], T=T)#, Tr=(Tr_mag + Tr_en)/2.0)
                     
         ## Save network output ##
         if args.OUT:
@@ -84,7 +81,7 @@ def main(args):
         print('Temperature %d / %d done!'%(iT+1, len(args.Tind)))
         
         ## Save observables ##
-        create_directory(quantities_dir)
-        np.save(quantities_dir + '/%s.npy'%model.name, np.array(obs))
+        create_directory(quantities_real_dir)
+        np.save(quantities_real_dir + '/%s.npy'%model.name, np.array(obs))
         
 main(parser.parse_args())
