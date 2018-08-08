@@ -8,8 +8,7 @@ Created on Sat Jun 30 16:25:59 2018
 import numpy as np
 from data.loaders import TestData
 from data.model_loader import ModelLoader
-from networks.utils import set_GPU_memory, create_directory
-from networks.ising import get_observables_with_corr_and_tpf as get_observables
+from networks.utils import set_GPU_memory, create_directory, calculate_observables
 # Returns 12 observables 
 # [Mag, En, Susc, specHeat, Mag2, Mag4, En2, 
 # tpf(L/2), tpf(L/4), S0, S1, S2]
@@ -27,18 +26,6 @@ parser.add_argument('-Tind', nargs='+', type=int, default=None, help='temperatur
 
 parser.add_argument('-nTE', type=int, default=10000, help='test samples')
 parser.add_argument('-TEST', type=int, default=10000, help='test size')
-
-def calculate_observables(data_or, data_in, data_out, T):
-    pred_samp = (data_out > np.random.random(data_out.shape)).astype(np.int)
-    
-    obs = np.zeros([5, 12])
-    obs[0] = get_observables(data_or, T)
-    obs[1] = get_observables(data_in, T)
-    obs[2] = get_observables(data_out, T)
-    obs[3] = get_observables(np.round(data_out), T)
-    obs[4] = get_observables(pred_samp, T)
-    
-    return obs
 
 def main(args):
     data = TestData(args)
