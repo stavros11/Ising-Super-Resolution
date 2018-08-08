@@ -9,7 +9,7 @@ import numpy as np
 from data.loaders import read_file, temp_partition, add_index
 from data.directories import quantities_dir, T_list
 from data.model_loader import ModelLoader
-from networks.utils import set_GPU_memory, create_directory, calculate_observables_real
+from networks.utils import set_GPU_memory, create_directory, calculate_observables
 from renormalization.curves import inv_curve
 from argparse import ArgumentParser
 
@@ -34,8 +34,8 @@ parser.add_argument('-CR', type=bool, default=False, help='critical data')
 
 def main(args):
     ## Load renormalization curve parameters ##
-    a_mag, b_mag = np.load('Magnetization_Transformation_Params_L%d.npy'%args.L)
-    a_en, b_en = np.load('Energy_Transformation_Params_L%d.npy'%args.L)
+    a_mag, b_mag = np.load('renormalization/Magnetization_Transformation_Params_L%d.npy'%args.L)
+    a_en, b_en = np.load('renormalization/Energy_Transformation_Params_L%d.npy'%args.L)
     
     ## Read data ##
     data_or = read_file(L=args.L, n_samples=args.nTE)
@@ -64,16 +64,18 @@ def main(args):
         ## Find closer value from T_list to update model temperature ##
         difs = (T_list - Tr_mag)**2 + (T_list - Tr_en)**2
         T_closer = T_list[difs.argmin()]
+        print(T_closer)
         model.update_temperature(T=T_closer)
+        
+        print(model.graph)
         
         ## Make predictions ##
         data_in = temp_partition(data_in, iT, n_samples=args.nTE)
         pred_cont = model.graph.predict(data_in)
         
         ## Calculate observables ##
-        obs[iT] = calculate_observables_real(
-                temp_partition(data_or, iT, n_samples=args.nTE),
-                data_in[:,:,:,0], pred_cont[:,:,:,0], T=T, Tr=(Tr_mag + Tr_en)/2.0)
+        obs[iT] = calculate_observables(temp_partition(data_or, iT, n_samples=args.nTE), 
+           data_in[:,:,:,0], pred_cont[:,:,:,0], T=T)#, Tr=(Tr_mag + Tr_en)/2.0)
                     
         ## Save network output ##
         if args.OUT:
