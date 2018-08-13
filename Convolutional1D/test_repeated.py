@@ -66,9 +66,13 @@ def main(args):
             model.update_temperature(T=T_model)
                     
             ## Make predictions ##
-            pred_cont[iT] = make_prediction(
-                    data_in=add_index(temp_partition(data_mc, iT, n_samples=args.nTE)),
-                    graph=model.graph, hid_filters=args.HF, kernels=args.K, hid_act=args.ACT)
+            if iT < 3:
+                sampled_in = np.round(pred_cont[iT])
+            else:
+                sampled_in = (pred_cont[iT] > np.random.random(pred_cont[iT].shape)).astype(np.int)
+            
+            pred_cont[iT] = make_prediction(data_in=sampled_in, graph=model.graph, 
+                     hid_filters=args.HF, kernels=args.K, hid_act=args.ACT)
 
             ## Calculate observables ##
             obs[iUP, iT] = calculate_observables_rep(pred_cont[iT][:,:,0], Tr=T)
