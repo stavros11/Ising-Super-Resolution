@@ -15,7 +15,7 @@ from networks.utils import set_GPU_memory, create_directory, calculate_observabl
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument('-L', type=int, default=16, help='output size')
+parser.add_argument('-L', type=int, default=32, help='output size')
 parser.add_argument('-GPU', type=float, default=0.3, help='GPU memory fraction')
 
 parser.add_argument('-Mind', type=int, default=0, help='model index')
@@ -52,8 +52,8 @@ def main(args):
             
         ## Calculate observables ##
         obs[iT] = calculate_observables(
-                temp_partition(data.test_out[:,:,:,0], iT, n_samples=args.nTE),
-                data_in[:,:,:,0], pred_cont[:,:,:,0], T=T)
+                temp_partition(data.test_out[:,:,0], iT, n_samples=args.nTE),
+                data_in[:,:,0], pred_cont[:,:,0], T=T)
                     
         ## Save network output ##
         if args.OUT:
@@ -64,5 +64,5 @@ def main(args):
     ## Save observables ##
     create_directory(quantities_dir)
     np.save(quantities_dir + '/%s.npy'%model.name, np.array(obs))
-        
+
 main(parser.parse_args())
