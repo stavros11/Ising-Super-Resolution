@@ -29,7 +29,7 @@ def calculate_energy1D(state, n_spins):
     # Fix periodic boundary conditions
     E+= state[:,0,0] * state[:,-1,0]
         
-    return -E[:, 0] / n_spins
+    return -E / n_spins
 
 
 ######################################
