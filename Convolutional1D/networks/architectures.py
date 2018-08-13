@@ -69,28 +69,39 @@ def simple1D_pbc(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu'):
 ###################################
 
 ## They read the weights from a model ##
-#def duplicate_simple2D(old_model, x, hid_filters=[64, 32], 
-#                     kernels=[6, 1, 3], hid_act='relu'):
-#    # x: new input dimension
-#    new_model = simple2D(x, hid_filters=hid_filters, hid_act=hid_act, 
-#                         kernels=kernels)
-#    for i in range(1, len(old_model.layers)):
-#        new_model.layers[i].set_weights(
-#                old_model.layers[i].get_weights())
-#
-#    return new_model
-#
-#def duplicate_simple2D_pbc(old_model, x, hid_filters=[64, 32], 
-#                           kernels=[6, 1, 3], hid_act='relu'):
-#    # x: new input dimension
-#    new_model = simple2D_pbc(x, hid_filters=hid_filters, 
-#                                      hid_act=hid_act, kernels=kernels)
-#    for i in range(1, len(old_model.layers)):
-#        new_model.layers[i].set_weights(
-#                old_model.layers[i].get_weights())
-#
-#    return new_model
+def duplicate_simple1D(old_model, x, hid_filters=[64, 32], 
+                     kernels=[6, 1, 3], hid_act='relu'):
+    # x: new input dimension
+    new_model = simple1D(x, hid_filters=hid_filters, hid_act=hid_act, 
+                         kernels=kernels)
+    for i in range(1, len(old_model.layers)):
+        new_model.layers[i].set_weights(
+                old_model.layers[i].get_weights())
 
+    return new_model
+#
+def duplicate_simple1D_pbc(old_model, x, hid_filters=[64, 32], 
+                           kernels=[6, 1, 3], hid_act='relu'):
+    # x: new input dimension
+    new_model = simple1D_pbc(x, hid_filters=hid_filters, 
+                                      hid_act=hid_act, kernels=kernels)
+    for i in range(1, len(old_model.layers)):
+        new_model.layers[i].set_weights(
+                old_model.layers[i].get_weights())
+
+    return new_model
+
+def make_prediction(data_in, graph, hid_filters=[64, 32], pbc=True,
+                    kernels=[6, 1, 3], hid_act='relu'):
+    if pbc:
+        model = duplicate_simple1D_pbc(graph, data_in.shape, hid_filters=hid_filters,
+                                       kernels=kernels, hid_act=hid_act)
+    else:
+        model = duplicate_simple1D(graph, data_in.shape, hid_filters=hid_filters,
+                                       kernels=kernels, hid_act=hid_act)
+        
+    return model.predict(data_in)
+    
 ##################################################
 ########## FUNCTIONS THAT RETURN NAMES  ##########
 ##################################################
