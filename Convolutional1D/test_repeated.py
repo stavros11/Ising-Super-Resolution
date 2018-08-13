@@ -18,6 +18,7 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument('-L', type=int, default=32, help='output size')
 parser.add_argument('-UP', type=int, default=3, help='number of upsamplings')
+parser.add_argument('-TS', type=int, default=3, help='temperature index to start sampling')
 parser.add_argument('-GPU', type=float, default=0.3, help='GPU memory fraction')
 
 parser.add_argument('-Mind', type=int, default=0, help='model index')
@@ -66,7 +67,7 @@ def main(args):
             model.update_temperature(T=T_model)
                     
             ## Make predictions ##
-            if iT < 3:
+            if iT < args.TS:
                 sampled_in = np.round(pred_cont[iT])
             else:
                 sampled_in = (pred_cont[iT] > np.random.random(pred_cont[iT].shape)).astype(np.int)
@@ -82,6 +83,6 @@ def main(args):
             
     ## Save observables ##
     create_directory(quantities_rep_dir)
-    np.save(quantities_rep_dir + '/%s.npy'%model.name, np.array(obs))
+    np.save(quantities_rep_dir + '/%s_TS%d.npy'%(model.name, args.TS), np.array(obs))
         
 main(parser.parse_args())
