@@ -55,9 +55,10 @@ def plot_energy_rep(figsize=(12, 7), N=32):
     N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
     color_list = ['blue', 'red', 'green']
     
+    T_ren = T_list
     plt.figure(figsize=figsize)
     for (i, N) in enumerate(N_list):
-        T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_list))
+        T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
         plt.plot(T_list_th, energy_theory(T_list_th, N=N), color=color_list[i],
                  label='Theory N=%d'%N)
         plt.plot(T_ren, obs_rep[i, :, -1, 1], '*', color=color_list[i],
