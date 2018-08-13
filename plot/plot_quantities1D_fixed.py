@@ -72,7 +72,7 @@ def plot_two(figsize=(15,6), save=False, linewidth=1.5):
                      color=color_list[i], label=labels[i], linewidth=linewidth)
         plt.xlabel('$T$')
         plt.ylabel(qlabels[q])
-        if q == 1:
+        if q == 0:
             plt.legend()
             
     if save:
