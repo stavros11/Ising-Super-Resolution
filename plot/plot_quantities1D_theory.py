@@ -35,6 +35,11 @@ def specHeat_theory(T, J=1, N=32):
     
     return J * (sh2 * C1 + C2) * sh2 / T**2
 
+def tpf_theory(T, k, J=1, N=32):
+    th = np.tanh(J / T)
+    return (th**k + th**(N-k)) / (1 + th**N)
+
+
 ### !!! .NPY DESCRIPTION !!! ###
 # obs = (32, 5, 12)
 # ind1: temperatures
