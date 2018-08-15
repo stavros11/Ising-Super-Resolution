@@ -60,7 +60,7 @@ def main(args):
                 
         ## Calculate observables ##
         obs[0, iT] = calculate_observables_rep(pred_cont[iT][:,:,0], Tr=T)
-        tpf[0, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=args.L // args.TPFD)
+        tpf[0, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=pred_cont[iT].shape[1] // args.TPFD)
         
         print('Temperature %d / %d done!'%(iT+1, len(T_list)))
         
@@ -83,7 +83,7 @@ def main(args):
 
             ## Calculate observables ##
             obs[iUP, iT] = calculate_observables_rep(pred_cont[iT][:,:,0], Tr=T)
-            tpf[iUP, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=args.L // args.TPFD)
+            tpf[iUP, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=pred_cont[iT].shape[1] // args.TPFD)
             
             print('Temperature %d / %d done!'%(iT+1, len(T_list)))
         
