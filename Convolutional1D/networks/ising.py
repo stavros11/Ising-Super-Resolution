@@ -37,6 +37,13 @@ def get_observables_assist(state, T):
                      obj.mag2 / obj.N_spins, obj.mag4 / obj.N_spins**3,
                      obj.energy2 / obj.N_spins]) / obj.N_spins
    
+ def two_point_function(state, k):
+    N = state.shape[1]
+    copy = np.empty(state.shape)
+    copy[:, :N-k] = state[:, k:]
+    copy[:, N-k:] = state[:, :k]
+
+    return (copy * state).mean()
 
 ##########################################
 ########## CALCULATIONS CLASSES ##########
