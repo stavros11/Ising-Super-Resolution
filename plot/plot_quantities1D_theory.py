@@ -49,7 +49,7 @@ obs_rep = np.load('%s/%s.npy'%(quantities_dir1D_rep, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
-n_correct = 5
+n_correct = 6
 obs_or[:n_correct, -1] = obs_or[:n_correct, -2]
 obs_rep[:, :n_correct, -1] = obs_rep[:, :n_correct, -2]
 
@@ -58,55 +58,61 @@ for i in range(32):
     if obs_rep[-1, i, -1, 3] > 10:
         obs_rep[-1, i, -1, 3] = 0
 
-def plot_energy_original(figsize=(8, 5), N=32):
+def plot_original(q=0, figsize=(8, 5), N=32):
+    theory_function = [None, energy_theory, None, specHeat_theory]
+    ylabel = ['$M$', '$E$', '$\chi $', '$C_V$']
+    
     plt.figure(figsize=figsize)
-    plt.plot(T_list_th, energy_theory(T_list_th, N=N), color='magenta', label='Theory N=%d'%N)
-    plt.plot(T_list, obs_or[:, 0, 1], '--', color='blue', label='MC N=%d'%N)
-    plt.plot(T_list, obs_or[:, -1, 1], '*', color='red', label='SR N=%d'%N)
+    plt.plot(T_list_th, theory_function[q](T_list_th, N=N), color='magenta', label='Theory N=%d'%N)
+    plt.plot(T_list, obs_or[:, 0, q], '--', color='blue', label='MC N=%d'%N)
+    plt.plot(T_list, obs_or[:, -1, q], '*', color='red', label='SR N=%d'%N)
+    
+    plt.xlabel('$T$')
+    plt.ylabel(ylabel[q])
     
     plt.show()
-
-def plot_Cv_original(figsize=(8, 5), N=32):
-    plt.figure(figsize=figsize)
-    plt.plot(T_list_th, specHeat_theory(T_list_th, N=N), color='magenta', label='Theory N=%d'%N)
-    plt.plot(T_list, obs_or[:, 0, 3], '--', color='blue', label='MC N=%d'%N)
-    plt.plot(T_list, obs_or[:, -1, 3], '*', color='red', label='SR N=%d'%N)
     
-    plt.show()
-
-def plot_energy_rep(figsize=(8, 5), N=32):
+def plot_rep(q=0, figsize=(8, 5), N=32):
     logL_original = int(np.log2(N))
     N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
     color_list = ['blue', 'red', 'green']
+    
+    ylabel = ['$M$', '$E$', '$\chi $', '$C_V$']
+    
+    T_ren = T_list
+    plt.figure(figsize=figsize)
+    plt.plot(T_list, obs_or[:, -1, q], '-*', color='magenta', label='MC N=%d'%N)
+    for (i, N) in enumerate(N_list):
+        T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
+        plt.plot(T_ren, obs_rep[i, :, -1, q], '-*', color=color_list[i],
+                 label='SR N=%d'%N)
+    
+    plt.xlabel('$T$')
+    plt.ylabel(ylabel[q])
+    plt.legend()
+        
+    plt.show()
+    
+def plot_rep_th(q=0, figsize=(8, 5), N=32):
+    logL_original = int(np.log2(N))
+    N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
+    color_list = ['blue', 'red', 'green']
+    
+    theory_function = [None, energy_theory, None, specHeat_theory]
+    ylabel = ['$M$', '$E$', '$\chi $', '$C_V$']
     
     T_ren = T_list
     plt.figure(figsize=figsize)
     for (i, N) in enumerate(N_list):
         T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
-        plt.plot(T_list_th, energy_theory(T_list_th, N=N), color=color_list[i],
+        plt.plot(T_list_th, theory_function[q](T_list_th, N=N), color=color_list[i],
                  label='Theory N=%d'%N)
-        plt.plot(T_ren, obs_rep[i, :, -1, 1], '*', color=color_list[i],
+        plt.plot(T_ren, obs_rep[i, :, -1, q], '*', color=color_list[i],
                  label='SR N=%d'%N)
-        
-        #plt.legend()
-        
-    plt.show()
     
-def plot_Cv_rep(figsize=(8, 5), N=32):
-    logL_original = int(np.log2(N))
-    N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
-    color_list = ['blue', 'red', 'green']
-    
-    T_ren = T_list
-    plt.figure(figsize=figsize)
-    for (i, N) in enumerate(N_list):
-        T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
-        plt.plot(T_list_th, specHeat_theory(T_list_th, N=N), color=color_list[i],
-                 label='Theory N=%d'%N)
-        plt.plot(T_ren, obs_rep[i, :, -1, 3], '*', color=color_list[i],
-                 label='SR N=%d'%N)
-        
-        #plt.legend()
+    plt.xlabel('$T$')
+    plt.ylabel(ylabel[q])
+    #plt.legend()
         
     plt.show()
     
