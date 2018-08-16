@@ -6,7 +6,7 @@ Created on Thu Aug 16 15:59:43 2018
 """
 
 import numpy as np
-from data.directories import quantities_rep_dir, T_list
+from data.directories import quantities_real_dir, T_list
 from data.loaders import read_file, add_index, temp_partition
 from data.model_loader import ModelLoader
 from networks.utils import set_GPU_memory, create_directory, calculate_observables_real
@@ -16,14 +16,12 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument('-L', type=int, default=32, help='output size')
-parser.add_argument('-TS', type=int, default=5, help='temperature index to start sampling')
 parser.add_argument('-GPU', type=float, default=0.3, help='GPU memory fraction')
 
 parser.add_argument('-Mind', type=int, default=0, help='model index')
 parser.add_argument('-ACT', type=str, default='relu', help='hidden activation')
 parser.add_argument('-HF', nargs='+', type=int, default=None, help='hidden filters list')
 parser.add_argument('-K', nargs='+', type=int, default=None, help='kernels list')
-parser.add_argument('-VER', type=int, default=1, help='version for name')
 
 parser.add_argument('-nTE', type=int, default=10000, help='test samples')
 parser.add_argument('-TEST', type=int, default=10000, help='test size')
@@ -59,6 +57,6 @@ def main(args):
         
     ## Save observables ##
     create_directory(quantities_rep_dir)
-    np.save(quantities_rep_dir + '/%s_TS%d_UP%d_VER%d.npy'%(model.name, args.TS, args.UP, args.VER), obs)
+    np.save(quantities_rep_dir + '/%s.npy'%(model.name), obs)
         
 main(parser.parse_args())
