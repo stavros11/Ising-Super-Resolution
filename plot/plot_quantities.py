@@ -57,13 +57,14 @@ def plot_four(figsize=(14, 8), L=16, save=False):
         plt.subplot(221 + q)
         plt.plot(T_list, obs[:, 0, q], color='blue', label=''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']),
                  linewidth=3.5)
-        plt.plot(T_list, obs[:, 1, q], '--', color='blue', 
-                 label=''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' RG']), linewidth=3.5, alpha=0.3)
+        plt.plot(T_list, obs[:, 1, q], '-', color='blue', 
+                 label=''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' RG']), linewidth=3.5, alpha=0.4)
         
         plt.plot(T_list, obs[:, -1, q], 'o--', color='red', label=''.join([r'%d'%L, r'$\times$', r'%d'%L, r' SR']),
                  linewidth=3.0, markersize=10)
         
-        plt.text(tx[q], ty[q], text[q], horizontalalignment='center', verticalalignment='center', fontweight='bold')
+        plt.text(tx[q], ty[q], text[q], horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=54)
         
         if q < 2:
             plt.locator_params(axis='y', nbins=6)
@@ -74,13 +75,13 @@ def plot_four(figsize=(14, 8), L=16, save=False):
         plt.xlim([0, 4.6])
         
         if q == 0:
-            plt.legend(loc='lower left')
-        plt.xlabel('$T$')
-        plt.ylabel(ylab[q])
+            plt.legend(loc='lower left', fontsize=46)
+        plt.xlabel('$T$', fontsize=52)
+        plt.ylabel(ylab[q], fontsize=52)
         
     
     if save:
-        #plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.1)
+        plt.subplots_adjust(left=0.1, right=0.95, top=0.96, bottom=0.08)
         plt.savefig('%s.pdf'%NAME)
     else:
         plt.show()
