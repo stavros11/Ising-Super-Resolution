@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
-matplotlib.rcParams.update({'font.size': 36})
+matplotlib.rcParams.update({'font.size': 42})
 
 from plot_directories import T_list1D as T_list
 from plot_directories import quantities_dir1D, quantities_dir1D_fixed
@@ -27,14 +27,14 @@ from plot_directories import quantities_dir1D, quantities_dir1D_fixed
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.10B1000'
+NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000'
 obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
-
-fixed_older = np.load('%s/Regular1D32relu_L1_20_MReg0.10EReg0.30B1000_gaussian_sampling.npy'%quantities_dir1D_fixed)
+fixed_older = np.load('%s/%s.npy'%(quantities_dir1D_fixed, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
 obs[:3, -1] = obs[:3, -2]
+fixed_older[:6, -1] = fixed_older[:6, -2]
 
 def plot_one(q=0, figsize=(8, 5), L=32):
     # q: which quantity to plot
@@ -77,18 +77,18 @@ gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1])
 
 # the fisrt subplot
 ax0 = plt.subplot(gs[0])
-line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='#ff0000', linewidth=2.5)
-line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='#e66464', linewidth=2.5, alpha=0.6)
-line_srM, = ax0.plot(T_list, obs[:, -1, 0], 'o--', color='blue', linewidth=1.5)
-plt.ylabel('$M$')
+line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5)
+line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4)
+line_srM, = ax0.plot(T_list, obs[:, -1, 0], 'o--', color='red', linewidth=3.0, markersize=10)
+plt.ylabel('$M$', fontsize=54)
 
 #the second subplot
 ax1 = plt.subplot(gs[2], sharex = ax0)
-line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='#ff0000', linewidth=2.5)
-line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='#e66464', linewidth=2.5, alpha=0.6)
-line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='blue', linewidth=1.5)
+line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=3.5)
+line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4)
+line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='red', linewidth=3.0, markersize=10)
 plt.setp(ax0.get_xticklabels(), visible=False)
-plt.ylabel('$E$')
+plt.ylabel('$E$', fontsize=54)
 
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
@@ -97,29 +97,36 @@ yticks = ax0.yaxis.get_major_ticks()
 yticks[0].label1.set_visible(False)
 
 # put lened on first subplot
-ax0.legend((line_mcM, line_rgM, line_srM), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), loc='upper right')
+ax0.legend((line_mcM, line_rgM, line_srM), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), 
+           loc='upper right', fontsize=50)
 
-plt.xlabel('$T$')
+plt.text(0.15, 0.9, 'a', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=54)
+plt.text(0.15, -0.15, 'b', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=58)
+
+plt.xlabel('$T$', fontsize=54)
+plt.xlim([0, 3.7])
+plt.locator_params(axis='x', nbins=8)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
-
 
 
 # the fisrt subplot
 T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_list))
 ax2 = plt.subplot(gs[1])
-line_mcMf, = ax2.plot(T_list, fixed_older[:, 0, 0], color='#ff0000', linewidth=2.5)
-line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='#e66464', linewidth=2.5, alpha=0.6)
-line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='blue', linewidth=1.5)
-plt.ylabel('$M$')
+line_mcMf, = ax2.plot(T_list, fixed_older[:, 0, 0], color='blue', linewidth=3.5)
+line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4)
+line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='red', linewidth=3.0, markersize=10)
+plt.ylabel('$M$', fontsize=54)
 
 #the second subplot
 ax3 = plt.subplot(gs[3], sharex = ax2)
-line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='#ff0000', linewidth=2.5)
-line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='#e66464', linewidth=2.5, alpha=0.6)
-line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='blue', linewidth=1.5)
+line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='blue', linewidth=3.5)
+line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4)
+line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='red', linewidth=3.0, markersize=10)
 plt.setp(ax2.get_xticklabels(), visible=False)
-plt.ylabel('$E$')
+plt.ylabel('$E$', fontsize=54)
 
 ax2.locator_params(axis='y', nbins=5)
 ax3.locator_params(axis='y', nbins=5)
@@ -127,10 +134,18 @@ ax3.locator_params(axis='y', nbins=5)
 yticks = ax2.yaxis.get_major_ticks()
 yticks[0].label1.set_visible(False)
 
-# put lened on first subplot
-ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), loc='upper right')
+plt.text(0.15, 0.50, 'c', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=54)
+plt.text(0.15, -0.32, 'd', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=58)
 
-plt.xlabel('$T$')
+# put lened on first subplot
+ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), 
+           loc='upper right', fontsize=50)
+
+plt.xlabel('$T$', fontsize=54)
+plt.xlim([0, 3.7])
+plt.locator_params(axis='x', nbins=8)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
 
