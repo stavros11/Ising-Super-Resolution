@@ -48,6 +48,11 @@ def plot_four(figsize=(14, 8), L=16, save=False):
     # plots the four plots (M, E, chi, Cv)
     plt.figure(figsize=figsize)
     ylab = ['$M$', '$E$', '$\chi $', '$C_V$']
+    text = ['a','b','c','d']
+    
+    tx = [0.2, 0.2, 0.2, 0.2]
+    ty = [0.9, -0.45, 5.4, 1.55]
+    
     for q in range(4):
         plt.subplot(221 + q)
         plt.plot(T_list, obs[:, 0, q], color='blue', label=''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']),
@@ -58,21 +63,26 @@ def plot_four(figsize=(14, 8), L=16, save=False):
         plt.plot(T_list, obs[:, -1, q], 'o--', color='red', label=''.join([r'%d'%L, r'$\times$', r'%d'%L, r' SR']),
                  linewidth=3.0, markersize=10)
         
+        plt.text(tx[q], ty[q], text[q], horizontalalignment='center', verticalalignment='center', fontweight='bold')
+        
         if q < 2:
-            plt.locator_params(axis='y', nbins=5)
+            plt.locator_params(axis='y', nbins=6)
         else:
             plt.locator_params(axis='y', nbins=6)
         
-        plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=2.5)
+        plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.8)
         plt.xlim([0, 4.6])
         
-        if q == 1:
-            plt.legend(loc='upper left')
+        if q == 0:
+            plt.legend(loc='lower left')
         plt.xlabel('$T$')
         plt.ylabel(ylab[q])
         
     
     if save:
+        #plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.1)
         plt.savefig('%s.pdf'%NAME)
     else:
         plt.show()
+    
+plot_four(figsize=(32, 20), save=True)
