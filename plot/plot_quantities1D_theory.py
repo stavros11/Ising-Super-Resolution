@@ -48,9 +48,11 @@ def tpf_theory(T, k, J=1, N=32):
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.10B1000_TS6'
-obs_or = np.load('%s/%s.npy'%(quantities_dir1D, NAME[:-4]))
+NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.10B1000_TS5_UP2_VER2'
+obs_or = np.load('%s/%s.npy'%(quantities_dir1D, NAME[:-13]))
 obs_rep = np.load('%s/%s.npy'%(quantities_dir1D_rep, NAME))
+tpf = np.load('%s/%s_TPF_N085.npy'%(quantities_dir1D_rep, NAME))
+
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
@@ -98,7 +100,7 @@ def plot_rep(q=0, figsize=(8, 5), N=32):
         
     plt.show()
     
-def plot_rep_th(q=0, figsize=(8, 5), N=32):
+def plot_rep_th(q=0, figsize=(8, 5), N=32, xlims=[0, 4], ylims=[-1, -0.2]):
     logL_original = int(np.log2(N))
     N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
     color_list = ['blue', 'red', 'green']
@@ -117,7 +119,27 @@ def plot_rep_th(q=0, figsize=(8, 5), N=32):
     
     plt.xlabel('$T$')
     plt.ylabel(ylabel[q])
+    plt.xlim(xlims)
+    plt.ylim(ylims)
     #plt.legend()
         
     plt.show()
     
+def plot_rep_tpf_th(figsize=(8, 5), N=32):
+    logL_original = int(np.log2(N))
+    N_list = 2 ** np.arange(logL_original+1, logL_original+len(obs_rep)+1)
+    color_list = ['blue', 'red', 'green']
+    
+    T_ren = T_list
+    plt.figure(figsize=figsize)
+    for (i, N) in enumerate(N_list):
+        T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
+        plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color=color_list[i],
+                 label='N=%d'%N)
+        plt.plot(T_ren, tpf[i], '*', color=color_list[i])
+    
+    plt.xlabel('$T$')
+    plt.ylabel('$C(T)$')
+    #plt.legend()
+        
+    plt.show()
