@@ -71,9 +71,9 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     else:
         plt.show()
         
-fig = plt.figure(figsize=(20, 14))
+fig = plt.figure(figsize=(30, 14))
 # set height ratios for sublots
-gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1]) 
+gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1]) 
 
 # the fisrt subplot
 ax0 = plt.subplot(gs[0])
@@ -83,7 +83,7 @@ line_srM, = ax0.plot(T_list, obs[:, -1, 0], 'o--', color='blue', linewidth=1.5)
 plt.ylabel('$M$')
 
 #the second subplot
-ax1 = plt.subplot(gs[1], sharex = ax0)
+ax1 = plt.subplot(gs[2], sharex = ax0)
 line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='#ff0000', linewidth=2.5)
 line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='#e66464', linewidth=2.5, alpha=0.6)
 line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='blue', linewidth=1.5)
@@ -102,4 +102,36 @@ ax0.legend((line_mcM, line_rgM, line_srM), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR
 plt.xlabel('$T$')
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
+
+
+
+# the fisrt subplot
+T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_list))
+ax2 = plt.subplot(gs[1])
+line_mcMf, = ax2.plot(T_list, fixed_older[:, 0, 0], color='#ff0000', linewidth=2.5)
+line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='#e66464', linewidth=2.5, alpha=0.6)
+line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='blue', linewidth=1.5)
+plt.ylabel('$M$')
+
+#the second subplot
+ax3 = plt.subplot(gs[3], sharex = ax2)
+line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='#ff0000', linewidth=2.5)
+line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='#e66464', linewidth=2.5, alpha=0.6)
+line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='blue', linewidth=1.5)
+plt.setp(ax2.get_xticklabels(), visible=False)
+plt.ylabel('$E$')
+
+ax2.locator_params(axis='y', nbins=5)
+ax3.locator_params(axis='y', nbins=5)
+# remove last tick label for the second subplot
+yticks = ax2.yaxis.get_major_ticks()
+yticks[0].label1.set_visible(False)
+
+# put lened on first subplot
+ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), loc='upper right')
+
+plt.xlabel('$T$')
+# remove vertical gap between subplots
+plt.subplots_adjust(hspace=.0)
+
 plt.savefig('%s.pdf'%NAME)
