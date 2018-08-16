@@ -6,9 +6,12 @@ Created on Wed Aug  8 17:20:57 2018
 """
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
-rcParams.update({'font.size': 32})
+from matplotlib import gridspec
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
+matplotlib.rcParams.update({'font.size': 62})
 
 from plot_directories import T_list, quantities_real_dir
 # Use this T_list when plot_directories module is not available
@@ -99,3 +102,46 @@ def plot_two_unfixed(figsize=(18, 6), L=16, linewidth=1.5, save=False):
         plt.savefig('%s.pdf'%NAME)
     else:
         plt.show()
+   
+fig = plt.figure(figsize=(20, 20))
+# set height ratios for sublots
+gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1]) 
+
+# the fisrt subplot
+ax0 = plt.subplot(gs[0])
+line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5)
+line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.3)
+line_srM, = ax0.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 0], 'o--', color='red', linewidth=3.0,
+                     markersize=10)
+plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
+plt.ylabel('$M$')
+
+#the second subplot
+ax1 = plt.subplot(gs[1], sharex = ax0)
+line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=2.5)
+line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=2.5, alpha=0.3)
+line_srE, = ax1.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 1], 'o--', color='red', linewidth=3.0,
+                     markersize=10)
+plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
+plt.setp(ax0.get_xticklabels(), visible=False)
+plt.ylabel('$E$')
+
+ax0.locator_params(axis='y', nbins=5)
+ax1.locator_params(axis='y', nbins=5)
+# remove last tick label for the second subplot
+yticks = ax0.yaxis.get_major_ticks()
+yticks[0].label1.set_visible(False)
+
+# put lened on first subplot
+L = 16
+ax0.legend((line_mcM, line_rgM, line_srM), (
+        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
+        ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
+        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left')
+
+plt.xlabel('$T$')
+# remove vertical gap between subplots
+plt.subplots_adjust(hspace=.0)
+
+plt.subplots_adjust(left=0.15, right=0.95, top=0.95, bottom=0.1)
+plt.savefig('ups_real2D.pdf')
