@@ -20,13 +20,14 @@ parser = ArgumentParser()
 parser.add_argument('-L', type=int, default=32, help='output size')
 parser.add_argument('-UP', type=int, default=3, help='number of upsamplings')
 parser.add_argument('-TS', type=int, default=5, help='temperature index to start sampling')
-parser.add_argument('-TPFD', type=int, default=16, help='divide L for two point function calculation')
+#parser.add_argument('-TPFD', type=int, default=16, help='divide L for two point function calculation')
 parser.add_argument('-GPU', type=float, default=0.3, help='GPU memory fraction')
 
 parser.add_argument('-Mind', type=int, default=0, help='model index')
 parser.add_argument('-ACT', type=str, default='relu', help='hidden activation')
 parser.add_argument('-HF', nargs='+', type=int, default=None, help='hidden filters list')
 parser.add_argument('-K', nargs='+', type=int, default=None, help='kernels list')
+parser.add_argument('-VER', type=int, default=1, help='version for name')
 
 parser.add_argument('-nTE', type=int, default=10000, help='test samples')
 parser.add_argument('-TEST', type=int, default=10000, help='test size')
@@ -56,11 +57,16 @@ def main(args):
         pred_cont.append(make_prediction(
                 data_in=add_index(temp_partition(data_mc, iT, n_samples=args.nTE)),
                 graph=model.graph, hid_filters=args.HF, kernels=args.K, hid_act=args.ACT))
+        
+        if iT < args.TS:
+            pred_cont[iT] = np.round(pred_cont[iT])
+        else:
+            pred_cont[iT] = (pred_cont[iT] > np.random.random(pred_cont[iT].shape)).astype(np.int)
                 
                 
         ## Calculate observables ##
         obs[0, iT] = calculate_observables_rep(pred_cont[iT][:,:,0], Tr=T)
-        tpf[0, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=pred_cont[iT].shape[1] // args.TPFD)
+        tpf[0, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=int(pred_cont[iT].shape[1]**0.8/5))
         
         print('Temperature %d / %d done!'%(iT+1, len(T_list)))
         
@@ -74,16 +80,16 @@ def main(args):
                     
             ## Make predictions ##
             if iT < args.TS:
-                sampled_in = np.round(pred_cont[iT])
+                pred_cont[iT] = np.round(pred_cont[iT])
             else:
-                sampled_in = (pred_cont[iT] > np.random.random(pred_cont[iT].shape)).astype(np.int)
+                pred_cont[iT] = (pred_cont[iT] > np.random.random(pred_cont[iT].shape)).astype(np.int)
             
-            pred_cont[iT] = make_prediction(data_in=sampled_in, graph=model.graph, 
+            pred_cont[iT] = make_prediction(data_in=pred_cont[iT], graph=model.graph, 
                      hid_filters=args.HF, kernels=args.K, hid_act=args.ACT)
 
             ## Calculate observables ##
             obs[iUP, iT] = calculate_observables_rep(pred_cont[iT][:,:,0], Tr=T)
-            tpf[iUP, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=pred_cont[iT].shape[1] // args.TPFD)
+            tpf[iUP, iT] = two_point_function(2 * pred_cont[iT][:,:,0] - 1, k=int(pred_cont[iT].shape[1]**0.8/5))
             
             print('Temperature %d / %d done!'%(iT+1, len(T_list)))
         
@@ -91,7 +97,7 @@ def main(args):
             
     ## Save observables ##
     create_directory(quantities_rep_dir)
-    np.save(quantities_rep_dir + '/%s_TS%d.npy'%(model.name, args.TS), obs)
-    np.save(quantities_rep_dir + '/%s_TS%d_TPFk%d.npy'%(model.name, args.TS, args.TPFD), tpf)
+    np.save(quantities_rep_dir + '/%s_TS%d_UP%d_VER%d.npy'%(model.name, args.TS, args.UP, args.VER), obs)
+    np.save(quantities_rep_dir + '/%s_TS%d_TPF_N085.npy'%(model.name, args.TS), tpf)
         
 main(parser.parse_args())
