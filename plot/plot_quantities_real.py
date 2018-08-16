@@ -110,21 +110,21 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
 # the fisrt subplot
 ax0 = plt.subplot(gs[0])
 line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5)
-line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.3)
+line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4)
 line_srM, = ax0.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 0], 'o--', color='red', linewidth=3.0,
                      markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
-plt.ylabel('$M$')
+plt.ylabel('$M$', fontsize=54)
 
 #the second subplot
 ax1 = plt.subplot(gs[1], sharex = ax0)
 line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=2.5)
-line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=2.5, alpha=0.3)
+line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=2.5, alpha=0.4)
 line_srE, = ax1.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 1], 'o--', color='red', linewidth=3.0,
                      markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
 plt.setp(ax0.get_xticklabels(), visible=False)
-plt.ylabel('$E$')
+plt.ylabel('$E$', fontsize=54)
 
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
@@ -137,9 +137,13 @@ L = 16
 ax0.legend((line_mcM, line_rgM, line_srM), (
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
         ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
-        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left')
+        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left', fontsize=54)
 
-plt.xlabel('$T$')
+plt.xlabel('$T$', fontsize=54)
+plt.text(0, 1.1, 'a', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=54)
+plt.text(0, -0.6, 'b', horizontalalignment='center', verticalalignment='center', 
+                 fontweight='bold', fontsize=58)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
 
