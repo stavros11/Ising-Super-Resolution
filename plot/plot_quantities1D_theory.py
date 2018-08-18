@@ -49,10 +49,10 @@ def tpf_theory(T, k, J=1, N=32):
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.10B1000_TS5_UP3_VER2'
+NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000_TS5_UP4_VER3'
 obs_or = np.load('%s/%s.npy'%(quantities_dir1D, NAME[:-13]))
 obs_rep = np.load('%s/%s.npy'%(quantities_dir1D_rep, NAME))
-tpf = np.load('%s/%s_TPF_N085.npy'%(quantities_dir1D_rep, NAME))
+tpf = np.load('%s/%s_TPF_N085.npy'%(quantities_dir1D_rep, NAME[:-9]))
 
 
 # Use rounding instead of sampling for the five lowest temperatures 
