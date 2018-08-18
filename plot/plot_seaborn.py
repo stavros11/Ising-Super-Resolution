@@ -12,7 +12,7 @@ from matplotlib import gridspec
 from seaborn import distplot
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
-matplotlib.rcParams.update({'font.size': 12})
+matplotlib.rcParams.update({'font.size': 40})
 
 
 from plot_directories import T_list, seaborn_dir
@@ -145,20 +145,35 @@ def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False,
 color_list = ['blue', 'green', 'red']
 label_list = ['MC', 'RG', 'SR']
 alphas = [1.0, 0.75, 0.5]
+text_font = 68
+
+tx = [-0.55, 0.0]
+ty = [2.6, 2.7]
 
 iT = 15, 20
 obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],
             obs[iT[1], np.array([0, 1, 4]), 0], obs[iT[1], np.array([0, 1, 4]), 1]]
 
-fig, axs = plt.subplots(figsize=(14,3), ncols=4, nrows=1)      
+fig, axs = plt.subplots(figsize=(30,5), ncols=4, nrows=1)      
         
 for i in range(4):
     for l in range(3):
-        distplot(obs_plot[i][l], bins=20, kde=False, color=color_list[l], label=label_list[l],
+        distplot(obs_plot[i][l], bins=15, kde=False, color=color_list[l], label=label_list[l],
                      norm_hist=True, hist_kws=dict(alpha=alphas[l]), ax=axs[i])
         
-    axs[i].set_xlabel(['$M$', '$E$'][i%2], fontsize=20)
-    axs[i].locator_params(axis='x', nbins=6)
+    axs[i].set_xlabel(['$M$', '$E$'][i%2], fontsize=42)
+    axs[i].locator_params(axis='x', nbins=4)
+    
+
+axs[1].text(tx[0], ty[0], 'a', horizontalalignment='center', verticalalignment='center', 
+   fontweight='bold', fontsize=text_font)
+axs[3].text(tx[1], ty[1], 'b', horizontalalignment='center', verticalalignment='center', 
+   fontweight='bold', fontsize=text_font)
+
+axs[0].legend(fontsize=48)
+
+plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.25)
+plt.savefig('seaborn_hist.pdf')
 
 #the second subplot
 #ax1 = plt.subplot(gs[1], sharex = ax0)
@@ -178,8 +193,4 @@ for i in range(4):
 #                 fontweight='bold', fontsize=text_font)
 #plt.text(-5.8, 0.9, 'b', horizontalalignment='center', verticalalignment='center', 
 #                 fontweight='bold', fontsize=text_font)
-
-
-#plt.subplots_adjust(left=0.15, right=0.95, top=0.95, bottom=0.1)
-#plt.savefig('seaborn_hist.pdf')
 

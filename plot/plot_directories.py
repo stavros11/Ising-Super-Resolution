@@ -22,6 +22,7 @@ metrics_critical_save_dir = BASIC_DIR + 'MetricsCritical'
 
 ## Quantities directories ##
 quantities_dir = BASIC_DIR + 'Quantities'
+quantities_real_dir = BASIC_DIR + 'QuantitiesReal'
 quantities_critical_dir = BASIC_DIR + 'QuantitiesCritical'
 multiple_exponents_dir = BASIC_DIR + 'MultipleExponents'
 seaborn_dir = BASIC_DIR + 'SeabornQuantities'
