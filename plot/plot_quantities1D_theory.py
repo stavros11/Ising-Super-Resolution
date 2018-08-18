@@ -6,9 +6,10 @@ Created on Mon Aug 13 17:18:06 2018
 """
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
-rcParams.update({'font.size': 14})
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
 from plot_directories import T_list1D as T_list
 from plot_directories import quantities_dir1D, quantities_dir1D_rep
@@ -143,3 +144,48 @@ def plot_rep_tpf_th(figsize=(8, 5), N=32):
     #plt.legend()
         
     plt.show()
+
+mc1d = np.load('C:/Users/User/Documents/Stavros/Ising_Data/ising1D-data/ising-1d-N32-samples10000-test.npy')
+def two_point_function(state, k):
+    N = state.shape[1]
+    copy = np.empty(state.shape)
+    copy[:, :N-k] = state[:, k:]
+    copy[:, N-k:] = state[:, :k]
+
+    return (copy * state).mean()
+
+
+tpf_or = np.zeros(32)
+for iT in range(32):
+    tpf_or[iT] = two_point_function(2 * mc1d[iT * 10000 : (iT+1) * 10000] - 1, k=int(32**0.8/5))
+
+matplotlib.rcParams.update({'font.size': 28})
+label_size = 32
+
+logL_original = int(np.log2(32))
+N_list = 2 ** np.arange(logL_original, logL_original+len(obs_rep)+1)
+
+tpf_plot = np.zeros([len(N_list), 32])
+tpf_plot[0] = tpf_or
+tpf_plot[1:] = tpf
+
+plt.figure(figsize=(8, 5))
+alpha_list = [1.0, 0.8, 0.6, 0.4]
+marker_list = ['s', '^', 'o', 'd']
+color_list = ['blue', 'red', 'green', 'magenta']
+
+T_ren = T_list
+for (i, N) in enumerate(N_list):    
+    plt.plot(T_ren, tpf_plot[i], linestyle='--', color=color_list[i], alpha=1.0, linewidth=3.0,
+             marker=marker_list[i], markersize=6, label='$N=%d$'%N)
+    
+    plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color=color_list[i], 
+             alpha=0.4, linewidth=3.5)
+    
+    T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
+
+plt.xlabel('$T$', fontsize=label_size)
+plt.ylabel('$G_N(j)$', fontsize=label_size)    
+plt.legend(loc='upper right', fontsize=30)
+
+plt.show()
