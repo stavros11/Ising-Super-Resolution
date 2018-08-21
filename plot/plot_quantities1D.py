@@ -73,12 +73,12 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     
     
     
-matplotlib.rcParams.update({'font.size': 42})
+matplotlib.rcParams.update({'font.size': 40})
 test_size = 64 #text
-legend_size = 54
-label_size = 52
+legend_size = 44
+label_size = 46
         
-fig = plt.figure(figsize=(30, 14))
+fig = plt.figure(figsize=(30, 10))
 # set height ratios for sublots
 gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1]) 
 
@@ -89,7 +89,7 @@ line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.
 line_srM, = ax0.plot(T_list, obs[:, -1, 0], linestyle='--', color='red', linewidth=3.5, 
                      alpha=0.8, markersize=15, marker='d')
 plt.ylabel('$M$', fontsize=label_size)
-ax0.yaxis.set_label_coords(0.1,0.5)
+ax0.yaxis.set_label_coords(0.06,0.5)
 
 #the second subplot
 ax1 = plt.subplot(gs[2], sharex = ax0)
@@ -99,7 +99,7 @@ line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='red', linewidth=3.5,
                      alpha=0.8, markersize=15, marker='d')
 plt.setp(ax0.get_xticklabels(), visible=False)
 plt.ylabel('$E$', fontsize=label_size)
-ax1.yaxis.set_label_coords(0.1,0.5)
+ax1.yaxis.set_label_coords(0.06,0.5)
 
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
@@ -131,7 +131,7 @@ line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='blue', linewidth=3.5,
 line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='red', linewidth=3.5, 
                      alpha=0.8, markersize=15, marker='d')
 plt.ylabel('$M$', fontsize=label_size)
-ax2.yaxis.set_label_coords(0.1,0.5)
+ax2.yaxis.set_label_coords(0.06,0.5)
 
 #the second subplot
 ax3 = plt.subplot(gs[3], sharex = ax2)
@@ -141,7 +141,7 @@ line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='red', linewidt
                      alpha=0.8, markersize=15, marker='d')
 plt.setp(ax2.get_xticklabels(), visible=False)
 plt.ylabel('$E$', fontsize=label_size)
-ax3.yaxis.set_label_coords(0.1,0.5)
+ax3.yaxis.set_label_coords(0.06,0.5)
 
 ax2.locator_params(axis='y', nbins=5)
 ax3.locator_params(axis='y', nbins=5)
@@ -164,4 +164,5 @@ plt.locator_params(axis='x', nbins=5)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
 
+plt.subplots_adjust(left=0.06, right=0.98, top=0.98, bottom=0.15)
 plt.savefig('ups_real1D.pdf')

@@ -102,29 +102,32 @@ def plot_two_unfixed(figsize=(18, 6), L=16, linewidth=1.5, save=False):
     else:
         plt.show()
 
-matplotlib.rcParams.update({'font.size': 58})
-fig = plt.figure(figsize=(20, 20))
+matplotlib.rcParams.update({'font.size': 48})
+label_size = 54
+text_size = 60
+
+fig = plt.figure(figsize=(20, 16))
 # set height ratios for sublots
 gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1]) 
 
 # the fisrt subplot
 ax0 = plt.subplot(gs[0])
-line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5, marker='o', markersize=11)
-line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5, marker='', markersize=11)
+line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='', markersize=8)
 line_srM, = ax0.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 0], linestyle='--', color='red', linewidth=3.5,
-                     marker='d', markersize=15, alpha=0.8)
+                     marker='o', markersize=15, alpha=0.8)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
-plt.ylabel('$M$', fontsize=62)
+plt.ylabel('$M$', fontsize=label_size)
 
 #the second subplot
 ax1 = plt.subplot(gs[1], sharex = ax0)
-line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=3.5, marker='o', markersize=11)
-line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=3.5, marker='', markersize=11)
+line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='', markersize=8)
 line_srE, = ax1.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 1], 'o--', color='red', linewidth=3.5,
-                     marker='d', markersize=15, alpha=0.8)
-plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
+                     marker='o', markersize=15, alpha=0.8)
+plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.setp(ax0.get_xticklabels(), visible=False)
-plt.ylabel('$E$', fontsize=62)
+plt.ylabel('$E$', fontsize=label_size)
 
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
@@ -137,15 +140,15 @@ L = 16
 ax0.legend((line_mcM, line_rgM, line_srM), (
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
         ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
-        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left', fontsize=62)
+        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left', fontsize=58)
 
-plt.xlabel('$T$', fontsize=62)
+plt.xlabel('$T$', fontsize=label_size)
 plt.text(0, 1.1, 'a', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=68)
+                 fontweight='bold', fontsize=text_size)
 plt.text(0, -0.6, 'b', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=68)
+                 fontweight='bold', fontsize=text_size)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
 
-plt.subplots_adjust(left=0.15, right=0.95, top=0.95, bottom=0.1)
-plt.savefig('ups_real2D.pdf')
+#plt.subplots_adjust(left=0.12, right=0.95, top=0.95, bottom=0.10)
+plt.savefig('ups_real2D.pdf', bbox_inches='tight')

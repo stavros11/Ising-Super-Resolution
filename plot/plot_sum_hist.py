@@ -17,7 +17,7 @@ NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD'
 
 def read_data(iT):
     ## Read MC and SR data ##
-    mc = df.temp_partition(df.read_file(df.data_directory_select(), L=16), iT)
+    mc = df.temp_partition(df.read_file(df.data_directory_select(2), L=16), iT)
     output = np.load('%s/%s/T%.4f.npy'%(output_dir, NAME, T_list[iT]))
     sampled = (output > np.random.random(output.shape)).astype(np.int)
     

@@ -145,17 +145,7 @@ def plot_rep_tpf_th(figsize=(8, 5), N=32):
         
     plt.show()
 
-mc1d = np.load('C:/Users/User/Documents/Stavros/Ising_Data/ising1D-data/ising-1d-N32-samples10000-test.npy')
-def two_point_function(state, k):
-    N = state.shape[1]
-    copy = np.empty(state.shape)
-    copy[:, :N-k] = state[:, k:]
-    copy[:, N-k:] = state[:, :k]
-
-    return (copy * state).mean()
-
-
-mc1d = np.load('C:/Users/User/Documents/Stavros/Ising_Data/ising1D-data/ising-1d-N32-samples10000-test.npy')
+mc1d = np.load('C:/Users/Stavros/Documents/Scripts_and_programs/Ising_Data/ising1d-data-test-10000/ising-1d-N32-samples10000-test.npy')
 def two_point_function(state, k):
     N = state.shape[1]
     copy = np.empty(state.shape)
@@ -168,8 +158,8 @@ tpf_or = np.zeros(32)
 for iT in range(32):
     tpf_or[iT] = two_point_function(2 * mc1d[iT * 10000 : (iT+1) * 10000] - 1, k=int(32**0.8/5))
 
-matplotlib.rcParams.update({'font.size': 48})
-label_size = 54
+matplotlib.rcParams.update({'font.size': 46})
+label_size = 50
 
 logL_original = int(np.log2(32))
 N_list = 2 ** np.arange(logL_original, logL_original+len(obs_rep)+1)
@@ -178,23 +168,26 @@ tpf_plot = np.zeros([len(N_list), 32])
 tpf_plot[0] = tpf_or
 tpf_plot[1:] = tpf
 
-plt.figure(figsize=(18, 12))
-alpha_list = [1.0, 0.8, 0.6, 0.4]
+plt.figure(figsize=(18, 10))
+alpha_list = [1.0, 0.8, 0.6, 0.4, 0.2]
 marker_list = ['s', '^', 'o', 'd', 'v']
 color_list = ['blue', 'red', 'green', 'magenta', 'black']
 
 T_ren = T_list
+tpf_corr = np.zeros([5, 32])
 for (i, N) in enumerate(N_list):    
-    plt.plot(T_ren, tpf_plot[i], linestyle='--', color=color_list[i], alpha=1.0, linewidth=3.0,
-             marker=marker_list[i], markersize=16, label='$N=%d$'%N)
+    plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color='blue', 
+             alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
     
-    plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color=color_list[i], 
-             alpha=0.7, linewidth=4.5)
+    plt.plot(T_ren, tpf_plot[i], linestyle=' ', color='red',
+             marker=marker_list[i], markersize=14, alpha=alpha_list[i])
     
+    tpf_corr[i] = tpf_theory(T_ren, k=int(N**0.8/5), N=N)
     T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
 
 plt.xlabel('$T$', fontsize=label_size)
 plt.ylabel('$G_N(j)$', fontsize=label_size)    
-plt.legend(loc='upper right', fontsize=58)
+plt.legend(loc='upper right', fontsize=48)
 
-plt.savefig('tpf1D.pdf')
+plt.subplots_adjust(left=0.12, right=0.95, top=0.96, bottom=0.16)
+plt.savefig('tpf1D.pdf')# bbox_inches='tight')

@@ -23,9 +23,9 @@ aM, bM = np.load('Magnetization_Transformation_Params_L16.npy')
 aE, bE = np.load('Energy_Transformation_Params_L16.npy')
 T_list = np.linspace(0.01, 4.538, 32)
 
-fig = plt.figure(figsize=(14, 16))
-matplotlib.rcParams.update({'font.size': 42})
-label_font = 54
+fig = plt.figure(figsize=(15, 12))
+matplotlib.rcParams.update({'font.size': 38})
+label_font = 50
 text_font = 62
 
 # set height ratios for sublots
@@ -66,11 +66,11 @@ ax0.legend((line_mcM, line_srM, line_rgM, line_FM),
             ''.join([r'8', r'$\times$', r'8', r' MC']),
            ''.join([r'8', r'$\times$', r'8', r' RG']),
            'Corrected T'),
-           loc='upper right', fontsize=48)
+           loc='upper right', fontsize=38)
 
 plt.text(0.3, 1.5, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_font)
-plt.text(0.3, -0.35, 'b', horizontalalignment='center', verticalalignment='center', 
+plt.text(0.3, -0.4, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_font)
 
 plt.xlabel('$T$', fontsize=label_font)
@@ -79,5 +79,5 @@ plt.locator_params(axis='x', nbins=10)
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)
 
-plt.subplots_adjust(left=0.18, right=0.95, top=0.96, bottom=0.1)
-plt.savefig('MCvsRG.pdf')
+plt.subplots_adjust(left=0.15, right=0.95, top=0.96, bottom=0.15)
+plt.savefig('mcrg_transformation.pdf')

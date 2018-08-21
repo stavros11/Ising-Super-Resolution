@@ -81,12 +81,12 @@ def plot_four(figsize=(14, 8), L=16, save=False):
         
     
     if save:
-        plt.subplots_adjust(left=0.1, right=0.95, top=0.96, bottom=0.08)
+        plt.subplots_adjust(left=0.05, right=0.98, top=0.96, bottom=0.1)
         #plt.savefig('%s.pdf'%NAME)
         plt.savefig('ups_RG2D.pdf')
     else:
         plt.show()
 
 matplotlib.rcParams.update({'font.size': 42})
-plot_four(figsize=(32, 20), save=True)
+plot_four(figsize=(32, 15), save=True)
 #plot_four(figsize=(12, 8), save=True)
