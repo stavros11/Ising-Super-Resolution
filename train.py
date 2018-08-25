@@ -22,6 +22,7 @@ parser.add_argument('-TRS', type=int, default=10000, help='train size')
 parser.add_argument('-VALS', type=int, default=2000, help='validation size')
 parser.add_argument('-VER', type=int, default=1, help='version for name')
 
+parser.add_argument('-FEAT', type=bool, default=False, help='use feature extraction (currently one layer before upsampling)')
 parser.add_argument('-PBC', type=bool, default=True, help='use PBC padding')
 parser.add_argument('-ACT', type=str, default='relu', help='hidden activation')
 parser.add_argument('-HF', nargs='+', type=int, default=None, help='hidden filters list')

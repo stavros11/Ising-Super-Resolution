@@ -64,6 +64,27 @@ def simple2D_pbc(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu'):
     
     return model
 
+def FeatExt1L2D_pbc(x, hid_filters=[32, 32], kernels=[3, 5, 3], hid_act='relu'):
+    model = Sequential()
+    model.add(InputLayer(input_shape=x[1:]))
+    
+    ## Feature Extraction Layer before upsampling
+    model.add(Lambda(PBCLayer2D, arguments={'pad' : kernels[0]-1}))
+    model.add(Conv2D(hid_filters[0], kernels[0], padding='valid', 
+                     kernel_initializer='he_normal', activation=hid_act))
+    
+    model.add(UpSampling2D())
+    for (k, f) in zip(kernels[1:], hid_filters[1:]):
+        model.add(Lambda(PBCLayer2D, arguments={'pad' : k-1}))
+        model.add(Conv2D(f, k, padding='valid', 
+                         kernel_initializer='he_normal', activation=hid_act))
+
+    model.add(Lambda(PBCLayer2D, arguments={'pad' : kernels[-1]-1}))
+    model.add(Conv2D(1, kernels[-1], padding='valid', 
+                     kernel_initializer='glorot_normal', activation='sigmoid'))
+    
+    return model
+
 ###################################
 ########### DUPLICATES  ###########
 ###################################
@@ -95,12 +116,16 @@ def duplicate_simple2D_pbc(old_model, x, hid_filters=[64, 32],
 ########## FUNCTIONS THAT RETURN NAMES  ##########
 ##################################################
     
-def get_name(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
+def get_name(x, feat_ext=False, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
              pbc=False):
     ## Returns name (that contains model info)
     
     # Create name and write filters
-    name = 'Simple2D%d%s_L%d'%(x[1], hid_act, len(hid_filters))
+    if feat_ext:
+        name = 'FeatExt1L2D%d%s_L%d'%(x[1], hid_act, len(hid_filters))
+    else:
+        name = 'Simple2D%d%s_L%d'%(x[1], hid_act, len(hid_filters))
+
     for i in hid_filters:
         name += '_' + str(i)
         
@@ -115,16 +140,22 @@ def get_name(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
     else:
         return name
     
-def get_model(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
+def get_model(x, feat_ext=False, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
               pbc=False):
     ## Returns model
-    if pbc:
-        return simple2D_pbc(x, hid_filters=hid_filters, kernels=kernels, 
+    if feat_ext:
+        return FeatExt1L2D_pbc(x, hid_filters=hid_filters, kernels=kernels, 
                             hid_act=hid_act)
     else:
-        return simple2D(x, hid_filters=hid_filters, kernels=kernels, 
-                        hid_act=hid_act)
+        if pbc:
+            return simple2D_pbc(x, hid_filters=hid_filters, kernels=kernels, 
+                                hid_act=hid_act)
+        else:
+            return simple2D(x, hid_filters=hid_filters, kernels=kernels, 
+                            hid_act=hid_act)
 
+
+### DEPRECATED // Not updated for FeatExtL1 ###
 def get_name_and_model(x, hid_filters=[64, 32], kernels=[6, 1, 3], hid_act='relu',
                        pbc=False):
     ## Returns name (that contains model info), model

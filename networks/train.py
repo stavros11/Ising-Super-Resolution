@@ -20,6 +20,7 @@ class TrainerCritical():
         self.create_callbacks()
         
         self.name = get_name([1, self.args.L, self.args.L, 1], 
+                             feat_ext=self.args.FEAT,
                              hid_act=self.args.ACT,
                              hid_filters=self.args.HF, 
                              kernels=self.args.K,
@@ -68,6 +69,7 @@ class TrainerCritical():
     ## Split compiling and training for the critical case
     def compiler(self, data):
         self.model = get_model(data.train_in.shape, 
+                               feat_ext=self.args.FEAT,
                                hid_act=self.args.ACT,
                                hid_filters=self.args.HF, 
                                kernels=self.args.K,
@@ -117,6 +119,7 @@ class TrainerTemp(TrainerCritical):
         n_temp = len(self.args.T_list)
         for (iT,T) in enumerate(self.args.T_list):
             self.model = get_model(data.train_in.shape, 
+                                   feat_ext=self.args.FEAT,
                                    hid_act=self.args.ACT,
                                    hid_filters=self.args.HF, 
                                    kernels=self.args.K,
