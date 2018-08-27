@@ -8,6 +8,7 @@ Created on Mon Aug 13 22:23:40 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import seaborn as sns
 from matplotlib import gridspec
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
@@ -73,96 +74,169 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     
     
     
-matplotlib.rcParams.update({'font.size': 40})
+matplotlib.rcParams.update({'font.size': 38})
 test_size = 64 #text
-legend_size = 44
+legend_size = 40
 label_size = 46
         
-fig = plt.figure(figsize=(30, 10))
-# set height ratios for sublots
-gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1]) 
+#fig = plt.figure(figsize=(30, 10))
+## set height ratios for sublots
+#gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1]) 
+#
+## the fisrt subplot
+#ax0 = plt.subplot(gs[0])
+#line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
+#line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+#line_srM, = ax0.plot(T_list, obs[:, -1, 0], linestyle='--', color='red', linewidth=3.5, 
+#                     alpha=0.8, markersize=15, marker='d')
+#plt.ylabel('$M$', fontsize=label_size)
+#ax0.yaxis.set_label_coords(0.06,0.5)
+#
+##the second subplot
+#ax1 = plt.subplot(gs[2], sharex = ax0)
+#line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
+#line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+#line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='red', linewidth=3.5, 
+#                     alpha=0.8, markersize=15, marker='d')
+#plt.setp(ax0.get_xticklabels(), visible=False)
+#plt.ylabel('$E$', fontsize=label_size)
+#ax1.yaxis.set_label_coords(0.06,0.5)
+#
+#ax0.locator_params(axis='y', nbins=5)
+#ax1.locator_params(axis='y', nbins=5)
+## remove last tick label for the second subplot
+#yticks = ax0.yaxis.get_major_ticks()
+#yticks[0].label1.set_visible(False)
+#
+## put lened on first subplot
+#ax0.legend((line_mcM, line_rgM, line_srM), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), 
+#           loc='upper right', fontsize=legend_size)
+#
+#plt.text(0.15, 0.8, 'a', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=test_size)
+#plt.text(0.15, -0.15, 'b', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=test_size)
+#
+#plt.xlabel('$T$', fontsize=label_size)
+#plt.locator_params(axis='x', nbins=5)
+#plt.xlim([0, 3.7])
+## remove vertical gap between subplots
+#plt.subplots_adjust(hspace=.0)
+#
+#
+## the fisrt subplot
+#T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_list))
+#ax2 = plt.subplot(gs[1])
+#line_mcMf, = ax2.plot(T_list, fixed_older[:, 0, 0], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
+#line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+#line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='red', linewidth=3.5, 
+#                     alpha=0.8, markersize=15, marker='d')
+#plt.ylabel('$M$', fontsize=label_size)
+#ax2.yaxis.set_label_coords(0.06,0.5)
+#
+##the second subplot
+#ax3 = plt.subplot(gs[3], sharex = ax2)
+#line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
+#line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
+#line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='red', linewidth=3.5, 
+#                     alpha=0.8, markersize=15, marker='d')
+#plt.setp(ax2.get_xticklabels(), visible=False)
+#plt.ylabel('$E$', fontsize=label_size)
+#ax3.yaxis.set_label_coords(0.06,0.5)
+#
+#ax2.locator_params(axis='y', nbins=5)
+#ax3.locator_params(axis='y', nbins=5)
+## remove last tick label for the second subplot
+#yticks = ax2.yaxis.get_major_ticks()
+#yticks[0].label1.set_visible(False)
+#
+#plt.text(0.15, 0.4, 'c', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=test_size)
+#plt.text(0.15, -0.35, 'd', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=test_size)
+#
+## put lened on first subplot
+#ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), 
+#           loc='upper right', fontsize=legend_size)
+#
+#plt.xlabel('$T$', fontsize=label_size)
+#plt.xlim([0, 3.7])
+#plt.locator_params(axis='x', nbins=5)
+## remove vertical gap between subplots
+#plt.subplots_adjust(hspace=.0)
+#
+##plt.subplots_adjust(left=0.06, right=0.98, top=0.98, bottom=0.15)
+from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
-# the fisrt subplot
-ax0 = plt.subplot(gs[0])
-line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
-line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
-line_srM, = ax0.plot(T_list, obs[:, -1, 0], linestyle='--', color='red', linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='d')
-plt.ylabel('$M$', fontsize=label_size)
-ax0.yaxis.set_label_coords(0.06,0.5)
-
-#the second subplot
-ax1 = plt.subplot(gs[2], sharex = ax0)
-line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
-line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
-line_srE, = ax1.plot(T_list, obs[:, -1, 1], 'o--', color='red', linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='d')
-plt.setp(ax0.get_xticklabels(), visible=False)
-plt.ylabel('$E$', fontsize=label_size)
-ax1.yaxis.set_label_coords(0.06,0.5)
-
-ax0.locator_params(axis='y', nbins=5)
-ax1.locator_params(axis='y', nbins=5)
-# remove last tick label for the second subplot
-yticks = ax0.yaxis.get_major_ticks()
-yticks[0].label1.set_visible(False)
-
-# put lened on first subplot
-ax0.legend((line_mcM, line_rgM, line_srM), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), 
-           loc='upper right', fontsize=legend_size)
-
-plt.text(0.15, 0.8, 'a', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=test_size)
-plt.text(0.15, -0.15, 'b', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=test_size)
-
-plt.xlabel('$T$', fontsize=label_size)
-plt.locator_params(axis='x', nbins=5)
-plt.xlim([0, 3.7])
-# remove vertical gap between subplots
-plt.subplots_adjust(hspace=.0)
-
-
-# the fisrt subplot
 T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_list))
-ax2 = plt.subplot(gs[1])
-line_mcMf, = ax2.plot(T_list, fixed_older[:, 0, 0], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
-line_rgMf, = ax2.plot(T_list, fixed_older[:, 1, 0], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
-line_srMf, = ax2.plot(T_ren, fixed_older[:, -1, 0], 'o--', color='red', linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='d')
+def get_errors():
+    errors = np.zeros([len(T_list), fixed_older.shape[-1]])
+    for (iT, T) in enumerate(T_ren):
+        dif = np.abs(T - T_list)
+        i1 = dif.argmin()
+        dif[i1] = 1000
+        i2 = dif.argmin()
+        mc_values = (fixed_older[i2, 0] - fixed_older[i1, 0]) * (T - T_list[i1])/ (T_list[i2] - T_list[i1])
+        mc_values+= fixed_older[i1, 0]
+        
+        errors[iT] = np.abs((mc_values - fixed_older[iT, -1]) / mc_values)
+        
+    return errors
+        
+errors = get_errors()
+
+fig = plt.figure(figsize=(30, 8))
+#gs = gridspec.GridSpec(1, 2)
+
+ax2 = fig.add_subplot(121)
+line_mcMf, = plt.plot(T_list, fixed_older[:, 0, 0], color=plt.cm.Paired(0), linewidth=3.5)
+line_rgMf, = plt.plot(T_list, fixed_older[:, 1, 0], color=plt.cm.Paired(2), linewidth=3.5)
+line_srMf, = plt.plot(T_ren, fixed_older[:, -1, 0], color=plt.cm.Paired(1), linestyle='', linewidth=3.5, 
+                     alpha=0.8, markersize=15, marker='o')
 plt.ylabel('$M$', fontsize=label_size)
-ax2.yaxis.set_label_coords(0.06,0.5)
-
-#the second subplot
-ax3 = plt.subplot(gs[3], sharex = ax2)
-line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='blue', linewidth=3.5, alpha=0.9, marker='o', markersize=11)
-line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='blue', linewidth=3.5, alpha=0.4, marker='s', markersize=8)
-line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], 'o--', color='red', linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='d')
-plt.setp(ax2.get_xticklabels(), visible=False)
-plt.ylabel('$E$', fontsize=label_size)
-ax3.yaxis.set_label_coords(0.06,0.5)
-
-ax2.locator_params(axis='y', nbins=5)
-ax3.locator_params(axis='y', nbins=5)
-# remove last tick label for the second subplot
-yticks = ax2.yaxis.get_major_ticks()
-yticks[0].label1.set_visible(False)
-
-plt.text(0.15, 0.4, 'c', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=test_size)
-plt.text(0.15, -0.35, 'd', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=test_size)
-
-# put lened on first subplot
-ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), 
-           loc='upper right', fontsize=legend_size)
-
 plt.xlabel('$T$', fontsize=label_size)
-plt.xlim([0, 3.7])
-plt.locator_params(axis='x', nbins=5)
-# remove vertical gap between subplots
-plt.subplots_adjust(hspace=.0)
 
-plt.subplots_adjust(left=0.06, right=0.98, top=0.98, bottom=0.15)
-plt.savefig('ups_real1D.pdf')
+plt.text(0, 0.95, 'a', horizontalalignment='center', verticalalignment='center', 
+         fontweight='bold', fontsize=test_size)
+
+ax_ins = inset_axes(ax2, 
+                    width="50%", # width = 30% of parent_bbox
+                    height="40%", # height : 1 inch
+                    loc=1)
+plt.plot(T_list, 100*errors[:, 0], linestyle=':', linewidth=2.0, color=plt.cm.Paired(3),
+         markersize=15, marker='^')
+plt.locator_params(axis='x', nbins=5)
+plt.locator_params(axis='y', nbins=3)
+plt.ylabel('Error (%)', fontsize=label_size - 10)
+plt.xlabel('$T$', fontsize=label_size - 10)
+
+
+ax3 = fig.add_subplot(122)
+line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color=plt.cm.Paired(0), linewidth=3.5)
+line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color=plt.cm.Paired(2), linewidth=3.5)
+line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], linestyle='', color=plt.cm.Paired(1), linewidth=3.5, 
+                     alpha=0.8, markersize=15, marker='o')
+plt.ylabel('$E$', fontsize=label_size)
+plt.xlabel('$T$', fontsize=label_size)
+
+ax3.text(3.5, -0.32, 'b', horizontalalignment='center', verticalalignment='center', 
+         fontweight='bold', fontsize=test_size)
+
+ax_ins2 = inset_axes(ax3, 
+                    width="50%", # width = 30% of parent_bbox
+                    height="40%", # height : 1 inch
+                    loc=4)
+plt.plot(T_list, 100*errors[:, 1], linestyle=':', linewidth=2.0, color=plt.cm.Paired(3),
+         markersize=15, marker='^')
+ax_ins2.xaxis.tick_top()
+plt.locator_params(axis='x', nbins=5)
+plt.locator_params(axis='y', nbins=3)
+plt.ylabel('Error (%)', fontsize=label_size - 10)
+plt.xlabel('$T$', fontsize=label_size - 10)
+ax_ins2.xaxis.set_label_position('top') 
+
+
+ax3.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), 
+           loc='upper left', fontsize=legend_size)
+
+plt.savefig('ups_real1D.pdf', bbox_inches='tight')
