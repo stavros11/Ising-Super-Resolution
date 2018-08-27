@@ -9,6 +9,7 @@ from numpy import linspace
 
 BASIC_DIR = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/SR_results/'
 BASIC_DIR = 'C:/Users/Stavros/Documents/Scripts_and_programs/SR_results/'
+BASIC_DIR = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/SR_results/'
 
 ## Temperature list ##
 T_list = linspace(0.01, 4.538, 32)
