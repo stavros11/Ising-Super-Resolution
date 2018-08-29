@@ -76,7 +76,7 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     
 matplotlib.rcParams.update({'font.size': 38})
 test_size = 64 #text
-legend_size = 40
+legend_size = 37
 label_size = 46
         
 #fig = plt.figure(figsize=(30, 10))
@@ -185,14 +185,15 @@ def get_errors():
         
 errors = get_errors()
 
-fig = plt.figure(figsize=(30, 8))
+fig = plt.figure(figsize=(30, 7))
 #gs = gridspec.GridSpec(1, 2)
+#cmap = plt.cm.get_cmap('Paired_r', lut=4)
 
 ax2 = fig.add_subplot(121)
-line_mcMf, = plt.plot(T_list, fixed_older[:, 0, 0], color=plt.cm.Paired(0), linewidth=3.5)
-line_rgMf, = plt.plot(T_list, fixed_older[:, 1, 0], color=plt.cm.Paired(2), linewidth=3.5)
-line_srMf, = plt.plot(T_ren, fixed_older[:, -1, 0], color=plt.cm.Paired(1), linestyle='', linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='o')
+line_mcMf, = plt.plot(T_list, fixed_older[:, 0, 0], color='blue', alpha=0.8, linewidth=3.5)
+line_rgMf, = plt.plot(T_list, fixed_older[:, 1, 0], color='blue', alpha=0.5, linewidth=3.5)
+line_srMf, = plt.plot(T_ren, fixed_older[:, -1, 0], color='orange', alpha=0.7, linestyle='', linewidth=3.5, 
+                     markersize=15, marker='o')
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
@@ -200,10 +201,10 @@ plt.text(0, 0.95, 'a', horizontalalignment='center', verticalalignment='center',
          fontweight='bold', fontsize=test_size)
 
 ax_ins = inset_axes(ax2, 
-                    width="50%", # width = 30% of parent_bbox
+                    width="40%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=1)
-plt.plot(T_list, 100*errors[:, 0], linestyle=':', linewidth=2.0, color=plt.cm.Paired(3),
+plt.plot(T_list, 100*errors[:, 0], linestyle=':', linewidth=2.0, color='green', alpha=0.6,
          markersize=15, marker='^')
 plt.locator_params(axis='x', nbins=5)
 plt.locator_params(axis='y', nbins=3)
@@ -212,10 +213,10 @@ plt.xlabel('$T$', fontsize=label_size - 10)
 
 
 ax3 = fig.add_subplot(122)
-line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color=plt.cm.Paired(0), linewidth=3.5)
-line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color=plt.cm.Paired(2), linewidth=3.5)
-line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], linestyle='', color=plt.cm.Paired(1), linewidth=3.5, 
-                     alpha=0.8, markersize=15, marker='o')
+line_mcEf, = ax3.plot(T_list, fixed_older[:, 0, 1], color='blue', alpha=0.8, linewidth=3.5)
+line_rgEf, = ax3.plot(T_list, fixed_older[:, 1, 1], color='blue', alpha=0.5, linewidth=3.5)
+line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], color='orange', alpha=0.7, linestyle='', linewidth=3.5, 
+                      markersize=15, marker='o')
 plt.ylabel('$E$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
@@ -223,10 +224,10 @@ ax3.text(3.5, -0.32, 'b', horizontalalignment='center', verticalalignment='cente
          fontweight='bold', fontsize=test_size)
 
 ax_ins2 = inset_axes(ax3, 
-                    width="50%", # width = 30% of parent_bbox
+                    width="40%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=4)
-plt.plot(T_list, 100*errors[:, 1], linestyle=':', linewidth=2.0, color=plt.cm.Paired(3),
+plt.plot(T_list, 100*errors[:, 1], linestyle=':', linewidth=2.0, color='green', alpha=0.6,
          markersize=15, marker='^')
 ax_ins2.xaxis.tick_top()
 plt.locator_params(axis='x', nbins=5)
@@ -236,7 +237,7 @@ plt.xlabel('$T$', fontsize=label_size - 10)
 ax_ins2.xaxis.set_label_position('top') 
 
 
-ax3.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ RG', '$N=32$ SR'), 
+ax3.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), 
            loc='upper left', fontsize=legend_size)
 
 plt.savefig('ups_real1D.pdf', bbox_inches='tight')

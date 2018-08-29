@@ -8,8 +8,7 @@ Created on Wed Jul 18 12:32:37 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
-from seaborn import distplot
+from seaborn import distplot, kdeplot
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 matplotlib.rcParams.update({'font.size': 40})
@@ -142,13 +141,13 @@ def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False,
         plt.show()    
 
 
-color_list = ['blue', 'green', 'red']
-label_list = ['MC', 'RG', 'SR']
+color_list = ['blue', 'green', 'orange']
+label_list = ['MC', 'DS', 'SR']
 alphas = [1.0, 0.75, 0.5]
 text_font = 68
 
-tx = [-0.55, 0.0]
-ty = [2.6, 2.7]
+tx = [-0.35, 0.15]
+ty = [2.65, 2.8]
 
 iT = 15, 20
 obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],
@@ -158,8 +157,10 @@ fig, axs = plt.subplots(figsize=(30,5), ncols=4, nrows=1)
         
 for i in range(4):
     for l in range(3):
-        distplot(obs_plot[i][l], bins=15, kde=False, color=color_list[l], label=label_list[l],
-                     norm_hist=True, hist_kws=dict(alpha=alphas[l]), ax=axs[i])
+        distplot(obs_plot[i][l], bins=15, kde=True, color=color_list[l], label=label_list[l],
+                     norm_hist=True, hist_kws=dict(alpha=alphas[l]), ax=axs[i],
+                     kde_kws={"lw":4.0})
+        #kdeplot(obs_plot[i][l], rc={"lines.linewidth": 2.5}, color=color_list[l])
         
     axs[i].set_xlabel(['$M$', '$E$'][i%2], fontsize=42)
     axs[i].locator_params(axis='x', nbins=4)
@@ -170,7 +171,7 @@ axs[1].text(tx[0], ty[0], 'a', horizontalalignment='center', verticalalignment='
 axs[3].text(tx[1], ty[1], 'b', horizontalalignment='center', verticalalignment='center', 
    fontweight='bold', fontsize=text_font)
 
-axs[0].legend(fontsize=48)
+axs[0].legend(fontsize=44)
 
 plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.25)
 plt.savefig('seaborn_hist.pdf')

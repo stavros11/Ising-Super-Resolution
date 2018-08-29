@@ -145,7 +145,7 @@ def plot_rep_tpf_th(figsize=(8, 5), N=32):
         
     plt.show()
 
-mc1d = np.load('C:/Users/Stavros/Documents/Scripts_and_programs/Ising_Data/ising1d-data-test-10000/ising-1d-N32-samples10000-test.npy')
+mc1d = np.load('C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_1D/Ising-Data1D/ising-1d-N32-samples10000-test.npy')
 def two_point_function(state, k):
     N = state.shape[1]
     copy = np.empty(state.shape)
@@ -170,8 +170,11 @@ tpf_plot[1:] = tpf
 
 plt.figure(figsize=(18, 10))
 alpha_list = [1.0, 0.8, 0.6, 0.4, 0.2]
+alpha_list_points = [0.8, 0.7, 0.6, 0.4, 0.2]
 marker_list = ['s', '^', 'o', 'd', 'v']
 color_list = ['blue', 'red', 'green', 'magenta', 'black']
+
+cmap = plt.cm.get_cmap('Paired_r', lut=10)
 
 T_ren = T_list
 tpf_corr = np.zeros([5, 32])
@@ -179,8 +182,8 @@ for (i, N) in enumerate(N_list):
     plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color='blue', 
              alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
     
-    plt.plot(T_ren, tpf_plot[i], linestyle=' ', color='red',
-             marker=marker_list[i], markersize=14, alpha=alpha_list[i])
+    plt.plot(T_ren, tpf_plot[i], linestyle=' ', color='orange',
+             marker=marker_list[i], markersize=14, alpha=alpha_list_points[i])
     
     tpf_corr[i] = tpf_theory(T_ren, k=int(N**0.8/5), N=N)
     T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))
