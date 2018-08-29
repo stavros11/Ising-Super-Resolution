@@ -8,7 +8,8 @@ Created on Wed Aug  8 17:20:57 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+from os import getcwd, path
+
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
@@ -27,11 +28,11 @@ def inv_curve(x, a, b):
 #        tpf(L/4), S0, S1, S2]
 
 # Load renormalization parameters (fix .npy directories)
-parameters_dir = 'C:/Users/Stavros/Documents/GitHub/Ising-Super-Resolution/renormalization'
-parameters_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/GitHub/Ising-Super-Resolution/renormalization'
+git_folder = path.split(getcwd())[0]
+parameters_dir = path.join(git_folder, 'renormalization')
 a, b = np.zeros(2), np.zeros(2)
-a[0], b[0] = np.load('%s/Magnetization_Transformation_Params_L16.npy'%parameters_dir)
-a[1], b[1] = np.load('%s/Energy_Transformation_Params_L16.npy'%parameters_dir)
+a[0], b[0] = np.load(path.join(parameters_dir, 'Magnetization_Transformation_Params_L16.npy'))
+a[1], b[1] = np.load(path.join(parameters_dir, 'Energy_Transformation_Params_L16.npy'))
 
 # Load data (fix .npy directory here)
 NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30_OLD'
