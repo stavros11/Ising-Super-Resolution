@@ -17,8 +17,18 @@ from plot_directories import T_list, quantities_real_dir
 # Use this T_list when plot_directories module is not available
 #T_list = np.linspace(0.01, 4.538, 32)
 
-def inv_curve(x, a, b):
-    return b / np.arccosh(np.exp(a / x))
+#def inv_curve(x, a, b):
+#    return b / np.arccosh(np.exp(a / x))
+
+## Found from magnetization: RG^(-1)(MC(T)) ##
+cut_iT = 5
+T_ren_inv = np.array([0., 0., 0., 0., 0.,
+       1.21835191, 1.22976684, 1.39674347, 1.51484435, 1.65761354,
+       1.75902208, 1.85837041, 1.95260925, 2.07132396, 2.13716533,
+       2.25437054, 2.29606717, 2.38018868, 2.44845189, 2.51316151,
+       2.58725426, 2.6448879 , 2.7110948 , 2.74426717, 2.81525268,
+       2.87031377, 2.90806294, 2.98742994, 3.03780331, 3.10501399,
+       3.17323991, 3.19663683])
 
 ### !!! .NPY DESCRIPTION !!! ###
 # obs = (32, 5, 12)
@@ -47,7 +57,7 @@ def plot_one(q=0, figsize=(8, 5), L=16):
     plt.figure(figsize=figsize)
     plt.plot(T_list, obs[:, 0, q], color='blue', label='%dx%d MC'%(L, L))
     plt.plot(T_list, obs[:, 1, q], '--', color='green', label='%dx%d RG'%(L//2, L//2))
-    plt.plot(inv_curve(T_list, a=a[q], b=b[q]), obs[:, -1, q], 
+    plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, q], 
              'x', color='red', label='%dx%d SR'%(L, L))
     
     plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k')
@@ -66,7 +76,7 @@ def plot_two(figsize=(18, 6), L=16, linewidth=1.5, save=False):
         plt.plot(T_list, obs[:, 1, q], '--', color='green', 
                  label='%dx%d MC'%(L//2, L//2), linewidth=linewidth)
         
-        plt.plot(inv_curve(T_list, a=a[q], b=b[q]), obs[:, -1, q], 
+        plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, q],
                  '*', color='red', label='%dx%d SR'%(L, L))
         plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k')
         if q == 1:
@@ -91,7 +101,7 @@ def plot_two_unfixed(figsize=(18, 6), L=16, linewidth=1.5, save=False):
                  label='%dx%d MC'%(L//2, L//2), linewidth=linewidth)
         
         plt.plot(T_list, obs[:, -1, q], 'x', color='black', label='%dx%d SR'%(L, L))
-        plt.plot(inv_curve(T_list, a=a[q], b=b[q]), obs[:, -1, q], 
+        plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, q],
                  '*', color='red', label='%dx%d SR fixed'%(L, L))
         plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k')
         if q == 1:
@@ -117,7 +127,7 @@ fig = plt.figure(figsize=(30, 7))
 ax0 = plt.subplot(121)
 line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', alpha=0.8, linewidth=3.5, marker='', markersize=11)
 line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', alpha=0.5, linewidth=3.5, marker='', markersize=8)
-line_srM, = ax0.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 0], linestyle=' ', 
+line_srM, = ax0.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 0], linestyle=' ', 
                      color='orange', alpha=0.7, linewidth=3.5, marker='o', markersize=13)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
 plt.ylabel('$M$', fontsize=label_size)
@@ -132,7 +142,7 @@ ax_ins = inset_axes(ax0,
                     loc=1)
 plt.plot(T_list, obs[:, 0, 2], color='green', alpha=0.8, linewidth=3.5)
 plt.plot(T_list, obs[:, 1, 2], color='green', alpha=0.4, linewidth=3.5)
-plt.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 2], linestyle=' ', 
+plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 2], linestyle=' ', 
                      color='purple', alpha=0.7, linewidth=3.5, marker='o', markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.locator_params(axis='x', nbins=2)
@@ -146,7 +156,7 @@ plt.xlabel('$T$', fontsize=label_size - 10)
 ax1 = plt.subplot(122)
 line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', alpha=0.8, linewidth=3.5, marker='', markersize=11)
 line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', alpha=0.5, linewidth=3.5, marker='', markersize=8)
-line_srE, = ax1.plot(inv_curve(T_list, a=a[0], b=b[0]), obs[:, -1, 1], linestyle=' ', 
+line_srE, = ax1.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 1], linestyle=' ', 
                      color='orange', alpha=0.7, linewidth=3.5, marker='o', markersize=13)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.ylabel('$E$', fontsize=label_size)
@@ -164,7 +174,7 @@ ax_ins2 = inset_axes(ax1,
                     loc=4)
 plt.plot(T_list, obs[:, 0, 3], color='green', alpha=0.8, linewidth=3.5)
 plt.plot(T_list, obs[:, 1, 3], color='green', alpha=0.4, linewidth=3.5)
-plt.plot(inv_curve(T_list, a=a[1], b=b[1]), obs[:, -1, 3], linestyle=' ', 
+plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 3], linestyle=' ', 
                      color='purple', alpha=0.7, linewidth=3.5, marker='o', markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.locator_params(axis='x', nbins=2)
