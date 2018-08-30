@@ -140,7 +140,7 @@ def plot_rep_tpf_th(figsize=(8, 5), N=32):
         
     plt.show()
     
-mc1d = np.load('C:/Users/Stavros/Documents/Scripts_and_programs/Ising_Data/ising1d-data-test-10000/ising-1d-N32-samples10000-test.npy')
+mc1d = np.load('D:/Ising-Super-Resolution-Data/ising-data/ising1D-data/ising-1d-N32-samples10000-test.npy')
 def two_point_function(state, k):
     N = state.shape[1]
     copy = np.empty(state.shape)
@@ -189,7 +189,7 @@ color_list = ['blue', 'red', 'green', 'magenta', 'black']
 
 #from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
-plt.figure(figsize=(30, 8))
+plt.figure(figsize=(30, 7))
 gs = gridspec.GridSpec(1, 2)
 matplotlib.rcParams.update({'font.size': 32})
 label_size = 40
@@ -201,7 +201,7 @@ iT = 10
 for (i, N) in enumerate(N_list):
     plt.plot(k_list, tpf_th[i, iT], color='blue', alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
     
-    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='red', alpha=alpha_list[i], linewidth=3.0,
+    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='orange', alpha=alpha_list[i], linewidth=3.0,
              marker=marker_list[i], markersize=16)
     
 plt.xlabel('$j$', fontsize=label_size)
@@ -217,7 +217,7 @@ iT = 20
 for (i, N) in enumerate(N_list):
     plt.plot(k_list, tpf_th[i, iT], color='blue', alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
     
-    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='red', alpha=alpha_list[i], linewidth=3.0,
+    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='orange', alpha=alpha_list[i], linewidth=3.0,
              marker=marker_list[i], markersize=16)
     
 plt.xlabel('$j$', fontsize=label_size)
