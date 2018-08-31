@@ -23,7 +23,7 @@ BASIC_DIR = '/home/sefthymiou/super-resolving-ising/'
 #mc_critical_train_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_Titan_scripts/Ising_Data/ising-critical-train-%d/L=%d/configs.npy'
 #mc_critical_test_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_Titan_scripts/Ising_Data/ising-critical-test-%d/L=%d/configs.npy'
 mc_train_dir = BASIC_DIR + 'ising-data/ising-data-train-%d/L=%d/q=%d/configs.npy'
-mc_test_dir = BASIC_DIR + 'ising-data/ising-data-train-%d/L=%d/q=%d/configs.npy'
+mc_test_dir = BASIC_DIR + 'ising-data/ising-data-test-%d/L=%d/q=%d/configs.npy'
 mc_critical_train_dir = BASIC_DIR + 'ising-data/ising-critical-train-%d/L=%d/configs.npy'
 mc_critical_test_dir = BASIC_DIR + 'ising-data/ising-critical-test-%d/L=%d/configs.npy'
 
