@@ -14,6 +14,8 @@ from numpy import linspace
 T_list = linspace(0.01, 4.538, 32)
 
 BASIC_DIR = '/home/sefthymiou/super-resolving-ising/'
+## To run in PC instead of Titan:
+#BASIC_DIR = 'D:/Ising-Super-Resolution-Data/'
 
 ## Data directories ##
 #mc_train_dir = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_Titan_scripts/Ising_Data/ising-data-train-%d/L=%d/q=%d/configs.npy'

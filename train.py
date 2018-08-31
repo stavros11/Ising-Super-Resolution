@@ -6,7 +6,7 @@ Created on Thu Jun 14 16:18:23 2018
 """
 
 from networks.utils import set_GPU_memory
-from data.loaders import TrainingData
+from loaders import TrainingData
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
