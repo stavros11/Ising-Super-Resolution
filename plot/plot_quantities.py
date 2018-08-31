@@ -24,7 +24,7 @@ from plot_directories import T_list, quantities_dir
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30_OLD'
+NAME = 'Simple2D16relu_L2_64_32_K777_PBC_MReg0.00EReg0.30B1000'
 obs = np.load('%s/%s.npy'%(quantities_dir, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
@@ -83,7 +83,7 @@ def plot_four(figsize=(14, 8), L=16, save=False):
     if save:
         plt.subplots_adjust(left=0.05, right=0.98, top=0.96, bottom=0.1)
         #plt.savefig('%s.pdf'%NAME)
-        plt.savefig('ups_RG2D.pdf')
+        plt.savefig('ups_RG2D_%s.pdf'%NAME)
     else:
         plt.show()
 
