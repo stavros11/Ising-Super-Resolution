@@ -31,8 +31,10 @@ def data_directory_select(choice_pc, choice_train=0):
     elif choice_pc == 0:
         ## Fix directory for Titan
         starting = '/home/sefthymiou/super-resolving-ising/'
-    else:
+    elif choice_pc == 2:
         starting = 'C:/Users/Stavros/Documents/Scripts_and_programs/Ising_Data/'
+    else:
+        starting = 'D:/Ising-Super-Resolution-Data/ising-data/'
         
     return starting + ending
 
