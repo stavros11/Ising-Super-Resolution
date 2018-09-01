@@ -33,23 +33,50 @@ def calc_nn(states):
     
     return np.array([nn1, nn2]).transpose((1, 2, 3, 0))
 
-iT = 20
-mc = df.temp_partition(df.read_file(df.data_directory_select(3), L=16), iT)
-sr = read_sr('FeatExt1L2D16relu_L2_32_32_K353_PBC_MReg0.00EReg0.00B1000')
-sr_old = read_sr('Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD')
+iT = 30
+mc = df.temp_partition(df.read_file(df.data_directory_select(1), L=16), iT)
+sr = [#read_sr('Simple2D16relu_L2_64_32_K513_PBC_MReg0.00EReg0.00B1000'),
+#      read_sr('FeatExt1L2D16relu_L2_32_32_K353_PBC_MReg0.00EReg0.50B1000'),
+#      read_sr('Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000'),
+      read_sr('Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD')]
 
-sr_s = (sr > np.random.random(sr.shape)).astype(np.int)
-sr_old_s = (sr_old > np.random.random(sr_old.shape)).astype(np.int)
+sr_s = [(x > np.random.random(x.shape)).astype(np.int) for x in sr]
 
-nn_list = [calc_nn(x) for x in [mc, sr_s, sr_old_s]]
+nn_mc = calc_nn(mc)
+nn_s, nn_round = [calc_nn(x) for x in sr_s], [calc_nn(np.round(x)) for x in sr]
 
-plt.figure(figsize=(10, 4))
-plt.subplot(131)
-plt.hist(block_sum(mc).ravel(), bins=5)
-plt.ylim((0,350000))
-plt.subplot(132)
-plt.hist(block_sum(sr_s).ravel(), bins=5)
-plt.ylim((0,350000))
-plt.subplot(133)
-plt.hist(block_sum(sr_old_s).ravel(), bins=5)
-plt.ylim((0,350000))
+bs_mc = block_sum(mc)
+bs_s, bs_round = [block_sum(x) for x in sr_s], [block_sum(np.round(x)) for x in sr]
+
+def plot_histograms(figsize=(10,4)):
+    n_figs = len(bs_s)
+    
+    plt.figure(figsize=figsize)
+    plt.subplot(131)
+    plt.hist(bs_mc.ravel(), bins=5)
+    plt.ylim((0,350000))
+    plt.subplot(132)
+    plt.hist(block_sum(sr_s).ravel(), bins=5)
+    plt.ylim((0,350000))
+    plt.subplot(133)
+    plt.hist(block_sum(sr_old_s).ravel(), bins=5)
+    plt.ylim((0,350000))
+    
+    plt.show()
+    
+def plot_confs_cont(figsize=(10,4)):
+    ind = np.random.randint(0, len(mc))
+    plt.figure(figsize=figsize)
+    plt.subplot(131)
+    plt.imshow(mc[ind], cmap='Greys', vmin=0, vmax=1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.subplot(132)
+    plt.imshow(sr[ind], cmap='Greys', vmin=0, vmax=1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.subplot(133)
+    plt.imshow(sr_old[ind], cmap='Greys', vmin=0, vmax=1)
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
