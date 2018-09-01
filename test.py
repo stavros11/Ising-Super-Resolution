@@ -33,6 +33,9 @@ def main(args):
     
     model = ModelLoader(list_ind=args.Mind, critical=args.CR)
     
+    print('\nInitiating testing with %s'%model.name)
+    print('Output is%s saved.\n'%[' not', ''][int(args.OUT)])
+    
     if args.TEST > args.nTE:
         args.TEST = args.nTE
         
