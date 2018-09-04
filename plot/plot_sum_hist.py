@@ -38,7 +38,7 @@ def plot_block_sum(iT=[10,15,20], figsize=(10, 6), save=False):
         mcs, cont, rnd, samp = read_data(iT[line])
         
         plt.subplot(3, 3, 1 + 3*line)
-        plt.hist(mcs.ravel(), bins=5, color=palette[0], alpha=0.5)
+        plt.hist(mcs.ravel(), bins=5, color=palette[0], alpha=0.6)
         plt.ylim((0,350000))
         plt.xticks(np.arange(0, 5, step=2))
         plt.yticks([])
@@ -56,7 +56,7 @@ def plot_block_sum(iT=[10,15,20], figsize=(10, 6), save=False):
 #            plt.title('Continuous', fontsize=label_size)
         
         plt.subplot(3, 3, 2 + 3*line)
-        plt.hist(rnd.ravel(), bins=5, color=palette[2], alpha=0.5)
+        plt.hist(rnd.ravel(), bins=5, color=palette[1], alpha=0.6)
         plt.ylim((0,350000))
         plt.xticks(np.arange(0, 5, step=2))
         plt.yticks([])
@@ -64,7 +64,7 @@ def plot_block_sum(iT=[10,15,20], figsize=(10, 6), save=False):
             plt.title('Rounded', fontsize=label_size)
         
         plt.subplot(3, 3, 3 + 3*line)
-        plt.hist(samp.ravel(), bins=5, color=palette[4], alpha=0.7)
+        plt.hist(samp.ravel(), bins=5, color=palette[2], alpha=0.6)
         plt.ylim((0,350000))
         plt.xticks(np.arange(0, 5, step=2))
         plt.yticks([])

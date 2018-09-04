@@ -9,7 +9,7 @@ import numpy as np
 from scipy.stats import linregress
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+import seaborn as sns
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
@@ -125,11 +125,12 @@ text_size = 70
    
 from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
+cp = sns.color_palette("deep", 3)
 plt.figure(figsize=(20, 10))
 ax1 = plt.subplot()
-line1, = ax1.plot(np.log10(L_list/2), np.log10(obs[10]), linestyle='--', marker='s', markersize=marker_size, color='red', 
+line1, = ax1.plot(np.log10(L_list/2), np.log10(obs[10]), linestyle='--', marker='s', markersize=marker_size, color=cp[2], 
                   linewidth=2.0, label='$r=L/2$')
-line11, = ax1.plot(np.log10(L_list/4), np.log10(obs[10]), linestyle='--', marker='d', markersize=marker_size, color='green', 
+line11, = ax1.plot(np.log10(L_list/4), np.log10(obs[10]), linestyle='--', marker='d', markersize=marker_size, color=cp[1], 
                   linewidth=2.0, label='$r=L/4$')
 plt.xlabel('$\log \, r$', fontsize=label_font)
 plt.ylabel('$\log \, G(r) $', fontsize=label_font)
@@ -142,17 +143,17 @@ inset_axes = inset_axes(ax1,
                     height="50%", # height : 1 inch
                     loc='lower left')
 
-plt.plot(np.log10(L_list), np.log10(obs[2]), linestyle='--', marker='o', markersize=marker_size, color='blue', linewidth=2.0)
+plt.plot(np.log10(L_list), np.log10(obs[2]), linestyle='--', marker='o', markersize=marker_size, color=cp[0], linewidth=2.0)
 plt.xlabel('$\log \, L$', fontsize=label_font - 8)
-inset_axes.xaxis.set_label_coords(0.7,0.2)
-inset_axes.yaxis.set_label_coords(0.14,0.4)
+inset_axes.xaxis.set_label_coords(0.8,0.17)
+inset_axes.yaxis.set_label_coords(0.14,0.45)
 plt.ylabel('$\log \, \chi $', fontsize=label_font - 8)
 plt.xticks([])
 plt.yticks([])
 
-ax1.text(0.57, -0.28, 'a', horizontalalignment='center', verticalalignment='center', 
+ax1.text(0.565, -0.255, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
-inset_axes.text(1.25, 2.45, 'b', horizontalalignment='center', verticalalignment='center', 
+inset_axes.text(1.25, 2.5, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 

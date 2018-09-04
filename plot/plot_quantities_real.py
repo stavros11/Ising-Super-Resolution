@@ -8,6 +8,7 @@ Created on Wed Aug  8 17:20:57 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import seaborn as sns
 from os import getcwd, path
 
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
@@ -123,41 +124,45 @@ text_size = 64
 fig = plt.figure(figsize=(30, 7))
 # set height ratios for sublots
 
+cp = sns.color_palette("Paired", 10)
+
 # the fisrt subplot
 ax0 = plt.subplot(121)
-line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color='blue', alpha=0.8, linewidth=3.5, marker='', markersize=11)
-line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color='blue', alpha=0.5, linewidth=3.5, marker='', markersize=8)
+line_mcM, = ax0.plot(T_list, obs[:, 0, 0], color=cp[1], alpha=0.8, linewidth=3.5, marker='')
+line_rgM, = ax0.plot(T_list, obs[:, 1, 0], color=cp[0], linewidth=3.5, marker='', linestyle='--')
 line_srM, = ax0.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 0], linestyle=' ', 
-                     color='orange', alpha=0.7, linewidth=3.5, marker='o', markersize=13)
+                     color=cp[4], marker='o', markersize=12)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth=1.5)
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0, 0.95, 'a', horizontalalignment='center', verticalalignment='center', 
+plt.text(0, 0.97, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 ax_ins = inset_axes(ax0, 
                     width="30%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=1)
-plt.plot(T_list, obs[:, 0, 2], color='green', alpha=0.8, linewidth=3.5)
-plt.plot(T_list, obs[:, 1, 2], color='green', alpha=0.4, linewidth=3.5)
+plt.plot(T_list, obs[:, 0, 2], color=cp[3], alpha=0.8, linewidth=3)
+plt.plot(T_list, obs[:, 1, 2], color=cp[2], linewidth=3, linestyle='--')
 plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 2], linestyle=' ', 
-                     color='purple', alpha=0.7, linewidth=3.5, marker='o', markersize=10)
+                     color=cp[-1], alpha=0.8, marker='o', markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.locator_params(axis='x', nbins=2)
 plt.locator_params(axis='y', nbins=3)
 plt.xlim([1.5, 3])
+plt.xticks(fontsize=32)
+plt.yticks(fontsize=32)
 plt.ylabel('$\chi $', fontsize=label_size - 10)
 plt.xlabel('$T$', fontsize=label_size - 10)
 
 
 #the second subplot
 ax1 = plt.subplot(122)
-line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color='blue', alpha=0.8, linewidth=3.5, marker='', markersize=11)
-line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color='blue', alpha=0.5, linewidth=3.5, marker='', markersize=8)
+line_mcE, = ax1.plot(T_list, obs[:, 0, 1], color=cp[1], alpha=0.8, linewidth=3.5, marker='')
+line_rgE, = ax1.plot(T_list, obs[:, 1, 1], color=cp[0], linewidth=3.5, marker='', linestyle='--')
 line_srE, = ax1.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 1], linestyle=' ', 
-                     color='orange', alpha=0.7, linewidth=3.5, marker='o', markersize=13)
+                     color=cp[4], marker='o', markersize=12)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.ylabel('$E$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
@@ -165,21 +170,23 @@ plt.xlabel('$T$', fontsize=label_size)
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
 
-plt.text(0, -0.55, 'b', horizontalalignment='center', verticalalignment='center', 
+plt.text(0, -0.58, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 ax_ins2 = inset_axes(ax1, 
                     width="30%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=4)
-plt.plot(T_list, obs[:, 0, 3], color='green', alpha=0.8, linewidth=3.5)
-plt.plot(T_list, obs[:, 1, 3], color='green', alpha=0.4, linewidth=3.5)
+plt.plot(T_list, obs[:, 0, 3], color=cp[3], alpha=0.8, linewidth=3)
+plt.plot(T_list, obs[:, 1, 3], color=cp[2], linewidth=3, linestyle='--')
 plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 3], linestyle=' ', 
-                     color='purple', alpha=0.7, linewidth=3.5, marker='o', markersize=10)
+                     color=cp[-1], alpha=0.8, marker='o', markersize=10)
 plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
 plt.locator_params(axis='x', nbins=2)
 plt.locator_params(axis='y', nbins=3)
-plt.xlim([1, 3])
+plt.xlim([1.5, 3])
+plt.xticks(fontsize=32)
+plt.yticks(fontsize=32)
 plt.ylabel('$C_V$', fontsize=label_size - 10)
 plt.xlabel('$T$', fontsize=label_size - 10)
 ax_ins2.xaxis.set_label_position('top') 
@@ -190,7 +197,7 @@ L = 16
 ax0.legend((line_mcM, line_rgM, line_srM), (
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
         ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
-        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC'])), loc='lower left', fontsize=40)
+        ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' SR'])), loc='lower left', fontsize=37)
 
 # remove vertical gap between subplots
 plt.subplots_adjust(hspace=.0)

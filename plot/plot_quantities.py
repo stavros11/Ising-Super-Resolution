@@ -24,7 +24,7 @@ from plot_directories import T_list, quantities_dir
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'FeatExt1L2D16relu_L2_32_32_K353_PBC_MReg0.00EReg0.50B1000'
+NAME = 'Simple2D16relu_L3_64_16_16_K333_PBC_MReg0.10EReg0.30B1000'
 obs = np.load('%s/%s.npy'%(quantities_dir, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 

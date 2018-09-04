@@ -8,6 +8,7 @@ Created on Mon Aug 13 17:18:06 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import seaborn as sns
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
@@ -145,7 +146,8 @@ def plot_rep_tpf_th(figsize=(8, 5), N=32):
         
     plt.show()
 
-mc1d = np.load('C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_1D/Ising-Data1D/ising-1d-N32-samples10000-test.npy')
+#mc1d = np.load('C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/Super_resolution_1D/Ising-Data1D/ising-1d-N32-samples10000-test.npy')
+mc1d = np.load('D:/Ising-Super-Resolution-Data/ising-data/ising1D-data/ising-1d-N32-samples10000-test.npy')
 def two_point_function(state, k):
     N = state.shape[1]
     copy = np.empty(state.shape)
@@ -174,16 +176,20 @@ alpha_list_points = [0.8, 0.7, 0.6, 0.4, 0.2]
 marker_list = ['s', '^', 'o', 'd', 'v']
 color_list = ['blue', 'red', 'green', 'magenta', 'black']
 
-cmap = plt.cm.get_cmap('Paired_r', lut=10)
+#cp_points = sns.cubehelix_palette(5, start=1, rot=-0.65)[::-1]
+#cp_lines  = sns.cubehelix_palette(5, start=0, rot=-0.65)[::-1]
+
+cp_points = sns.color_palette("colorblind", 5)
+cp_lines = sns.color_palette("deep", 5, desat=0.9)
 
 T_ren = T_list
 tpf_corr = np.zeros([5, 32])
 for (i, N) in enumerate(N_list):    
-    plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color='blue', 
-             alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
+    plt.plot(T_list_th, tpf_theory(T_list_th, k=int(N**0.8/5), N=N), color=cp_lines[i], alpha=0.5,
+             linewidth=3.5, label='$N=%d$'%N)
     
-    plt.plot(T_ren, tpf_plot[i], linestyle=' ', color='orange',
-             marker=marker_list[i], markersize=14, alpha=alpha_list_points[i])
+    plt.plot(T_ren, tpf_plot[i], linestyle=' ', color=cp_points[i],
+             marker=marker_list[i], markersize=14)
     
     tpf_corr[i] = tpf_theory(T_ren, k=int(N**0.8/5), N=N)
     T_ren = 2.0 / np.arccosh(np.exp(2.0 / T_ren))

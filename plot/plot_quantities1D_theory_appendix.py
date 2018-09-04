@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+import seaborn as sns
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
@@ -195,14 +196,15 @@ matplotlib.rcParams.update({'font.size': 32})
 label_size = 40
 text_size = 52
 
+cp_points = sns.color_palette("colorblind", 5)
+cp_lines = sns.color_palette("deep", 5, desat=0.9)
 
 plt.subplot(gs[0])
 iT = 10
 for (i, N) in enumerate(N_list):
-    plt.plot(k_list, tpf_th[i, iT], color='blue', alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
+    plt.plot(k_list, tpf_th[i, iT], color=cp_lines[i], alpha=0.5, linewidth=4.0, label='$N=%d$'%N)
     
-    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='orange', alpha=alpha_list[i], linewidth=3.0,
-             marker=marker_list[i], markersize=16)
+    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color=cp_points[i], marker=marker_list[i], markersize=15)
     
 plt.xlabel('$j$', fontsize=label_size)
 plt.ylabel('$G_N(j)$', fontsize=label_size)
@@ -215,15 +217,14 @@ plt.text(16, 0.98, 'a', horizontalalignment='center', verticalalignment='center'
 ax = plt.subplot(gs[1])
 iT = 20
 for (i, N) in enumerate(N_list):
-    plt.plot(k_list, tpf_th[i, iT], color='blue', alpha=alpha_list[i], linewidth=4.5, label='$N=%d$'%N)
+    plt.plot(k_list, tpf_th[i, iT], color=cp_lines[i], alpha=0.5, linewidth=4.0, label='$N=%d$'%N)
     
-    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color='orange', alpha=alpha_list[i], linewidth=3.0,
-             marker=marker_list[i], markersize=16)
+    plt.plot(k_list, tpf_plot[i, iT], linestyle='', color=cp_points[i], marker=marker_list[i], markersize=15)
     
 plt.xlabel('$j$', fontsize=label_size)
 plt.ylabel('$G_N(j)$', fontsize=label_size)
 
-plt.text(16, 0.98, 'b', horizontalalignment='center', verticalalignment='center', 
+plt.text(16.2, 0.97, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 #inset_axes = inset_axes(ax, width="40%", height="30%", loc='upper right')
