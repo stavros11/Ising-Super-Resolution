@@ -144,10 +144,10 @@ def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False,
 color_list = ['blue', 'green', 'orange']
 label_list = ['MC', 'DS', 'SR']
 alphas = [1.0, 0.8, 0.65]
-text_font = 68
+text_font = 48
 
-tx = [-0.02, -2.1, -0.07, -1.85]
-ty = [4.9, 2.6, 3.12, 2.9]
+tx = [-0.02, -2.1, -0.07, -1.865]
+ty = [4.9, 2.7, 3.12, 3.0]
 
 iT = 15, 20
 obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],

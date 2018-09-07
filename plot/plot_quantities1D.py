@@ -74,7 +74,7 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     
     
 matplotlib.rcParams.update({'font.size': 38})
-test_size = 64 #text
+test_size = 50 #text
 label_size = 46
         
 #fig = plt.figure(figsize=(30, 10))

@@ -119,7 +119,7 @@ from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
 matplotlib.rcParams.update({'font.size': 38})
 label_size = 46
-text_size = 64
+text_size = 50
 
 fig = plt.figure(figsize=(30, 7))
 # set height ratios for sublots
@@ -136,7 +136,7 @@ plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0, 0.97, 'a', horizontalalignment='center', verticalalignment='center', 
+plt.text(0.0, 0.975, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 ax_ins = inset_axes(ax0, 
@@ -170,7 +170,7 @@ plt.xlabel('$T$', fontsize=label_size)
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
 
-plt.text(0, -0.58, 'b', horizontalalignment='center', verticalalignment='center', 
+plt.text(0.0, -0.545, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 ax_ins2 = inset_axes(ax1, 

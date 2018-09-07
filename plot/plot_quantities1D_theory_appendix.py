@@ -194,7 +194,7 @@ plt.figure(figsize=(30, 7))
 gs = gridspec.GridSpec(1, 2)
 matplotlib.rcParams.update({'font.size': 32})
 label_size = 40
-text_size = 52
+text_size = 45
 
 cp_points = sns.color_palette("colorblind", 5)
 cp_lines = sns.color_palette("deep", 5, desat=0.9)
@@ -210,7 +210,9 @@ plt.xlabel('$j$', fontsize=label_size)
 plt.ylabel('$G_N(j)$', fontsize=label_size)
 plt.legend(loc='lower left', fontsize=32)
 
-plt.text(16, 0.98, 'a', horizontalalignment='center', verticalalignment='center', 
+#plt.text(16, 0.98, 'a', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=text_size)
+plt.text(-0.25, 0.92, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 
@@ -224,7 +226,9 @@ for (i, N) in enumerate(N_list):
 plt.xlabel('$j$', fontsize=label_size)
 plt.ylabel('$G_N(j)$', fontsize=label_size)
 
-plt.text(16.2, 0.97, 'b', horizontalalignment='center', verticalalignment='center', 
+#plt.text(16.2, 0.97, 'b', horizontalalignment='center', verticalalignment='center', 
+#                 fontweight='bold', fontsize=text_size)
+plt.text(-0.25, 0.905, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
 #inset_axes = inset_axes(ax, width="40%", height="30%", loc='upper right')
