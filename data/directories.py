@@ -39,6 +39,7 @@ quantities_dir = BASIC_DIR + 'Quantities'
 quantities_real_dir = BASIC_DIR + 'QuantitiesReal'
 quantities_critical_dir = BASIC_DIR + 'QuantitiesCritical'
 multiple_exponents_dir = BASIC_DIR + 'MultipleExponents'
+multiple_exponents_test_dir = BASIC_DIR + 'MultipleExponentsTest'
 
 ## Output directories ##
 output_dir = BASIC_DIR + 'Output'
