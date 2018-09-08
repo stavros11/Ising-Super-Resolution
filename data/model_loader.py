@@ -60,3 +60,13 @@ class ModelLoader():
             return False
         else:
             return True
+        
+        
+def critical_model_from_file(model_dir):
+    metrics_list = ['round_loss', 'cont_loss']
+
+    custom_objects = {'loss': mean_squared_error}
+    for x in metrics_list:
+        custom_objects[x] = mean_squared_error
+        
+    return load_model(model_dir, custom_objects=custom_objects)
