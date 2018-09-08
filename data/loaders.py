@@ -71,6 +71,10 @@ def read_file_critical(L=16, n_samples=40000, train=False):
     else:
         return np.load(mc_critical_test_dir%(n_samples, L))
     
+def read_file_GPU(L=16, q=2):
+    data = np.load('/home/data/critical-2d-ising/L=%d/q=%d/configs.npy'%(L, q))
+    return data.reshape(data.shape[0], L, L)    
+
 ####################################
 ########## DATA UTILITIES ##########
 ####################################
