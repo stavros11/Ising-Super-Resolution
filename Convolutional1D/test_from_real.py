@@ -56,7 +56,7 @@ def main(args):
         
         
     ## Save observables ##
-    create_directory(quantities_rep_dir)
-    np.save(quantities_rep_dir + '/%s.npy'%(model.name), obs)
+    create_directory(quantities_real_dir)
+    np.save(quantities_real_dir + '/%s.npy'%(model.name), obs)
         
 main(parser.parse_args())
