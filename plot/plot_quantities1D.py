@@ -27,13 +27,14 @@ from plot_directories import quantities_dir1D, quantities_dir1D_fixed
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000'
-obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
+L = 64
+NAME = 'Simple1D64relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000'
+#obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 fixed_older = np.load('%s/%s.npy'%(quantities_dir1D_fixed, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
-obs[:3, -1] = obs[:3, -2]
+#obs[:3, -1] = obs[:3, -2]
 fixed_older[:6, -1] = fixed_older[:6, -2]
 
 def plot_one(q=0, figsize=(8, 5), L=32):
@@ -238,7 +239,7 @@ plt.xlabel('$T$', fontsize=label_size - 14)
 ax_ins2.xaxis.set_label_position('top') 
 
 
-ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=32$ MC', '$N=16$ MC', '$N=32$ SR'), 
+ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=%d$ MC'%L, '$N=%d$ MC'%(L//2), '$N=%d$ SR'%L), 
            loc='lower left', fontsize=34)
 
 plt.savefig('ups_real1D.pdf', bbox_inches='tight')
