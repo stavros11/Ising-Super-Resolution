@@ -28,7 +28,7 @@ from plot_directories import quantities_dir1D, quantities_dir1D_fixed
 
 # Load data (fix .npy directory here)
 L = 64
-NAME = 'Simple1D64relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000'
+NAME = 'Simple1D64relu_L2_32_16_K533_PBC_MReg0.00EReg0.00B1000'
 #obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 fixed_older = np.load('%s/%s.npy'%(quantities_dir1D_fixed, NAME))
 
