@@ -48,8 +48,9 @@ def main(args):
         
         ## Make predictions ##
         data_in = temp_partition(mc_small, iT, n_samples=args.nTE)
-        model_large = duplicate_simple1D_pbc(model.graph, data_in.shape,
-                                             hid_filters=args.HF, kernels=args.K)
+        model_large = duplicate_simple1D_pbc(model.graph, data_in.shape+(1,),
+                                             hid_filters=args.HF, kernels=args.K,
+                                             hid_act=args.ACT)
         pred = model_large.predict(add_index(data_in))
         
         ## Calculate observables ##
@@ -60,6 +61,6 @@ def main(args):
         
     ## Save observables ##
     create_directory(quantities_real_dir)
-    np.save(quantities_real_dir + '/%s.npy'%(model.name), obs)
+    np.save(quantities_real_dir + '/%s_extr.npy'%(model.name), obs)
         
 main(parser.parse_args())
