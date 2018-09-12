@@ -46,7 +46,8 @@ a[0], b[0] = np.load(path.join(parameters_dir, 'Magnetization_Transformation_Par
 a[1], b[1] = np.load(path.join(parameters_dir, 'Energy_Transformation_Params_L16.npy'))
 
 # Load data (fix .npy directory here)
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30_OLD'
+L = 16
+NAME = 'Simple2D16relu_L3_64_16_16_K3333_PBC_MReg0.00EReg0.20B1000'
 obs = np.load('%s/%s.npy'%(quantities_real_dir, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
@@ -193,7 +194,6 @@ ax_ins2.xaxis.set_label_position('top')
 ax_ins2.xaxis.tick_top()
 
 # put legend on first subplot
-L = 16
 ax0.legend((line_mcM, line_rgM, line_srM), (
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
         ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
@@ -203,7 +203,7 @@ ax0.legend((line_mcM, line_rgM, line_srM), (
 plt.subplots_adjust(hspace=.0)
 
 #plt.subplots_adjust(left=0.12, right=0.95, top=0.95, bottom=0.10)
-plt.savefig('ups_real2D.pdf', bbox_inches='tight')
+plt.savefig('ups_real2D_%s.pdf'%NAME, bbox_inches='tight')
 
 
 #plt.figure(figsize=(8, 6))
