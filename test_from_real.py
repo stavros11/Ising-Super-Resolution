@@ -9,8 +9,7 @@ import numpy as np
 from data.loaders import read_file, temp_partition, add_index
 from data.directories import quantities_real_dir, T_list
 from data.model_loader import ModelLoader
-from networks.utils import set_GPU_memory, create_directory, calculate_observables
-from renormalization.curves import inv_curve
+from networks.utils import set_GPU_memory, create_directory, calculate_observables_real
 from argparse import ArgumentParser
 
 # Returns 12 observables 
@@ -33,9 +32,14 @@ parser.add_argument('-TEST', type=int, default=10000, help='test size')
 parser.add_argument('-CR', type=bool, default=False, help='critical data')
 
 def main(args):
-    ## Load renormalization curve parameters ##
-    a_mag, b_mag = np.load('renormalization/Magnetization_Transformation_Params_L%d.npy'%args.L)
-    a_en, b_en = np.load('renormalization/Energy_Transformation_Params_L%d.npy'%args.L)
+    ## Renormalized temperature (inverse)    
+    T_ren_inv = np.array([0.01, 0.01, 0.01, 0.01, 0.01,
+       1.21835191, 1.22976684, 1.39674347, 1.51484435, 1.65761354,
+       1.75902208, 1.85837041, 1.95260925, 2.07132396, 2.13716533,
+       2.25437054, 2.29606717, 2.38018868, 2.44845189, 2.51316151,
+       2.58725426, 2.6448879 , 2.7110948 , 2.74426717, 2.81525268,
+       2.87031377, 2.90806294, 2.98742994, 3.03780331, 3.10501399,
+       3.17323991, 3.19663683])
     
     ## Read data ##
     data_or = read_file(L=args.L, n_samples=args.nTE)
@@ -58,12 +62,10 @@ def main(args):
     obs = np.zeros([len(args.Tind), 5, 12])
     for (iT, T) in enumerate(T_list[args.Tind]):
         ## Find transformed temperatures ##
-        Tr_mag = inv_curve(T, a=a_mag, b=b_mag)
-        Tr_en = inv_curve(T, a=a_en, b=b_en)
+        Tr = T_ren_inv[iT]
         
         ## Find closer value from T_list to update model temperature ##
-        difs = (T_list - Tr_mag)**2 + (T_list - Tr_en)**2
-        T_closer = T_list[difs.argmin()]
+        T_closer = T_list[np.abs(T_list - Tr).argmin()]
         model.update_temperature(T=T_closer)
         
         ## Make predictions ##
@@ -71,8 +73,12 @@ def main(args):
         pred_cont = model.graph.predict(data_in_T)
         
         ## Calculate observables ##
-        obs[iT] = calculate_observables(temp_partition(data_or, iT, n_samples=args.nTE), 
-           data_in_T[:,:,:,0], pred_cont[:,:,:,0], T=T)#, Tr=(Tr_mag + Tr_en)/2.0)
+        if iT > 5:
+            Tr_calc = Tr
+        else:
+            Tr_calc = T
+        obs[iT] = calculate_observables_real(temp_partition(data_or, iT, n_samples=args.nTE), 
+           data_in_T[:,:,:,0], pred_cont[:,:,:,0], T=T, Tr=Tr_calc)
                     
         ## Save network output ##
         if args.OUT:
@@ -80,8 +86,8 @@ def main(args):
         
         print('Temperature %d / %d done!'%(iT+1, len(args.Tind)))
         
-        ## Save observables ##
-        create_directory(quantities_real_dir)
-        np.save(quantities_real_dir + '/%s.npy'%model.name, np.array(obs))
+    ## Save observables ##
+    create_directory(quantities_real_dir)
+    np.save(quantities_real_dir + '/%s.npy'%model.name, np.array(obs))
         
 main(parser.parse_args())
