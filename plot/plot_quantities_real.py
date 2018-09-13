@@ -23,7 +23,7 @@ from plot_directories import T_list, quantities_real_dir
 
 ## Found from magnetization: RG^(-1)(MC(T)) ##
 cut_iT = 5
-T_ren_inv = np.array([0., 0., 0., 0., 0.,
+T_ren_inv = np.array([0.01, 0.01, 0.01, 0.01, 0.01,
        1.21835191, 1.22976684, 1.39674347, 1.51484435, 1.65761354,
        1.75902208, 1.85837041, 1.95260925, 2.07132396, 2.13716533,
        2.25437054, 2.29606717, 2.38018868, 2.44845189, 2.51316151,
@@ -46,9 +46,10 @@ a[0], b[0] = np.load(path.join(parameters_dir, 'Magnetization_Transformation_Par
 a[1], b[1] = np.load(path.join(parameters_dir, 'Energy_Transformation_Params_L16.npy'))
 
 # Load data (fix .npy directory here)
-L = 16
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_PBC_MReg0.00EReg0.20B1000'
+L = 32
+NAME = 'Simple2D16relu_L3_64_16_16_K5333_PBC_MReg0.00EReg0.70B1000_extr'
 obs = np.load('%s/%s.npy'%(quantities_real_dir, NAME))
+plot_errors = True
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
@@ -115,7 +116,22 @@ def plot_two_unfixed(figsize=(18, 6), L=16, linewidth=1.5, save=False):
         plt.savefig('%s.pdf'%NAME)
     else:
         plt.show()
+        
+def get_errors():
+    errors = np.zeros([len(T_list), obs.shape[-1]])
+    for (iT, T) in enumerate(T_ren_inv):
+        dif = np.abs(T - T_list)
+        i1 = dif.argmin()
+        dif[i1] = 1000
+        i2 = dif.argmin()
+        mc_values = (obs[i2, 0] - obs[i1, 0]) * (T - T_list[i1])/ (T_list[i2] - T_list[i1])
+        mc_values+= obs[i1, 0]
+        
+        errors[iT] = np.abs((mc_values - obs[iT, -1]) / mc_values)
+        
+    return errors
 
+errors = get_errors()
 from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
 matplotlib.rcParams.update({'font.size': 38})
@@ -140,22 +156,37 @@ plt.xlabel('$T$', fontsize=label_size)
 plt.text(0.0, 0.975, 'a', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
-ax_ins = inset_axes(ax0, 
+if plot_errors:
+    ax_ins = inset_axes(ax0, 
                     width="30%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=1)
-plt.plot(T_list, obs[:, 0, 2], color=cp[3], alpha=0.8, linewidth=3)
-plt.plot(T_list, obs[:, 1, 2], color=cp[2], linewidth=3, linestyle='--')
-plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 2], linestyle=' ', 
-                     color=cp[-1], alpha=0.8, marker='o', markersize=10)
-plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
-plt.locator_params(axis='x', nbins=2)
-plt.locator_params(axis='y', nbins=3)
-plt.xlim([1.5, 3])
-plt.xticks(fontsize=32)
-plt.yticks(fontsize=32)
-plt.ylabel('$\chi $', fontsize=label_size - 10)
-plt.xlabel('$T$', fontsize=label_size - 10)
+    plt.plot(T_list[cut_iT:], errors[cut_iT:, 0]*100.0, linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
+         markersize=12, marker='^')
+    plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
+    plt.locator_params(axis='x', nbins=2)
+    plt.locator_params(axis='y', nbins=3)
+    plt.xticks(fontsize=32)
+    plt.yticks(fontsize=32)
+    plt.ylabel('Errors (%)', fontsize=label_size - 15)
+    plt.xlabel('$T$', fontsize=label_size - 10)
+else:
+    ax_ins = inset_axes(ax0, 
+                        width="30%", # width = 30% of parent_bbox
+                        height="40%", # height : 1 inch
+                        loc=1)
+    plt.plot(T_list, obs[:, 0, 2], color=cp[3], alpha=0.8, linewidth=3)
+    plt.plot(T_list, obs[:, 1, 2], color=cp[2], linewidth=3, linestyle='--')
+    plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 2], linestyle=' ', 
+                         color=cp[-1], alpha=0.8, marker='o', markersize=10)
+    plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
+    plt.locator_params(axis='x', nbins=2)
+    plt.locator_params(axis='y', nbins=3)
+    plt.xlim([1.5, 3])
+    plt.xticks(fontsize=32)
+    plt.yticks(fontsize=32)
+    plt.ylabel('$\chi $', fontsize=label_size - 10)
+    plt.xlabel('$T$', fontsize=label_size - 10)
 
 
 #the second subplot
@@ -174,24 +205,42 @@ ax1.locator_params(axis='y', nbins=5)
 plt.text(0.0, -0.545, 'b', horizontalalignment='center', verticalalignment='center', 
                  fontweight='bold', fontsize=text_size)
 
-ax_ins2 = inset_axes(ax1, 
-                    width="30%", # width = 30% of parent_bbox
-                    height="40%", # height : 1 inch
-                    loc=4)
-plt.plot(T_list, obs[:, 0, 3], color=cp[3], alpha=0.8, linewidth=3)
-plt.plot(T_list, obs[:, 1, 3], color=cp[2], linewidth=3, linestyle='--')
-plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 3], linestyle=' ', 
-                     color=cp[-1], alpha=0.8, marker='o', markersize=10)
-plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
-plt.locator_params(axis='x', nbins=2)
-plt.locator_params(axis='y', nbins=3)
-plt.xlim([1.5, 3])
-plt.xticks(fontsize=32)
-plt.yticks(fontsize=32)
-plt.ylabel('$C_V$', fontsize=label_size - 10)
-plt.xlabel('$T$', fontsize=label_size - 10)
-ax_ins2.xaxis.set_label_position('top') 
-ax_ins2.xaxis.tick_top()
+if plot_errors:
+    ax_ins2 = inset_axes(ax1, 
+                        width="30%", # width = 30% of parent_bbox
+                        height="40%", # height : 1 inch
+                        loc=4)
+    plt.plot(T_list[cut_iT:], errors[cut_iT:, 1]*100.0, linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
+         markersize=12, marker='^')
+    plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
+    plt.locator_params(axis='x', nbins=2)
+    plt.locator_params(axis='y', nbins=3)
+    plt.xticks(fontsize=32)
+    plt.yticks(fontsize=32)
+    plt.ylabel('Errors (%)', fontsize=label_size - 15)
+    plt.xlabel('$T$', fontsize=label_size - 10)
+    ax_ins2.xaxis.set_label_position('top') 
+    ax_ins2.xaxis.tick_top()
+else:
+    ax_ins2 = inset_axes(ax1, 
+                        width="30%", # width = 30% of parent_bbox
+                        height="40%", # height : 1 inch
+                        loc=4)
+    plt.plot(T_list, obs[:, 0, 3], color=cp[3], alpha=0.8, linewidth=3)
+    plt.plot(T_list, obs[:, 1, 3], color=cp[2], linewidth=3, linestyle='--')
+    plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 3], linestyle=' ', 
+                         color=cp[-1], alpha=0.8, marker='o', markersize=10)
+    plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
+    plt.locator_params(axis='x', nbins=2)
+    plt.locator_params(axis='y', nbins=3)
+    plt.xlim([1.5, 3])
+    plt.xticks(fontsize=32)
+    plt.yticks(fontsize=32)
+    plt.ylabel('$C_V$', fontsize=label_size - 10)
+    plt.xlabel('$T$', fontsize=label_size - 10)
+    ax_ins2.xaxis.set_label_position('top') 
+    ax_ins2.xaxis.tick_top()
+    
 
 # put legend on first subplot
 ax0.legend((line_mcM, line_rgM, line_srM), (
