@@ -28,7 +28,7 @@ from plot_directories import quantities_dir1D, quantities_dir1D_fixed
 
 # Load data (fix .npy directory here)
 L = 64
-NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000_extr'
+NAME = 'Simple1D64relu_L2_32_16_K533_PBC_MReg0.00EReg0.00B1000'
 #obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 fixed_older = np.load('%s/%s.npy'%(quantities_dir1D_fixed, NAME))
 
@@ -178,7 +178,8 @@ def get_errors():
         mc_values = (fixed_older[i2, 0] - fixed_older[i1, 0]) * (T - T_list[i1])/ (T_list[i2] - T_list[i1])
         mc_values+= fixed_older[i1, 0]
         
-        errors[iT] = np.abs((mc_values - fixed_older[iT, -1]) / mc_values)
+        #errors[iT] = np.abs((mc_values - fixed_older[iT, -1]) / mc_values)
+        errors[iT] = (fixed_older[iT, -1] - mc_values)
         
     return errors
         
@@ -203,13 +204,13 @@ ax_ins = inset_axes(ax2,
                     width="40%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=1)
-plt.plot(T_list, 100*errors[:, 0], linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
+plt.plot(T_ren, 100 * errors[:, 0], linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
          markersize=12, marker='^')
 plt.locator_params(axis='x', nbins=5)
 plt.locator_params(axis='y', nbins=3)
 plt.xticks(fontsize=32)
 plt.yticks(fontsize=32)
-plt.ylabel('Error (%)', fontsize=label_size - 14)
+plt.ylabel('Error ($10^{-2}$)', fontsize=label_size - 18)
 plt.xlabel('$T$', fontsize=label_size - 14)
 
 
@@ -220,26 +221,29 @@ line_srEf, = ax3.plot(T_ren, fixed_older[:, -1, 1], color=cp[4], linestyle='', m
 plt.ylabel('$E$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-ax3.text(0, -0.32, 'b', horizontalalignment='center', verticalalignment='center', 
+ax2.set_zorder(1)
+ax_ins.set_zorder(2)
+
+ax2.text(4.615, 0.96, 'b', horizontalalignment='center', verticalalignment='center', 
          fontweight='bold', fontsize=test_size)
 
 ax_ins2 = inset_axes(ax3, 
                     width="40%", # width = 30% of parent_bbox
                     height="40%", # height : 1 inch
                     loc=4)
-plt.plot(T_list, 100*errors[:, 1], linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
+plt.plot(T_ren, 100 * errors[:, 1], linestyle=':', linewidth=2.0, color=cp[3], alpha=0.7,
          markersize=15, marker='^')
 ax_ins2.xaxis.tick_top()
 plt.locator_params(axis='x', nbins=5)
 plt.locator_params(axis='y', nbins=3)
 plt.xticks(fontsize=32)
-plt.yticks(fontsize=32)
-plt.ylabel('Error (%)', fontsize=label_size - 14)
+plt.yticks([-1, 0, 1], fontsize=32)
+plt.ylabel('Error ($10^{-2}$)', fontsize=label_size - 18)
 plt.xlabel('$T$', fontsize=label_size - 14)
 ax_ins2.xaxis.set_label_position('top') 
 
 
-ax2.legend((line_mcMf, line_rgMf, line_srMf), ('$N=%d$ MC'%L, '$N=%d$ MC'%(L//2), '$N=%d$ SR'%L), 
-           loc='lower left', fontsize=34)
+ax3.legend((line_mcMf, line_rgMf, line_srMf), ('$N=%d$ MC'%L, '$N=%d$ MC'%(L//2), '$N=%d$ SR'%L), 
+           loc='upper left', fontsize=34)
 
 plt.savefig('ups_real1D.pdf', bbox_inches='tight')
