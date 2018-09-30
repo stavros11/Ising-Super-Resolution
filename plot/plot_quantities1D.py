@@ -28,7 +28,7 @@ from plot_directories import quantities_dir1D, quantities_dir1D_fixed
 
 # Load data (fix .npy directory here)
 L = 64
-NAME = 'Simple1D64relu_L2_32_16_K533_PBC_MReg0.00EReg0.00B1000'
+NAME = 'Simple1D32relu_L1_32_K53_PBC_MReg0.00EReg0.00B1000_extr'
 #obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 fixed_older = np.load('%s/%s.npy'%(quantities_dir1D_fixed, NAME))
 
@@ -75,7 +75,7 @@ def plot_four(qtot=4, figsize=(14, 8), L=32, save=False):
     
     
 matplotlib.rcParams.update({'font.size': 38})
-test_size = 50 #text
+test_size = 46 #text
 label_size = 46
         
 #fig = plt.figure(figsize=(30, 10))
@@ -197,8 +197,8 @@ line_srMf, = plt.plot(T_ren, fixed_older[:, -1, 0], color=cp[4], linestyle='', m
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0, 0.97, 'a', horizontalalignment='center', verticalalignment='center', 
-         fontweight='bold', fontsize=test_size)
+plt.text(-0.62, 1, '(a)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=test_size)
 
 ax_ins = inset_axes(ax2, 
                     width="40%", # width = 30% of parent_bbox
@@ -224,8 +224,8 @@ plt.xlabel('$T$', fontsize=label_size)
 ax2.set_zorder(1)
 ax_ins.set_zorder(2)
 
-ax2.text(4.615, 0.96, 'b', horizontalalignment='center', verticalalignment='center', 
-         fontweight='bold', fontsize=test_size)
+ax2.text(4.22, 1.0, '(b)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=test_size)
 
 ax_ins2 = inset_axes(ax3, 
                     width="40%", # width = 30% of parent_bbox
@@ -246,4 +246,4 @@ ax_ins2.xaxis.set_label_position('top')
 ax3.legend((line_mcMf, line_rgMf, line_srMf), ('$N=%d$ MC'%L, '$N=%d$ MC'%(L//2), '$N=%d$ SR'%L), 
            loc='upper left', fontsize=34)
 
-plt.savefig('ups_real1D.pdf', bbox_inches='tight')
+plt.savefig('ups_real1D_extr.pdf', bbox_inches='tight')

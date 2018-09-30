@@ -20,7 +20,7 @@ NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD'
 
 def read_data(iT):
     ## Read MC and SR data ##
-    mc = df.temp_partition(df.read_file(df.data_directory_select(3), L=16), iT)
+    mc = df.temp_partition(df.read_file(df.data_directory_select(1), L=16), iT)
     output = np.load('%s/%s/T%.4f.npy'%(output_dir, NAME, T_list[iT]))
     sampled = (output > np.random.random(output.shape)).astype(np.int)
     
@@ -28,7 +28,7 @@ def read_data(iT):
 
 def plot_block_sum(iT=[10,15,20], figsize=(10, 6), save=False):
     ## Plots three lines of four sum histograms ##    
-    text = ['a', 'b', 'c']
+    text = ['(a)', '(b)', '(c)']
     
     label_size = 60
     
@@ -42,8 +42,8 @@ def plot_block_sum(iT=[10,15,20], figsize=(10, 6), save=False):
         plt.ylim((0,350000))
         plt.xticks(np.arange(0, 5, step=2))
         plt.yticks([])
-        plt.text(-0.5, 300000, text[line], horizontalalignment='center', 
-                 verticalalignment='center', fontweight='bold', fontsize=64)
+        plt.text(-0.64, 310000, text[line], horizontalalignment='center', 
+                 verticalalignment='center', fontsize=64)
         if line == 0:
             plt.title('MC', fontsize=label_size)
         

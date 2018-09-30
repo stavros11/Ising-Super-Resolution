@@ -27,8 +27,8 @@ from plot_directories import quantities_dir1D
 #        tpf(L/4), S0, S1, S2]
 
 # Load data (fix .npy directory here)
-L = 64
-NAME = 'Simple1D64relu_L2_32_16_K533_PBC_MReg0.00EReg0.00B1000'
+L = 32
+NAME = 'Simple1D32relu_L3_32_16_16_K333_PBC_MReg0.00EReg0.00B1000'
 #obs = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 fixed_older = np.load('%s/%s.npy'%(quantities_dir1D, NAME))
 
@@ -39,7 +39,7 @@ fixed_older[:5, -1] = fixed_older[:5, -2]
     
     
 matplotlib.rcParams.update({'font.size': 38})
-test_size = 50 #text
+test_size = 46 #text
 label_size = 46
 
 from mpl_toolkits.axes_grid.inset_locator import inset_axes
@@ -67,8 +67,8 @@ line_srMf, = plt.plot(T_list, fixed_older[:, -1, 0], color=cp[4], linestyle='', 
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0, 0.97, 'a', horizontalalignment='center', verticalalignment='center', 
-         fontweight='bold', fontsize=test_size)
+plt.text(-0.62, 1, '(a)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=test_size)
 
 ax_ins = inset_axes(ax2, 
                     width="40%", # width = 30% of parent_bbox
@@ -78,8 +78,8 @@ plt.plot(T_list, 1000* errors[:, 0], linestyle=':', linewidth=2.0, color=cp[3], 
          markersize=12, marker='^')
 #plt.locator_params(axis='x', nbins=5)
 #plt.locator_params(axis='y', nbins=3)
-plt.xticks(fontsize=32)
-plt.yticks([-4, -2, 0, 2], fontsize=32)
+plt.xticks([0, 1, 2, 3], fontsize=32)
+plt.yticks([0, 5], fontsize=32)
 plt.yticks(fontsize=32)
 plt.ylabel('Error ($10^{-3}$)', fontsize=label_size - 18)
 plt.xlabel('$T$', fontsize=label_size - 14)
@@ -95,8 +95,8 @@ plt.xlabel('$T$', fontsize=label_size)
 ax2.set_zorder(1)
 ax_ins.set_zorder(2)
 
-ax2.text(4.615, 0.96, 'b', horizontalalignment='center', verticalalignment='center', 
-         fontweight='bold', fontsize=test_size)
+ax2.text(4.24, 1.0, '(b)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=test_size)
 
 ax_ins2 = inset_axes(ax3, 
                     width="40%", # width = 30% of parent_bbox
@@ -107,8 +107,8 @@ plt.plot(T_list, 100 * errors[:, 1], linestyle=':', linewidth=2.0, color=cp[3], 
 ax_ins2.xaxis.tick_top()
 #plt.locator_params(axis='x', nbins=5)
 #plt.locator_params(axis='y', nbins=3)
-plt.xticks(fontsize=32)
-#plt.yticks([-1, 0, 1], fontsize=32)
+plt.xticks([0, 1, 2, 3], fontsize=32)
+plt.yticks([-2, -1, 0], fontsize=32)
 plt.yticks(fontsize=32)
 plt.ylabel('Error ($10^{-2}$)', fontsize=label_size - 18)
 plt.xlabel('$T$', fontsize=label_size - 14)

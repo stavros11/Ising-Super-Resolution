@@ -146,8 +146,8 @@ label_list = ['MC', 'DS', 'SR']
 alphas = [1.0, 0.8, 0.65]
 text_font = 48
 
-tx = [-0.02, -2.1, -0.07, -1.865]
-ty = [4.9, 2.7, 3.12, 3.0]
+tx = [-0.2, -2.41, -0.23, -2.23]
+ty = [4.9, 2.8, 3.17, 3.14]
 
 iT = 15, 20
 obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],
@@ -168,14 +168,14 @@ for i in range(4):
 
 axs[0].legend(fontsize=38, loc='lower left')
 
-axs[0].text(tx[0], ty[0], 'a', horizontalalignment='center', verticalalignment='center', 
-   fontweight='bold', fontsize=text_font)
-axs[1].text(tx[1], ty[1], 'b', horizontalalignment='center', verticalalignment='center', 
-   fontweight='bold', fontsize=text_font)
-axs[2].text(tx[2], ty[2], 'c', horizontalalignment='center', verticalalignment='center', 
-   fontweight='bold', fontsize=text_font)
-axs[3].text(tx[3], ty[3], 'd', horizontalalignment='center', verticalalignment='center', 
-   fontweight='bold', fontsize=text_font)
+axs[0].text(tx[0], ty[0], '(a)', horizontalalignment='center', verticalalignment='center', 
+   fontsize=text_font)
+axs[1].text(tx[1], ty[1], '(b)', horizontalalignment='center', verticalalignment='center', 
+   fontsize=text_font)
+axs[2].text(tx[2], ty[2], '(c)', horizontalalignment='center', verticalalignment='center', 
+   fontsize=text_font)
+axs[3].text(tx[3], ty[3], '(d)', horizontalalignment='center', verticalalignment='center', 
+   fontsize=text_font)
 
 plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.25)
 plt.savefig('seaborn_hist.pdf')
