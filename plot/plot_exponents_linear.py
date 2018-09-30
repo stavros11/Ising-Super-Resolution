@@ -10,6 +10,7 @@ from scipy.stats import linregress
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+from mpl_toolkits.axes_grid.inset_locator import inset_axes
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
@@ -71,7 +72,7 @@ matplotlib.rcParams.update({'font.size': 52})
 label_font = 60
 legend_font = 64
 marker_size = 20
-text_size = 70
+text_size = 62
         
 #fig = plt.figure(figsize=(20, 20))
 ## set height ratios for sublots
@@ -123,39 +124,37 @@ text_size = 70
 #plt.subplots_adjust(left=0.08, right=0.98, top=0.98, bottom=0.08)
 #plt.savefig('critical_lin.pdf')
    
-from mpl_toolkits.axes_grid.inset_locator import inset_axes
-
 cp = sns.color_palette("deep", 3)
-plt.figure(figsize=(20, 10))
-ax1 = plt.subplot()
-line1, = ax1.plot(np.log10(L_list/2), np.log10(obs[10]), linestyle='--', marker='s', markersize=marker_size, color=cp[2], 
+fig, ax1 = plt.subplots(figsize=(20, 10))
+
+line1 = ax1.plot(np.log10(L_list/2), np.log10(obs[10]), linestyle='--', marker='s', markersize=marker_size, color=cp[2], 
                   linewidth=2.0, label='$r=L/2$')
-line11, = ax1.plot(np.log10(L_list/4), np.log10(obs[10]), linestyle='--', marker='d', markersize=marker_size, color=cp[1], 
+line11 = ax1.plot(np.log10(L_list/4), np.log10(obs[10]), linestyle='--', marker='d', markersize=marker_size, color=cp[1], 
                   linewidth=2.0, label='$r=L/4$')
 plt.xlabel('$\log \, r$', fontsize=label_font)
 plt.ylabel('$\log \, G(r) $', fontsize=label_font)
 plt.legend(loc='upper right', fontsize=legend_font)
-ax1.locator_params(axis='x', nbins=5)
-ax1.locator_params(axis='y', nbins=2)
+plt.locator_params(axis='x', nbins=5)
+plt.locator_params(axis='y', nbins=2)
 
 inset_axes = inset_axes(ax1, 
                     width="30%", # width = 30% of parent_bbox
                     height="50%", # height : 1 inch
-                    loc='lower left')
+                    loc=3)
 
 plt.plot(np.log10(L_list), np.log10(obs[2]), linestyle='--', marker='o', markersize=marker_size, color=cp[0], linewidth=2.0)
 plt.xlabel('$\log \, L$', fontsize=label_font - 8)
-inset_axes.xaxis.set_label_coords(0.8,0.17)
-inset_axes.yaxis.set_label_coords(0.14,0.45)
+inset_axes.xaxis.set_label_coords(0.8,0.185)
+inset_axes.yaxis.set_label_coords(0.16,0.4)
 plt.ylabel('$\log \, \chi $', fontsize=label_font - 8)
 plt.xticks([])
 plt.yticks([])
 
-ax1.text(0.565, -0.255, 'a', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
-inset_axes.text(1.25, 2.5, 'b', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
+ax1.text(0.465, -0.255, '(a)', horizontalalignment='center', verticalalignment='center', 
+                 fontsize=text_size)
+inset_axes.text(1.31, 2.5, '(b)', horizontalalignment='center', verticalalignment='center', 
+                 fontsize=text_size)
 
 
-plt.subplots_adjust(left=0.14, right=0.98, top=0.98, bottom=0.16)
-plt.savefig('critical_lin.pdf')
+#plt.subplots_adjust(left=0.14, right=0.98, top=0.98, bottom=0.16)
+plt.savefig('critical_lin.pdf', bbox_inches='tight')
