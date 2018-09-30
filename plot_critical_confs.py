@@ -20,7 +20,7 @@ matplotlib.rcParams['font.family'] = 'STIXGeneral'
 #64652 i_sample
 NAME = 'Simple2D16relu_L2_64_32_K333_PBC_MReg0.00EReg0.00B1000_Ver2Run7'
 
-mc = df.read_file(df.data_directory_select(2), n_samples=100000)
+mc = df.read_file(df.data_directory_select(1), n_samples=100000)
 
 model0 = simple2D_pbc([1, 16, 16, 1], kernels=[3,3,3])
 model0.load_weights('%s/%s.hdf5'%(models_critical_dir, NAME))
@@ -75,9 +75,9 @@ def plot_sr_states(states, figsize=(15, 6), p_list=[0, 1], save=False):
     fig = plt.figure(figsize=figsize)
     gs = gridspec.GridSpec(1, 4)
     
-    txt = ['a', 'b', 'c', 'd']
-    tx = [-2.0, -3.2, -12, -45]
-    ty = [-2, -3, -10, -40]
+    txt = ['(a)', '(b)', '(c)', '(d)']
+    tx = [-1.6, -2.6, -8, -35]
+    ty = [-2, -3.5, -12.5, -50]
     
     ax = []
     for (i, p) in enumerate(p_list):
@@ -88,7 +88,7 @@ def plot_sr_states(states, figsize=(15, 6), p_list=[0, 1], save=False):
         plt.yticks([])
         
         ax[i].text(tx[i], ty[i], txt[i], horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=60)   
+                 fontsize=48)   
     
     if save:
         #plt.subplots_adjust(left=0.05, right=0.99, top=1.0, bottom=0.0)
