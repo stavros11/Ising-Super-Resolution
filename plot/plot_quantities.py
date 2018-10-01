@@ -26,7 +26,7 @@ from plot_directories import T_list, quantities_dir
 
 # Load data (fix .npy directory here)
 L = 16
-NAME = 'Simple2D16relu_L3_32_32_16_K5533_PBC_MReg0.00EReg2.00B1000'
+NAME = 'Simple2D16relu_L3_32_32_16_K5533_PBC_MReg0.00EReg2.00B1000_corr'
 obs = np.load('%s/%s.npy'%(quantities_dir, NAME))
 
 # Use rounding instead of sampling for the five lowest temperatures 
@@ -110,8 +110,8 @@ plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0.0, 0.975, 'a', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
+plt.text(-0.78, 0.99, '(a)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=text_size)
 
 if False:
     pass
@@ -147,8 +147,8 @@ plt.xlabel('$T$', fontsize=label_size)
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
 
-plt.text(0.0, -0.545, 'b', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
+plt.text(-0.525, -0.25, '(b)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=text_size)
 
 
 if False:
@@ -177,7 +177,7 @@ else:
 # put legend on first subplot
 ax0.legend((line_mcM, line_rgM, line_srM), (
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' MC']), 
-        ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' MC']),
+        ''.join([r'%d'%(L//2), r'$\times$', r'%d'%(L//2), r' DS']),
         ''.join([r'%d'%L, r'$\times$', r'%d'%L, r' SR'])), loc='lower left', fontsize=37)
 
 # remove vertical gap between subplots
