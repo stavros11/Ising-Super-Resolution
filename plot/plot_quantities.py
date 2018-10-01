@@ -93,7 +93,7 @@ from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
 matplotlib.rcParams.update({'font.size': 38})
 label_size = 46
-text_size = 50
+text_size = 42
 
 fig = plt.figure(figsize=(30, 7))
 # set height ratios for sublots
@@ -184,4 +184,5 @@ ax0.legend((line_mcM, line_rgM, line_srM), (
 plt.subplots_adjust(hspace=.0)
 
 #plt.subplots_adjust(left=0.12, right=0.95, top=0.95, bottom=0.10)
-plt.savefig('test2D_pure_%s.pdf'%NAME, bbox_inches='tight')
+#plt.savefig('test2D_pure_%s.pdf'%NAME, bbox_inches='tight')
+plt.savefig('test2D_pure.pdf', bbox_inches='tight')

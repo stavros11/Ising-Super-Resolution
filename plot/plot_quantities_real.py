@@ -136,7 +136,7 @@ from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
 matplotlib.rcParams.update({'font.size': 38})
 label_size = 46
-text_size = 50
+text_size = 44
 
 fig = plt.figure(figsize=(30, 7))
 # set height ratios for sublots
@@ -153,8 +153,8 @@ plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle='--', color='k', linewidth
 plt.ylabel('$M$', fontsize=label_size)
 plt.xlabel('$T$', fontsize=label_size)
 
-plt.text(0.0, 0.975, 'a', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
+plt.text(-0.88, 1.0, '(a)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=text_size)
 
 if plot_errors:
     ax_ins = inset_axes(ax0, 
@@ -202,8 +202,8 @@ plt.xlabel('$T$', fontsize=label_size)
 ax0.locator_params(axis='y', nbins=5)
 ax1.locator_params(axis='y', nbins=5)
 
-plt.text(0.0, -0.545, 'b', horizontalalignment='center', verticalalignment='center', 
-                 fontweight='bold', fontsize=text_size)
+plt.text(-0.953, -0.475, '(b)', horizontalalignment='center', verticalalignment='center', 
+         fontsize=text_size)
 
 if plot_errors:
     ax_ins2 = inset_axes(ax1, 
@@ -252,8 +252,8 @@ ax0.legend((line_mcM, line_rgM, line_srM), (
 plt.subplots_adjust(hspace=.0)
 
 #plt.subplots_adjust(left=0.12, right=0.95, top=0.95, bottom=0.10)
-plt.savefig('ups_real2D_%s.pdf'%NAME, bbox_inches='tight')
-
+#plt.savefig('ups_real2D_%s.pdf'%NAME, bbox_inches='tight')
+plt.savefig('ups_real2D_extr.pdf'%NAME, bbox_inches='tight')
 
 #plt.figure(figsize=(8, 6))
 #plt.plot(T_list, obs[:, 0, 3], color='blue', linewidth=3.5, marker='', markersize=11)
