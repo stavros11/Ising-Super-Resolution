@@ -47,9 +47,9 @@ a[1], b[1] = np.load(path.join(parameters_dir, 'Energy_Transformation_Params_L16
 
 # Load data (fix .npy directory here)
 L = 32
-NAME = 'Simple2D16relu_L3_64_16_16_K5333_PBC_MReg0.00EReg0.70B1000_extr'
+NAME = 'handtuned3_extr'
 obs = np.load('%s/%s.npy'%(quantities_real_dir, NAME))
-plot_errors = True
+plot_errors = False
 
 # Use rounding instead of sampling for the five lowest temperatures 
 # to correct noise in susc and Cv
