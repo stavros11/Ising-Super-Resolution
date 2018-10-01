@@ -26,8 +26,9 @@ from plot_directories import T_list, seaborn_dir
 # ind4: different samples
 
 # Load data (fix .npy directory here!)
-NAME = 'Simple2D16relu_L3_64_16_16_K3333_MReg0.10EReg0.30B1000_OLD'
+NAME = 'Simple2D16relu_L3_32_32_16_K5533_PBC_MReg0.00EReg2.00B1000_corr_extr_iT15'
 obs = np.load('%s/%s.npy'%(seaborn_dir, NAME))
+obs2 = np.load('%s/%s.npy'%(seaborn_dir, NAME[:-4] + 'iT25'))
 
 def plot_one(iT, q=0, bins=20, figsize=(10, 6), save=False):
     # If iT < 5 select rounded instead of sampled
@@ -142,16 +143,19 @@ def plot_two_temperatures(iT=(15, 20), bins=20, figsize=(15, 5), save=False,
 
 
 color_list = ['blue', 'green', 'orange']
-label_list = ['MC', 'DS', 'SR']
+label_list = ['HR', 'LR', 'SR']
 alphas = [1.0, 0.8, 0.65]
 text_font = 48
 
-tx = [-0.2, -2.41, -0.23, -2.23]
-ty = [4.9, 2.8, 3.17, 3.14]
+tx = [-0.2, -2.21, -0.2, -1.6]
+ty = [6.5, 4.92, 6.73, 6.7]
 
 iT = 15, 20
-obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],
-            obs[iT[1], np.array([0, 1, 4]), 0], obs[iT[1], np.array([0, 1, 4]), 1]]
+#obs_plot = [obs[iT[0], np.array([0, 1, 4]), 0], obs[iT[0], np.array([0, 1, 4]), 1],
+#            obs[iT[1], np.array([0, 1, 4]), 0], obs[iT[1], np.array([0, 1, 4]), 1]]
+
+obs_plot = [obs[:, 0], obs[:, 1], 
+            obs2[:, 0], obs2[:, 1]]
 
 fig, axs = plt.subplots(figsize=(30,5), ncols=4, nrows=1)      
 
