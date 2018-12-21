@@ -118,7 +118,7 @@ def plot_scale_invariance(figsize=(23, 7), save=False,
     plt.ylabel(r'$\xi _b / L$')
     
     if save:
-        plt.savefig('scale_invariance.pdf', bbox_inches='tight')
+        plt.savefig('sr_errors.pdf', bbox_inches='tight')
     else:
         plt.show()
         
