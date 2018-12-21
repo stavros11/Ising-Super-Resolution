@@ -67,39 +67,55 @@ def plot_TPF(figsize=(8,5), save=False):
     else:
         plt.show()
         
-def plot_scale_invariance(figsize=(23, 7), save=False):
-    cp = sns.color_palette("deep", 3)
+def plot_scale_invariance(figsize=(23, 7), save=False,
+                          error_dir='D:/Ising-Super-Resolution-Data/'):
+    cp = sns.color_palette("deep", 4)
+    
+    # Energy error (for L in [16, 32, 64])    
+    endata = np.load(error_dir + 'sr_error_energy.npy')
+    en_error = np.abs(endata[0].mean(axis=1) - endata[1].mean(axis=1))
+    
+    # Binder cumulant U2
     binder = obs[5] / obs[4]**2
     binder = 3.0 * (1 - binder / 3.0) / 2.0
+    
+    # Two ways to calculate correlation length
     S = obs[7:10]
     ksia = np.sqrt(S[0] / S[1] - 1) / (2 * np.pi)
     ksib = np.sqrt((S[1] / S[2] - 1) / (4 - S[1] / S[2])) / (2 * np.pi)
     
     plt.figure(figsize=figsize)
+    plt.subplot(221)
+    plt.plot(np.log2(L_list[:3]), en_error, '--o', color=cp[0],
+             markersize=15, linewidth=2.0,)
+    plt.xticks([4, 5, 6])
+    plt.locator_params(axis='y', nbins=5)
+    plt.xlabel('$\log _2 L$')
+    plt.ylabel('$|E_\mathrm{MC} - E_\mathrm{SR}|$')
     
-    plt.subplot(131)
-    plt.plot(np.log2(L_list), binder, '--o', color=cp[0],
+    plt.subplot(222)
+    plt.plot(np.log2(L_list), binder, '--o', color=cp[1],
              markersize=15, linewidth=2.0,)
     plt.xticks([4, 5, 6, 7, 8])
     plt.locator_params(axis='y', nbins=5)
     plt.xlabel('$\log _2 L$')
     plt.ylabel('$U_2$')
     
-    plt.subplot(132)
-    plt.plot(np.log2(L_list), ksia, '--o', color=cp[0],
+    plt.subplot(223)
+    plt.plot(np.log2(L_list), ksia, '--o', color=cp[2],
              markersize=15, linewidth=2.0,)
     plt.xticks([4, 5, 6, 7, 8])
     plt.locator_params(axis='y', nbins=5)
     plt.xlabel('$\log _2 L$')
-    plt.ylabel(r'$\xi _a$')
+    plt.ylabel(r'$\xi _a / L$')
     
-    plt.subplot(133)
-    plt.plot(np.log2(L_list), ksib, '--o', color=cp[0],
+    plt.subplot(224)
+    plt.plot(np.log2(L_list), ksib, '--o', color=cp[3],
              markersize=15, linewidth=2.0,)
     plt.xticks([4, 5, 6, 7, 8])
     plt.locator_params(axis='y', nbins=5)
     plt.xlabel('$\log _2 L$')
-    plt.ylabel(r'$\xi _b$')
+    plt.ylabel(r'$\xi _b / L$')
     
     if save:
         plt.savefig('scale_invariance.pdf', bbox_inches='tight')
