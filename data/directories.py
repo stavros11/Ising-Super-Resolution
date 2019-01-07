@@ -14,6 +14,8 @@ from numpy import linspace
 T_list = linspace(0.01, 4.538, 32)
 
 BASIC_DIR = '/home/sefthymiou/super-resolving-ising/'
+## Notebook
+BASIC_DIR = 'C:/Users/Stavros.SAVVAS-PROBOOK/Documents/Scripts_and_Programs/SR_results/'
 ## To run in PC instead of Titan:
 #BASIC_DIR = 'D:/Ising-Super-Resolution-Data/'
 
