@@ -11,7 +11,7 @@ Created on Thu Jun 14 15:13:40 2018
 ##################################################################
 
 import numpy as np
-from correlation import correlation_lengths, two_point_function
+from networks.correlation import correlation_lengths, two_point_function
 
 def get_basic_observables(state, T):
     ## Returns [Mag, En, Susc, specHeat]
