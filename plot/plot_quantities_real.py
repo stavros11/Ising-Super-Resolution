@@ -176,7 +176,7 @@ else:
                         height="40%", # height : 1 inch
                         loc=1)
     plt.plot(T_list, obs[:, 0, 2], color=cp[3], alpha=0.8, linewidth=3)
-    plt.plot(T_list, obs[:, 1, 2], color=cp[2], linewidth=3, linestyle='--')
+    plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, 1, 2], color=cp[2], linewidth=3, linestyle='--')
     plt.plot(T_ren_inv[cut_iT:], obs[cut_iT:, -1, 2], linestyle=' ', 
                          color=cp[-1], alpha=0.8, marker='o', markersize=10)
     plt.axvline(x = 2 / np.log(1 + np.sqrt(2)), linestyle=(0, (5, 1)), color='k', linewidth=1.5)
@@ -252,8 +252,8 @@ ax0.legend((line_mcM, line_rgM, line_srM), (
 plt.subplots_adjust(hspace=.0)
 
 #plt.subplots_adjust(left=0.12, right=0.95, top=0.95, bottom=0.10)
-#plt.savefig('ups_real2D_%s.pdf'%NAME, bbox_inches='tight')
-plt.savefig('ups_real2D_extr.pdf'%NAME, bbox_inches='tight')
+plt.savefig('ups_real2D_%s.pdf'%NAME, bbox_inches='tight')
+#plt.savefig('ups_real2D_extr.pdf'%NAME, bbox_inches='tight')
 
 #plt.figure(figsize=(8, 6))
 #plt.plot(T_list, obs[:, 0, 3], color='blue', linewidth=3.5, marker='', markersize=11)
